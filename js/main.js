@@ -71,6 +71,14 @@ $(document).ready(function() {
 //     }
 // })();
 
+// Viewport Height
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+window.addEventListener("resize", () => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+});
+
 // Toggle Menu
 const toggleMenu = (toggleID, toggleNav) => {
     let toggleLink = document.querySelector(toggleID),
