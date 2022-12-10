@@ -188,17 +188,40 @@
          document.documentElement.style.setProperty("--vh", `${vh}px`);
      });
 
+     //  Promo Section
+     let promoSection = document.querySelector('#promoSection');
+     if (promoSection) {
+         let isPromo = localStorage.getItem('newsite_promotion');
+         if (isPromo !== 'shown') {
+             $("#promoSection").show();
+         }
+         $("#promoBtn").click(function() {
+             $("#promoSection").fadeOut();
+             localStorage.setItem('newsite_promotion', 'shown');
+             headerTop = 0;
+             console.log(`${headerTop}px`);
+             $('#top-bar__nav').css('top', headerHeight);
+         });
+     }
+
+
+     var headerTop = $('#header').offset().top,
+         headerHeight = $('#header').height();
+     $(window).scroll(function() {
+         let scroll = $(window).scrollTop();
+         headerTop = $('#header').offset().top - scroll;
+     });
+
+
      // Toggle Menu
      const toggleMenu = (toggleID, toggleNav) => {
          let toggleLink = document.querySelector(toggleID),
              toggleItem = document.querySelector(toggleNav),
-             headerHeight = document.querySelector('#header').clientHeight;
-         root = document.getElementsByTagName("html")[0];
-
-         toggleItem.style.top = `${headerHeight}px`;
-
+             root = document.getElementsByTagName("body")[0];
          if (toggleLink && toggleItem) {
              toggleLink.onclick = (e) => {
+                 toggleItem.style.top = `${headerHeight + headerTop}px`;
+
                  if (toggleItem.classList.contains("active")) {
                      toggleLink.classList.remove("closed");
                      root.classList.remove("hide-scroll");
@@ -226,50 +249,49 @@
 
 
 
+
      // Hide Header on on scroll down
-     let figureScroll = document.querySelector('#figure');
-     if (figureScroll && window.innerWidth < 768) {
+     //  let figureScroll = document.querySelector('#figure');
+     //  if (figureScroll && window.innerWidth < 768) {
+     //      var didScroll;
+     //      var lastScrollTop = 0;
+     //      var delta = 5;
+     //      var navbarHeight = $('#figure').outerHeight();
 
+     //      $(window).scroll(function(event) {
+     //          didScroll = true;
+     //      });
 
-         var didScroll;
-         var lastScrollTop = 0;
-         var delta = 5;
-         var navbarHeight = $('#figure').outerHeight();
+     //      setInterval(function() {
+     //          if (didScroll) {
+     //              hasScrolled();
+     //              didScroll = false;
+     //          }
+     //      }, 5);
 
-         $(window).scroll(function(event) {
-             didScroll = true;
-         });
+     //      function hasScrolled() {
+     //          var st = $(this).scrollTop();
 
-         setInterval(function() {
-             if (didScroll) {
-                 hasScrolled();
-                 didScroll = false;
-             }
-         }, 5);
+     //          // Make sure they scroll more than delta
+     //          if (Math.abs(lastScrollTop - st) <= delta)
+     //              return;
 
-         function hasScrolled() {
-             var st = $(this).scrollTop();
+     //          // If they scrolled down and are past the navbar, add class .nav-up.
+     //          // This is necessary so you never see what is "behind" the navbar.
+     //          if (st > lastScrollTop && st > navbarHeight) {
+     //              // Scroll Down
+     //              $('#figure').removeClass('nav-down').addClass('nav-up');
+     //          } else {
+     //              // Scroll Up
+     //              if (st + $(window).height() < $(document).height()) {
+     //                  $('#figure').removeClass('nav-up').addClass('nav-down');
+     //              }
+     //          }
 
-             // Make sure they scroll more than delta
-             if (Math.abs(lastScrollTop - st) <= delta)
-                 return;
+     //          lastScrollTop = st;
+     //      }
 
-             // If they scrolled down and are past the navbar, add class .nav-up.
-             // This is necessary so you never see what is "behind" the navbar.
-             if (st > lastScrollTop && st > navbarHeight) {
-                 // Scroll Down
-                 $('#figure').removeClass('nav-down').addClass('nav-up');
-             } else {
-                 // Scroll Up
-                 if (st + $(window).height() < $(document).height()) {
-                     $('#figure').removeClass('nav-up').addClass('nav-down');
-                 }
-             }
-
-             lastScrollTop = st;
-         }
-
-     }
+     //  }
 
 
      //  More Show Hide 
