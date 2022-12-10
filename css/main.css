@@ -12,6 +12,7 @@
 	
 -------------------------------------------------------------------*/
 
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 /* 01. GLOBAL STYLES */
 
@@ -749,11 +750,12 @@ p {
     border-color: #bf4100
 }
 
-.mainBtn:focus {
+
+/* .mainBtn:focus {
     color: #fff;
     background-color: #bf4100;
     border-color: #bf4100
-}
+} */
 
 .btnoutline {
     background-color: transparent !important;
@@ -773,6 +775,12 @@ p {
 }
 
 .btnfillwhite:hover {
+    border-color: #000;
+    color: #fff;
+    background-color: #000 !important
+}
+
+.btnfillwhite:focus {
     border-color: #000;
     color: #fff;
     background-color: #000 !important
@@ -973,7 +981,7 @@ p {
 
 .profileWrapper {
     position: relative;
-    padding-top: 150px;
+    padding-top: 160px;
 }
 
 
@@ -1065,17 +1073,16 @@ p {
 
 .radio .cr {
     border-radius: 50%;
-    ;
 }
 
 .checkbox .cr .cr-icon,
 .radio .cr .cr-icon {
     position: absolute;
-    font-size: 0.9em;
+    font-size: 1em;
     line-height: 0;
-    top: 55%;
-    left: 18%;
-    color: #FC7028;
+    top: 12%;
+    left: 12%;
+    color: #FC7028
 }
 
 .radio .cr .cr-icon {
@@ -1208,7 +1215,7 @@ a.hover:hover:before {
     text-transform: uppercase;
     padding: 25px 0 15px 0;
     transition: all 0.3s ease;
-    margin: 0
+    margin: 0;
 }
 
 .headerNav li {
@@ -1267,7 +1274,6 @@ a.hover:hover:before {
 
 .header .rightNav ul li i.fa-envelope {
     position: relative;
-    ;
     top: 3px;
 }
 
@@ -1488,7 +1494,15 @@ a.hover:hover:before {
 }
 
 .top-bar__nav .inner-col ul li a {
-    color: #19191c
+    color: #19191c;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.top-bar__nav .inner-col ul li a ion-icon {
+    font-size: 22px;
+    width: 25px;
 }
 
 .top-bar__nav .inner-col ul li a:hover {
@@ -1692,7 +1706,6 @@ a.hover:hover:before {
 
 .companyCarousal {
     padding: 60px 0;
-    position: relative;
 }
 
 .companyCarousal h1 {
@@ -1711,8 +1724,10 @@ a.hover:hover:before {
     margin: auto;
 }
 
-.companyCarousal .owl-dots {
-    display: none;
+.company-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 
@@ -1776,7 +1791,28 @@ a.hover:hover:before {
 .cta-section {
     padding: 60px 0;
     position: relative;
-    color: #fff
+    color: #fff;
+    background-color: #f0996a;
+}
+
+.cta-leaves-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.cta-leaves-left img {
+    max-width: 100%;
+}
+
+.cta-leaves-right {
+    position: absolute;
+    right: 0;
+    bottom: -60px;
+}
+
+.cta-leaves-right img {
+    max-width: 100%;
 }
 
 .cta-section h3 {
@@ -1794,8 +1830,22 @@ a.hover:hover:before {
 /**/
 
 .latestProfileSection {
-    padding: 60px 0;
+    padding: 30px 0;
     position: relative;
+}
+
+.latestProfileSection .container {
+    position: relative;
+}
+
+.latest-profile-leaves {
+    position: absolute;
+    bottom: -70px;
+    left: 0;
+}
+
+.latest-profile-leaves img {
+    max-width: 100%;
 }
 
 .latestProfileSection h3 {
@@ -1853,15 +1903,21 @@ a.hover:hover:before {
     left: 10px !important
 }
 
+.latestProfileSection .owl-prev span {
+    display: none;
+}
+
 .latestProfileSection .owl-prev:before {
-    content: "\f053";
     position: absolute;
     top: 8px;
-    left: 13px;
-    color: #19191C;
+    left: 8px;
     text-align: center;
-    font-family: 'FontAwesome';
     font-size: 12px;
+    background-image: url(../img/chevron-back-outline.svg);
+    width: 13px;
+    height: 17px;
+    background-size: cover;
+    content: '';
 }
 
 .latestProfileSection .owl-next {
@@ -1875,15 +1931,21 @@ a.hover:hover:before {
     right: 10px !important
 }
 
+.latestProfileSection .owl-next span {
+    display: none;
+}
+
 .latestProfileSection .owl-next:before {
-    content: "\f054";
     position: absolute;
     top: 8px;
-    left: 13px;
+    left: 9px;
     color: #19191C;
     text-align: center;
-    font-family: 'FontAwesome';
-    font-size: 12px;
+    background-image: url(../img/chevron-forward-outline.svg);
+    width: 13px;
+    height: 17px;
+    background-size: cover;
+    content: '';
 }
 
 .latestProfileSection .bookmark {
@@ -2100,6 +2162,27 @@ a.hover:hover:before {
 
 .studycase-section .item {
     padding: 120px 0;
+    position: relative;
+}
+
+.job-leaves-left {
+    position: absolute;
+    left: 0;
+    top: -80px;
+}
+
+.job-leaves-left img {
+    max-width: 100%;
+}
+
+.job-leaves-right {
+    position: absolute;
+    right: 0;
+    top: -40px;
+}
+
+.job-leaves-right img {
+    max-width: 100%;
 }
 
 .studycase-section h1 {
@@ -2129,6 +2212,30 @@ a.hover:hover:before {
     position: relative;
     max-height: 350px;
     margin: auto;
+    position: relative;
+    z-index: 0;
+}
+
+.model-leaves {
+    position: absolute;
+    z-index: -1;
+    left: -60px;
+    top: -42px;
+}
+
+.model-leaves img {
+    max-width: 100%;
+}
+
+.model-leaves-right {
+    position: absolute;
+    z-index: -1;
+    right: -94px;
+    bottom: -106px;
+}
+
+.model-leaves-right img {
+    max-width: 100%;
 }
 
 .studycase-section .content-img img {
@@ -2275,7 +2382,14 @@ a.hover:hover:before {
     font-size: 16px;
     font-weight: 700;
     border: solid 2px #19191C;
-    border-radius: 25px
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.toggleform .uplaodBtn .hydrated {
+    font-size: 22px;
 }
 
 .toggleform .uplaodBtn:hover {
@@ -2306,6 +2420,7 @@ a.hover:hover:before {
 
 .filter-area {
     position: relative;
+    margin-top: -1px;
 }
 
 .filter-area .inner {
@@ -2469,6 +2584,10 @@ a.hover:hover:before {
     box-shadow: 1px 1px 4px -2px rgba(0, 0, 0, 0.4);
 }
 
+.sortspacer {
+    padding-right: 13px !important;
+}
+
 .dropdown-toggle:after {
     display: none !important;
 }
@@ -2525,7 +2644,7 @@ a.hover:hover:before {
 }
 
 .filter-downBtn {
-    width: 70px;
+    width: auto;
     text-align: left;
     position: relative;
     top: -2px;
@@ -2877,10 +2996,10 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 }
 
 .noUi-horizontal .noUi-handle {
-    width: 18px;
+    width: 18px !important;
     height: 18px;
     border-radius: 50%;
-    left: -7px;
+    left: -3px;
     top: -10px;
     background-color: #fff;
     border: solid 2px #fc7028;
@@ -2895,7 +3014,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
  */
 
 .noUi-background {
-    background: #fc7028;
+    background: #DFDFE8;
 }
 
 .noUi-connect {
@@ -2937,10 +3056,6 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     left: -3px !important
 }
 
-.noUi-handle-upper {
-    left: -20px !important
-}
-
 
 /* Disabled state;
  */
@@ -2974,10 +3089,28 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     color: #A3A2AD;
 }
 
-.filterModal .range-valueBox .value {
+.filterModal .range-valueBox .value input {
     font-size: 18px;
     font-weight: 600;
-    color: #19191C
+    color: #19191C;
+    border: none;
+    width: 34px;
+    -moz-appearance: textfield;
+    transition: 0.2s all ease;
+}
+
+.filterModal .range-valueBox .value input:focus {
+    box-shadow: none;
+    outline: none;
+    /* background-color: #B4D5FF; */
+}
+
+.filterModal .range-valueBox .value input[type=number]::-webkit-inner-spin-button,
+.filterModal .range-valueBox .value input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
 }
 
 .filterModal hr {
@@ -3006,6 +3139,16 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 .modelcheckbox {
     border-radius: 10px;
     padding: 15px 10px
+}
+
+.svg-check {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 9px;
+    width: 139px;
+    height: 120px;
+    justify-content: center;
 }
 
 .modelcheckbox:before {
@@ -3284,15 +3427,17 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 .auditionsItem h3 {
     font-size: 28px;
     padding-top: 15px;
+    color: #19191c !important;
+    opacity: 9
 }
 
 .auditionsItem h3 a {
-    color: #19191C
+    color: #19191c!important
 }
 
 .auditionsItem h3 a:hover {
     text-decoration: underline !important;
-    color: #fc7028
+    color: #fc7028 !important
 }
 
 .auditionsItem p {
@@ -3303,7 +3448,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     position: absolute;
     top: 50%;
     right: 50px;
-    font-size: 18px;
+    font-size: 23px;
     margin-top: -12px;
     color: #19191C
 }
@@ -3388,8 +3533,11 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 
 .footer ul li {
     display: block;
-    ;
     padding-bottom: 8px;
+}
+
+.footer-icons {
+    font-size: 21px;
 }
 
 @media (min-width: 992px) {
