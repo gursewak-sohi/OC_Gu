@@ -156,7 +156,7 @@
         top: 60px;
         transition: top 0.2s ease-in-out;
         width: 100%;
-        z-index: 1;
+        z-index: 10;
         /*border-bottom:solid 1px #DFDFE8;*/
     }
     .nav-up {
@@ -277,6 +277,9 @@
     }
     .successExperience h3 {
         font-size: 18px
+    }
+    .successExperience .item {
+        width: 300px !important;
     }
     .successExperience h3 .badge {
         font-size: 14px;

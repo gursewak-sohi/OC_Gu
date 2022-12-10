@@ -340,9 +340,10 @@
              // nav: true,
              responsive: {
                  0: {
-                     items: 1
+                     items: 1,
+                     autoWidth: true,
                  },
-                 600: {
+                 576: {
                      items: 2
                  },
                  1000: {
