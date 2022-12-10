@@ -1,4 +1,13 @@
 @media (max-width: 575px) {
+    h1 {
+        font-size: 30px;
+    }
+    h3 {
+        font-size: 20px;
+    }
+    h4 {
+        font-size: 18px;
+    }
     .top-bar__nav {
         width: 100%;
     }
@@ -12,9 +21,6 @@
     .hide-scroll {
         overflow: hidden;
         height: calc(var(--vh, 1vh) * 100);
-    }
-    .entry-content h1 {
-        font-size: 30px;
     }
     .custom-select2 {
         position: relative;
@@ -176,7 +182,7 @@
         padding-top: 70px;
         padding-bottom: 30px;
     }
-    .hero h1 {
+    .hero .title {
         font-size: 56px;
         line-height: 50px;
     }
@@ -207,7 +213,7 @@
     .companyCarousal {
         padding: 40px 0;
     }
-    .companyCarousal h1 {
+    .companyCarousal span {
         font-size: 16px;
     }
     .companyCarousal img {
@@ -339,10 +345,6 @@
     }
     .job-leaves-right {
         width: 50px;
-    }
-    .studycase-section h1 {
-        font-size: 28px;
-        line-height: normal;
     }
     .studycase-section h1 span {
         font-size: 16px;
@@ -617,11 +619,9 @@
     }
     .footer p {
         font-size: 15px;
-        line-height: normal
     }
     .footer h5 {
         font-size: 16px;
-        line-height: normal;
         padding-bottom: 10px;
     }
 }
@@ -697,7 +697,7 @@
         padding-top: 70px;
         padding-bottom: 30px;
     }
-    .hero h1 {
+    .hero .title {
         font-size: 56px;
         line-height: 50px;
     }
@@ -727,7 +727,7 @@
     .companyCarousal {
         padding: 40px 0;
     }
-    .companyCarousal h1 {
+    .companyCarousal span {
         font-size: 16px;
     }
     .companyCarousal img {
@@ -837,10 +837,6 @@
     .job-leaves-right {
         width: 50px;
     }
-    .studycase-section h1 {
-        font-size: 28px;
-        line-height: normal;
-    }
     .studycase-section h1 span {
         font-size: 16px;
     }
@@ -948,7 +944,7 @@
         padding-top: 170px;
         padding-bottom: 30px;
     }
-    .hero h1 {
+    .hero .title {
         font-size: 76px;
         line-height: 50px;
     }
