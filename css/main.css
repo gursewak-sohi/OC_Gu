@@ -19,6 +19,8 @@
 * {
     padding: 0;
     margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -73,8 +75,8 @@ a:hover {
 }
 
 a {
-    color: #107fc4;
-    text-decoration: none !important;
+    color: #000000;
+    text-decoration: none;
 }
 
 a:hover,
@@ -84,14 +86,12 @@ a:active {
     color: #000
 }
 
-p {
-    font-style: normal;
-    font-size: 14px;
-    color: #54565a;
-}
-
 
 /* 02. COMMON STYLES */
+
+.text-orange {
+    color: #FC7028;
+}
 
 .relative {
     position: relative !important
@@ -810,75 +810,66 @@ p {
     background-color: #000 !important
 }
 
-.badge-outline-theme {
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    line-height: 20px !important;
-    background-color: transparent !important;
-    border: solid 1px #FC7028 !important;
-    color: #FC7028 !important;
+.badge {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    border: solid 1px;
+    padding: 2px 10px;
     margin-left: 4px;
-    padding: 2px 10px !important;
 }
 
-.badge-outline-primary {
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    line-height: 20px !important;
-    background-color: transparent !important;
-    border: solid 1px #3A84F4 !important;
-    color: #3A84F4 !important;
-    margin-left: 4px;
-    padding: 2px 10px !important;
+.badge-outline-orange {
+    background-color: transparent;
+    border-color: #FC7028;
+    color: #FC7028;
 }
 
-.badge-outline-secondary {
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    line-height: 20px !important;
-    background-color: transparent !important;
-    border: solid 1px #34966D !important;
-    color: #34966D !important;
-    margin-left: 4px;
-    padding: 2px 10px !important;
+.badge-outline-blue {
+    background-color: transparent;
+    border-color: #3A84F4;
+    color: #3A84F4;
 }
 
-.badge-fill-primary {
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    line-height: 20px !important;
-    background-color: #FC7028 !important;
-    border: solid 1px transparent !important;
-    color: #fff !important;
-    margin-left: 4px;
-    padding: 2px 10px !important;
+.badge-outline-green {
+    background-color: transparent;
+    border-color: #34966D;
+    color: #34966D;
 }
 
-.badge-fill-secondary {
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    line-height: 20px !important;
-    background-color: transparent !important;
-    border: solid 1px #34966D !important;
-    color: #34966D !important;
-    margin-left: 4px;
-    padding: 2px 10px !important;
+.badge-outline-purple {
+    background-color: transparent;
+    border-color: #df74d6;
+    color: #df74d6;
+}
+
+.badge-outline-yellow {
+    background-color: transparent;
+    border-color: #cdc744;
+    color: #cdc744;
 }
 
 .badge-outline-black {
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    line-height: 20px !important;
-    background-color: transparent !important;
-    border: solid 1px #19191C !important;
-    color: #19191C !important;
-    margin-left: 4px;
-    padding: 2px 10px !important;
+    background-color: transparent;
+    border-color: #19191C;
+    color: #19191C;
+}
+
+.badge-fill-orange {
+    background-color: #FC7028;
+    color: #fff;
+    border-color: transparent;
+}
+
+.badge-fill-green {
+    background-color: #34966D;
+    color: #fff;
+    border-color: transparent;
 }
 
 .badge.bigger {
-    font-size: 20px !important;
-    padding: 5px 10px !important;
+    font-size: 20px;
+    padding: 5px 10px;
 }
 
 .badge.radius-25 {
@@ -2292,12 +2283,6 @@ a.hover:hover:before {
     display: none;
 }
 
-.entry-content .morelink {
-    display: inline-block;
-    color: #19191C;
-    text-decoration: underline !important;
-}
-
 .entry-content h1 {
     font-size: 40px;
     font-weight: 800;
@@ -2314,15 +2299,6 @@ a.hover:hover:before {
 
 .entry-content p strong {
     color: #19191C
-}
-
-.entry-content p a {
-    color: #FC7028;
-    text-decoration: underline !important;
-}
-
-.entry-content p a:hover {
-    color: #19191C!important
 }
 
 .entry-content h3 {
@@ -2346,7 +2322,8 @@ a.hover:hover:before {
     margin-right: 12px;
     line-height: normal;
     font-size: 12px;
-    opacity: 0.5
+    opacity: 0.5;
+    font-weight: 600;
 }
 
 .casting-info-details {
@@ -3419,7 +3396,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     padding-right: 50px;
 }
 
-.auditionsItem span {
+.auditionsItem .right-content .right-content-title {
     color: #a9a9a9;
     font-size: 12px;
 }
