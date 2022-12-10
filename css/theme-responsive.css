@@ -13,6 +13,9 @@
         overflow: hidden;
         height: calc(var(--vh, 1vh) * 100);
     }
+    .entry-content h1 {
+        font-size: 30px;
+    }
     .custom-select2 {
         position: relative;
         display: block;
@@ -586,7 +589,7 @@
         display: none;
     }
     .auditionsItem .eye-icon:hover {
-        color: #fc7028
+        color: #eb783e
     }
     .audition-pagination ul {
         text-align: center !important;
