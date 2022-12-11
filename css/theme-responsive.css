@@ -1,4 +1,4 @@
-@media (max-width: 575px) {
+@media (max-width: 767px) {
     h1 {
         font-size: 30px;
     }
@@ -219,7 +219,7 @@
     }
     /**/
     .companyCarousal {
-        padding: 40px 0;
+        padding: 50px 0 0;
     }
     .companyCarousal span {
         font-size: 16px;
@@ -229,14 +229,11 @@
     }
     /**/
     .latestCastingSection {
-        padding: 40px 0;
+        padding: 40px 0 50px;
     }
     .latestCastingSection h2 {
         font-size: 24px;
         line-height: normal;
-    }
-    .latestCastingSection .pb-60 {
-        padding-bottom: 25px !important;
     }
     .latestCastingSection .badge {
         margin-top: 5px;
@@ -246,7 +243,7 @@
     }
     /**/
     .cta-section {
-        padding: 50px 0;
+        padding: 40px 0 50px;
         position: relative;
         color: #fff
     }
@@ -264,7 +261,7 @@
     }
     /**/
     .latestProfileSection {
-        padding: 40px 0;
+        padding: 40px 0 50px;
         position: relative;
     }
     .latestProfileSection h3 {
@@ -282,7 +279,7 @@
     }
     /**/
     .successExperience {
-        padding: 40px 0;
+        padding: 40px 0 50px;
     }
     .successExperience h2 {
         font-size: 28px;
@@ -307,7 +304,7 @@
     }
     /**/
     .hightlight-banner {
-        padding: 100px 0 50px 0;
+        padding: 110px 0 50px 0;
     }
     .hightlight-banner .tile {
         background: #96DBD9;
@@ -343,7 +340,7 @@
     }
     /**/
     .studycase-section .item {
-        padding: 40px 0;
+        padding: 40px 0 50px;
     }
     .job-leaves-left {
         right: 0;
@@ -362,9 +359,6 @@
     }
     .studycase-section .content {
         min-height: auto;
-    }
-    .studycase-section .content-img {
-        margin-top: 25px;
     }
     .studycase-section .w-75 {
         width: 100% !important
@@ -735,7 +729,7 @@
         margin-bottom: 15px;
     }
     .companyCarousal {
-        padding: 40px 0;
+        padding: 50px 0 0;
     }
     .companyCarousal span {
         font-size: 16px;
@@ -800,7 +794,7 @@
     }
     /**/
     .hightlight-banner {
-        padding: 100px 0 50px 0;
+        padding: 100px 0 40px 0;
     }
     .hightlight-banner .tile {
         background: #96DBD9;
@@ -976,16 +970,6 @@
         letter-spacing: 0.5px;
     }
     /**/
-    .latestCastingSection {
-        padding: 40px 0;
-    }
-    .latestCastingSection h2 {
-        font-size: 24px;
-        line-height: normal;
-    }
-    .latestCastingSection .pb-60 {
-        padding-bottom: 25px !important;
-    }
     .latestCastingSection .badge {
         margin-top: 5px;
     }

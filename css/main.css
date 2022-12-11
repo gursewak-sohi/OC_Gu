@@ -1756,7 +1756,7 @@ a.hover:hover:before {
 /**/
 
 .companyCarousal {
-    padding: 60px 0;
+    padding: 70px 0 0;
 }
 
 .companyCarousal span {
@@ -1786,7 +1786,7 @@ a.hover:hover:before {
 /**/
 
 .latestCastingSection {
-    padding: 60px 0;
+    padding: 60px 0 70px;
     position: relative;
 }
 
@@ -1841,7 +1841,7 @@ a.hover:hover:before {
 /**/
 
 .cta-section {
-    padding: 60px 0;
+    padding: 60px 0 70px;
     position: relative;
     color: #fff;
     background-color: #f0996a;
@@ -1882,7 +1882,7 @@ a.hover:hover:before {
 /**/
 
 .latestProfileSection {
-    padding: 50px 0 30px;
+    padding: 60px 0 70px;
     position: relative;
 }
 
@@ -2062,7 +2062,7 @@ a.hover:hover:before {
 /**/
 
 .successExperience {
-    padding: 60px 0;
+    padding: 60px 0 80px;
     position: relative;
     background: #F9F9FC;
 }
@@ -2076,10 +2076,6 @@ a.hover:hover:before {
     letter-spacing: -0.02em;
     color: #19191C;
     padding-bottom: 60px;
-}
-
-.successExperience .item {
-    margin-bottom: 25px;
 }
 
 .successExperience .itemCard {
@@ -2170,7 +2166,7 @@ a.hover:hover:before {
 /**/
 
 .hightlight-banner {
-    padding: 150px 0;
+    padding: 150px 0 80px;
     position: relative;
 }
 
@@ -2213,7 +2209,7 @@ a.hover:hover:before {
 }
 
 .studycase-section .item {
-    padding: 120px 0;
+    padding: 60px 0 80px;
     position: relative;
 }
 
