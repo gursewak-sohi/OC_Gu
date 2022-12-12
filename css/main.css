@@ -2095,11 +2095,10 @@ a.hover:hover:before {
 }
 
 .successExperience h3 {
-    font-style: normal;
-    font-weight: 800;
-    font-size: 24px;
-    line-height: 30px;
-    color: #19191C;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.5;
+    color: #A3A2AD;
 }
 
 .successExperience h4 {
