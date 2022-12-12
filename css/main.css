@@ -2084,6 +2084,10 @@ a.hover:hover:before {
     overflow: hidden;
 }
 
+.successExperience .item-full {
+    margin-bottom: 30px;
+}
+
 .successExperience .img-wrapper {
     padding-bottom: 60%;
     background-color: #ccc;

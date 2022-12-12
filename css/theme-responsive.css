@@ -292,6 +292,9 @@
     .successExperience .item {
         width: 300px !important;
     }
+    .successExperience .item.item-full {
+        width: 100% !important;
+    }
     .successExperience h4 {
         font-size: 22px;
         line-height: normal;
