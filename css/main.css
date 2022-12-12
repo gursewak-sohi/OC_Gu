@@ -2102,17 +2102,6 @@ a.hover:hover:before {
     color: #19191C;
 }
 
-.successExperience h3 .badge {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 30px;
-    text-transform: capitalize;
-    color: #A3A2AD;
-    padding: 0 5px;
-    vertical-align: top
-}
-
 .successExperience h4 {
     font-style: normal;
     font-weight: 700;
@@ -3493,6 +3482,27 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 .audition-pagination a:hover {
     text-decoration: underline !important;
     color: #eb783e
+}
+
+
+/* Article Page */
+
+.article-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.article-content h1 {
+    margin-bottom: 20px;
+}
+
+.article-content h3 {
+    margin: 16px 0;
+}
+
+.article-content img {
+    margin: 16px auto 24px;
+    max-width: 100%;
 }
 
 
