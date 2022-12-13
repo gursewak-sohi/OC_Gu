@@ -2330,9 +2330,9 @@ a.hover:hover:before {
 .casting-apply {
     margin-left: 0;
     padding-left: 0;
-    font-size: 18px;
-    line-height: 30px;
-    margin-bottom: 32px;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 24px;
 }
 
 .casting-apply>li {
@@ -2350,6 +2350,21 @@ a.hover:hover:before {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.casting-how {
+    margin-bottom: 20px;
+}
+
+.casting-how h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.casting-how p {
+    font-size: 16px;
+    line-height: 24px;
 }
 
 .upload-listing {
