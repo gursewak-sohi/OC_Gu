@@ -2315,7 +2315,7 @@ a.hover:hover:before {
 }
 
 .entry-content .w-90 {
-    width: 90% !important;
+    width: 90%;
 }
 
 .entry-content .morecontent span {
@@ -2325,6 +2325,59 @@ a.hover:hover:before {
 .entry-content p {
     font-size: 18px;
     line-height: 30px;
+}
+
+.casting-apply {
+    margin-left: 0;
+    padding-left: 0;
+    font-size: 18px;
+    line-height: 30px;
+    margin-bottom: 32px;
+}
+
+.casting-apply>li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.casting-apply>li ion-icon {
+    font-size: 20px;
+}
+
+.casting-apply>li>a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-listing {
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.upload-listing h4 {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.upload-listing>ul {
+    margin: 0;
+    padding: 0;
+}
+
+.upload-listing>li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    margin-top: 8px;
+}
+
+.upload-listing>li>a {
+    display: flex;
 }
 
 .entry-content p strong {
@@ -2375,7 +2428,7 @@ a.hover:hover:before {
     background-color: #fff;
     border: none;
     color: #19191C;
-    padding: 8px 32px;
+    padding: 8px 16px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -2386,6 +2439,11 @@ a.hover:hover:before {
     display: flex;
     align-items: center;
     gap: 6px;
+    width: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 .toggleform .uplaodBtn .hydrated {

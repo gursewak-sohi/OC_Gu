@@ -375,31 +375,31 @@
          })
      }
 
-     let toggleform = document.querySelector('.toggleform');
-     if (toggleform) {
-         $(".toggleform").hide();
-         $(".applyBtn").click(function() {
-             $(this).text($(this).text() === "Apply" ? "Apply" : "Apply");
-             $(".toggleform").slideToggle(400);
-         });
-     }
+     //  let toggleform = document.querySelector('.toggleform');
+     //  if (toggleform) {
+     //      $(".toggleform").hide();
+     //      $(".applyBtn").click(function() {
+     //          $(this).text($(this).text() === "Apply" ? "Apply" : "Apply");
+     //          $(".toggleform").slideToggle(400);
+     //      });
+     //  }
 
  });
 
 
 
 
- function importData() {
-     let input = document.createElement('input');
-     input.type = 'file';
-     input.onchange = _ => {
-         // you can use this method to get file and perform respective operations
-         let files = Array.from(input.files);
-         console.log(files);
-     };
-     input.click();
+ //  function importData() {
+ //      let input = document.createElement('input');
+ //      input.type = 'file';
+ //      input.onchange = _ => {
+ //          // you can use this method to get file and perform respective operations
+ //          let files = Array.from(input.files);
+ //          console.log(files);
+ //      };
+ //      input.click();
 
- }
+ //  }
 
 
  // Get all the dropdown from document

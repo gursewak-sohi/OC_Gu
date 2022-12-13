@@ -394,7 +394,7 @@
     }
     /**/
     .entry-content .w-90 {
-        width: 100% !important;
+        width: 100%;
     }
     .entry-content .line-height-40 {
         line-height: normal !important;
@@ -982,6 +982,9 @@
     }
     .toggleform-w50 {
         max-width: 70%;
+    }
+    .entry-content .w-90 {
+        width: 100%;
     }
 }
 
