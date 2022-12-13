@@ -2466,6 +2466,11 @@ a.hover:hover:before {
     color: #fff;
 }
 
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
 .toggleform .form-control {
     box-shadow: none !important;
     border-radius: 5px;
