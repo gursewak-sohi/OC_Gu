@@ -2332,7 +2332,8 @@ a.hover:hover:before {
     padding-left: 0;
     font-size: 16px;
     line-height: 24px;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
+    margin-top: 24px;
 }
 
 .casting-apply>li {
@@ -2353,18 +2354,13 @@ a.hover:hover:before {
 }
 
 .casting-how {
-    margin-bottom: 20px;
+    margin-bottom: 32px;
 }
 
 .casting-how h4 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     margin-bottom: 12px;
-}
-
-.casting-how p {
-    font-size: 16px;
-    line-height: 24px;
 }
 
 .upload-listing {
