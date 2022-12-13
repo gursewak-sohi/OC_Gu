@@ -104,6 +104,31 @@ a:active {
     color: #000
 }
 
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.form-check-input:checked {
+    background-color: #eb783e;
+    border-color: #eb783e;
+}
+
+.form-check-input {
+    width: 16px;
+    height: 16px;
+}
+
+.form-check {
+    padding-left: 24px;
+}
+
+.form-check .form-check-input {
+    margin-left: -24px;
+}
+
 
 /* 02. COMMON STYLES */
 
@@ -2464,11 +2489,6 @@ a.hover:hover:before {
 .toggleform .uplaodBtn:hover {
     background-color: #19191C;
     color: #fff;
-}
-
-.form-control:focus {
-    box-shadow: none;
-    border-color: #ced4da;
 }
 
 .toggleform .form-control {

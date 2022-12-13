@@ -179,33 +179,102 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="#">Casting</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">god løn...</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Create profile</li>
                                 </ol>
                             </nav>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-5">
-                        <div class="w-90">
-                            <h1 class="mb-3 mb-sm-4">Add Image</h1>
-                            <p>Here you can add image to application.</p>
-                            <h3>How to add</h3>
-                            <p>
-                                1. Choose "Browse" and find image on harddrive <br> 2. Click "Upload"
-                            </p>
-                            <form name="file_upload" method="POST" ENCTYPE="multipart/form-data" Action="/URL?UploadID=394158464" class="toggleform">
-                                <div class="my-4">
-                                    <input class="form-control" type="file" id="formFile">
-                                </div>
-                                <div class="form-group mb-20 ">
-                                    <button type="submit" class="uplaodBtn"><ion-icon name="cloud-upload-outline"></ion-icon>
-                                        Upload</button>
-                                </div>
-                            </form>
-                            <div class="mt-4">
-                                <small class="fst-italic">Only pdg, jpg will be accepted</small>
+                    <div class="col-lg-12">
+                        <h1 class="mb-3 mb-sm-4">Create Profile</h1>
+                        <p>Fill in this application to be registered to our directory, <a class="text-decoration-underline" href="javascript:;">Casters & agents click here</a></p>
+                        <h3 class="mb-3 text-muted">Personal Information</h3>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form action="">
+                                    <div class="mb-3">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Sex</label>
+                                        <select class="form-select">
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 mb-lg-4">
+                                        <label class="form-label">Birthday</label>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-2 mb-3 mb-lg-0">
+                                                <select class="form-select">
+                                                    <option value="1">01</option>
+                                                    <option value="2">02</option>
+                                                    <option value="3">03</option>
+                                                    <option value="4">04</option>
+                                                    <option value="5">05</option>
+                                                    <option value="6">06</option>
+                                                    <option value="7">07</option>
+                                                    <option value="8">08</option>
+                                                    <option value="9">09</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+                                                <select class="form-select">
+                                                    <option value="1">January</option>
+                                                    <option value="2">February</option>
+                                                    <option value="3">March</option>
+                                                    <option value="4">April</option>
+                                                    <option value="5">May</option>
+                                                    <option value="6">June</option>
+                                                    <option value="7">July</option>
+                                                    <option value="8">August</option>
+                                                    <option value="9">September</option>
+                                                    <option value="10">October</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">December</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mb-3 mb-lg-0">
+                                                <select class="form-select">
+                                                    <option value="1">2022</option>
+                                                    <option value="2">2021</option>
+                                                    <option value="3">2020</option>
+                                                    <option value="4">2019</option>
+                                                    <option value="5">2018</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3 class="mb-3 text-muted">Password</h3>
+                                    <div class="mb-3">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Repeat</label>
+                                        <input type="password" class="form-control" />
+                                    </div>
+                                    <div class="mb-4 pb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="terms">
+                                        <label class="form-check-label" for="terms">Yes, I have read and understood the <a class="text-decoration-underline" href="javascript:;">Rules</a></label>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn mainBtn">Create Profile</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
