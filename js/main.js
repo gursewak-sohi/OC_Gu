@@ -1,5 +1,9 @@
  $(document).ready(function() {
 
+     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+
      // Range Init
      var rangeSlider1 = document.getElementById('slider-range-1');
      var rangeSlider2 = document.getElementById('slider-range-2');
@@ -164,6 +168,7 @@
          });
 
      }
+
 
      //  Show All 
      let all = document.getElementById("all");
