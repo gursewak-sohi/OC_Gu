@@ -140,6 +140,10 @@ a:active {
     color: #6b6b6b !important;
 }
 
+.text-danger-alt {
+    color: var(--bs-alert-color);
+}
+
 .relative {
     position: relative !important
 }
