@@ -801,6 +801,12 @@ a:active {
     border-color: #bf4100
 }
 
+.mainBtn .upload {
+    font-size: 22px;
+    position: relative;
+    top: 5px;
+}
+
 
 /* .mainBtn:focus {
     color: #fff;
