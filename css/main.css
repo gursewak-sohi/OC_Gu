@@ -2470,7 +2470,7 @@ a.hover:hover:before {
     font-weight: 500
 }
 
-.toggleform .uplaodBtn {
+.uplaodBtn {
     background-color: #fff;
     border: none;
     color: #19191C;
@@ -2492,11 +2492,11 @@ a.hover:hover:before {
     cursor: pointer;
 }
 
-.toggleform .uplaodBtn .hydrated {
+.uplaodBtn .hydrated {
     font-size: 22px;
 }
 
-.toggleform .uplaodBtn:hover {
+.uplaodBtn:hover {
     background-color: #19191C;
     color: #fff;
 }
