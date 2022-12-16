@@ -2539,7 +2539,7 @@ a.hover:hover:before {
 
 .filter-area .inner {
     border: solid 1px #DFDFE8;
-    padding: 15px 0;
+    padding: 14px 0;
     border-radius: 10px;
 }
 
@@ -2604,9 +2604,9 @@ a.hover:hover:before {
 .filter-area .filterBtn {
     border-radius: 16px;
     display: block;
-    padding: 2px 15px;
+    padding: 0px 15px;
     color: #19191C;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
 }
@@ -2624,11 +2624,13 @@ a.hover:hover:before {
 .dropdown-container .dropdown-toggle {
     color: #000000;
     background-color: #ffffff;
-    font-size: 13px;
-    padding: 4px 20px 0 20px;
+    font-size: 16px;
+    padding: 0px 20px 0 20px;
     font-weight: 600;
     cursor: pointer;
     transition: all ease-in-out 0.3s;
+    display: flex;
+    align-items: center;
 }
 
 .dropdown-container .dropdown-toggle label {
@@ -2690,7 +2692,7 @@ a.hover:hover:before {
     position: absolute;
     right: 20px;
     top: 50%;
-    margin-top: -2.5px;
+    margin-top: 0;
     background-color: rgba(0, 0, 0, 0);
     transition: all ease-in-out 0.2s;
     background-image: url(../img/filter-arrow.svg);
@@ -2698,6 +2700,7 @@ a.hover:hover:before {
     height: 6px;
     width: 10px;
     background-size: cover;
+    margin-top: -2px;
 }
 
 .dropdown-menu {
@@ -2714,7 +2717,7 @@ a.hover:hover:before {
 }
 
 .sortspacer {
-    padding-right: 13px !important;
+    padding-right: 16px !important;
 }
 
 .dropdown-toggle:after {
@@ -2770,19 +2773,6 @@ a.hover:hover:before {
 .age-dropdown {
     width: 440px !important;
     padding: 20px !important;
-}
-
-.filter-downBtn {
-    width: auto;
-    text-align: left;
-    position: relative;
-    top: -2px;
-}
-
-.filter-downBtn img {
-    max-width: 14px;
-    top: -3px;
-    position: relative;
 }
 
 .filter-dropdown {

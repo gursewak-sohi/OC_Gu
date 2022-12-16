@@ -11,6 +11,9 @@
     .fs-sm-7 {
         font-size: 14px !important;
     }
+    .header-search .innerNav {
+        padding: 0;
+    }
     .top-bar__nav {
         width: 100%;
     }
@@ -134,11 +137,17 @@
     .filter-area .filterBtn {
         border-radius: 16px;
         display: block;
-        padding: 2px 5px;
-        color: #19191C
+        padding: 0px 14px;
+        font-size: 13px;
+        color: #19191C;
+        margin-top: -3px;
+    }
+    .filter-area .inner {
+        padding: 16px 0;
     }
     .dropdown-container .dropdown-toggle {
-        padding: 4px 10px 0 10px;
+        padding: 0px 10px 0 10px;
+        font-size: 13px;
     }
     /*.dropdown-menu::before,*/
     .dropdown-toggle::before {
