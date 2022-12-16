@@ -1125,11 +1125,11 @@ a:active {
 .checkbox .cr .cr-icon,
 .radio .cr .cr-icon {
     position: absolute;
-    font-size: 1em;
+    font-size: 16px;
     line-height: 0;
-    top: 12%;
-    left: 12%;
-    color: #eb783e
+    top: 9%;
+    left: 9%;
+    color: #eb783e;
 }
 
 .radio .cr .cr-icon {
@@ -1271,7 +1271,7 @@ a.hover:hover:before {
 .header {
     padding: 0;
     margin: 0;
-    padding: 0 25px;
+    padding: 0 5px;
     position: sticky;
     top: 0;
     border-bottom: solid 1px rgba(0, 0, 0, 0.1);
@@ -1298,7 +1298,7 @@ a.hover:hover:before {
 
 .header-search .innerNav {
     border-bottom: solid 1px rgba(0, 0, 0, 0.1);
-    padding: 0 25px
+    padding: 0 5px;
 }
 
 .header .logo {
@@ -1434,7 +1434,7 @@ a.hover:hover:before {
     z-index: 99999;
     top: 22px;
     width: 300px !important;
-    right: 0 !important;
+    right: -25px;
 }
 
 .top-bar__nav-toggle {
@@ -2759,20 +2759,37 @@ a.hover:hover:before {
 }
 
 .gender-dropdown {
-    width: 440px !important;
+    width: 320px !important;
     padding: 20px !important;
 }
 
 .area-dropdown {
-    width: 440px !important;
+    width: 320px !important;
     padding: 20px !important;
     left: auto !important;
     right: auto !important;
 }
 
-.age-dropdown {
-    width: 440px !important;
-    padding: 20px !important;
+.grid-items-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.grid-items-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.grid-items-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.grid-space-15 {
+    gap: 15px;
 }
 
 .filter-dropdown {
@@ -2842,9 +2859,11 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     box-shadow: none;
     box-sizing: border-box;
     transition: all 0.2s cubic-bezier(0.000, 0.000, 0.580, 1.000);
-    margin: 5px 5px;
     text-align: center;
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 
@@ -2860,10 +2879,10 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     background-color: #fefefe;
     margin: auto;
     padding: 0 0;
-    border: 0 solid #888;
+    border: none;
     max-width: 874px !important;
     overflow: hidden;
-    border-radius: 0
+    border-radius: 8px;
 }
 
 .filterModal .modal-header {
@@ -2907,14 +2926,13 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     height: 42px;
     box-shadow: none;
     font-size: 16px;
-    padding-left: 32px;
-    padding-right: 60px;
+    padding: 10px 50px 12px 23px;
 }
 
 .filterModal .search .searchIcon {
     position: absolute;
-    top: 10px;
-    right: 32px;
+    top: 8px;
+    right: 25px;
     border: 0;
     background-color: transparent;
 }
@@ -2931,12 +2949,13 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 
 .filterModal h2 {
     font-weight: 700;
-    font-size: 24px;
+    font-size: 19px;
     line-height: normal;
     letter-spacing: 0.025em;
     text-transform: capitalize;
     color: #19191C;
-    padding-bottom: 22px;
+    padding-bottom: 0;
+    margin-bottom: 17px;
 }
 
 .range-slider-popup {
