@@ -207,6 +207,7 @@
              console.log(`${headerTop}px`);
              $('#top-bar__nav').css('top', headerHeight);
          });
+
      }
 
      //  Promo Section
@@ -216,13 +217,17 @@
          $('#hasStickyPromo').css('top', promoSkickyHeight);
      }
 
+     //  Calc Header height
+     let header = document.querySelector('#header');
+     if (header) {
+         var headerTop = $('#header').offset().top,
+             headerHeight = $('#header').height();
+         $(window).scroll(function() {
+             let scroll = $(window).scrollTop();
+             headerTop = $('#header').offset().top - scroll;
+         });
+     }
 
-     var headerTop = $('#header').offset().top,
-         headerHeight = $('#header').height();
-     $(window).scroll(function() {
-         let scroll = $(window).scrollTop();
-         headerTop = $('#header').offset().top - scroll;
-     });
 
 
      // Toggle Menu

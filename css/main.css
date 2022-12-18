@@ -764,6 +764,10 @@ a:active {
     margin-bottom: 70px !important;
 }
 
+.table> :not(caption)>*>* {
+    padding: 8px 15px;
+}
+
 .bordernone {
     border: 0 !important;
 }

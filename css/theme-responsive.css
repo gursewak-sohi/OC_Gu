@@ -11,6 +11,9 @@
     .fs-sm-7 {
         font-size: 14px !important;
     }
+    .table> :not(caption)>*>* {
+        padding: 6px 10px;
+    }
     .grid-items-xs-2 {
         grid-template-columns: 1fr 1fr;
     }
