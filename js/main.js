@@ -209,6 +209,13 @@
          });
      }
 
+     //  Promo Section
+     let promoSkicky = document.querySelector('#promoSkicky');
+     if (promoSkicky) {
+         promoSkickyHeight = $('#promoSkicky').innerHeight();
+         $('#hasStickyPromo').css('top', promoSkickyHeight);
+     }
+
 
      var headerTop = $('#header').offset().top,
          headerHeight = $('#header').height();

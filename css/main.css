@@ -837,7 +837,8 @@ a:active {
 .btnfillwhite {
     background-color: #fff !important;
     border-color: #fff;
-    color: #eb783e
+    color: #eb783e;
+    white-space: nowrap;
 }
 
 .btnfillwhite:hover {
