@@ -85,6 +85,11 @@ p {
     color: #19191C
 }
 
+table {
+    font-size: 16px;
+    line-height: 1.2;
+}
+
 button,
 button:hover,
 a,
@@ -763,6 +768,10 @@ a:active {
     border: 0 !important;
 }
 
+.mx-w-200 {
+    max-width: 200px;
+}
+
 .container {
     max-width: 1280px;
 }
@@ -801,7 +810,7 @@ a:active {
     border-color: #bf4100
 }
 
-.mainBtn .upload {
+.mainBtn ion-icon {
     font-size: 22px;
     position: relative;
     top: 5px;
@@ -931,6 +940,10 @@ a:active {
 
 .badge.radius-25 {
     border-radius: 25px !important
+}
+
+.table-custom {
+    table-layout: fixed;
 }
 
 .seeMoreBtn {
