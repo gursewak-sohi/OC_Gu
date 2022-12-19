@@ -2427,6 +2427,26 @@ a.hover:hover:before {
     margin-bottom: 12px;
 }
 
+.casting-info {
+    margin-left: 0;
+    padding-left: 0;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 32px;
+    margin-top: 24px;
+}
+
+.casting-info>li {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.casting-info>li>div:first-child {
+    width: 25%;
+    flex-shrink: 0;
+}
+
 .upload-listing {
     margin: 0;
     padding: 0;

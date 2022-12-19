@@ -320,6 +320,14 @@
     .successExperience h3.pb-60 {
         padding-bottom: 50px !important
     }
+    .casting-info>li {
+        flex-direction: column;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+    .casting-info>li>div:first-child {
+        width: 100%;
+    }
     /**/
     .hightlight-banner {
         padding: 110px 0 50px 0;
