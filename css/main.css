@@ -805,7 +805,7 @@ a:active {
     padding-left: 40px;
     padding-right: 40px;
     border-radius: 25px;
-    z-index: 99
+    z-index: 10
 }
 
 .mainBtn:hover {
