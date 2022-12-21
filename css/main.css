@@ -764,12 +764,25 @@ a:active {
     margin-bottom: 70px !important;
 }
 
+.top-3px {
+    top: 3px;
+}
+
+.divider {
+    border-bottom: 1px solid #ced4da;
+    padding: 40px 0;
+}
+
 .table> :not(caption)>*>* {
     padding: 8px 15px;
 }
 
 .bordernone {
     border: 0 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 
 .mx-w-200 {
@@ -788,6 +801,24 @@ a:active {
 
 .bg-gray {
     background: #F9F9FC;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #000;
+}
+
+.nav-pills .nav-link {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 20px;
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-size: 18px;
+    border: 0;
+    color: #19191C;
 }
 
 .mainBtn {
@@ -900,6 +931,12 @@ a:active {
     background-color: transparent;
     border-color: #3A84F4;
     color: #3A84F4;
+}
+
+.badge-outline-muted {
+    background-color: transparent;
+    border-color: #6b6b6b;
+    color: #6b6b6b;
 }
 
 .badge-outline-green {
@@ -1038,6 +1075,10 @@ a:active {
     font-size: 16px;
     border-left: 0 solid #3C1C78;
     z-index: -1;
+}
+
+.choose-item {
+    max-width: 110px;
 }
 
 .wrapper {
@@ -1984,8 +2025,6 @@ a.hover:hover:before {
     overflow: hidden;
     border-radius: 10px;
 }
-
-.latestProfileSection .item {}
 
 .latestProfileSection .profileCard {
     background-color: #ccc;
