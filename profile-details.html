@@ -23,6 +23,28 @@
 
 <body>
 
+    <!-- Modal -->
+    <div class="modal fade filterModal" id="phoneModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                        <img src="img/close-icon.svg" alt="">
+                    </div>
+                    <h5 class="modal-title text-center">Phone Numbers</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="font-size-18px"><b>Phone:</b> 023423049009</p>
+                    <p class="font-size-18px"><b>Phone:</b> 023423049009</p>
+                    <p class="font-size-18px"><b>Lorem:</b> <br> Jeg taler flydende svensk, dansk og engelsk samt kan skifte til flere dialekter på disse 3 sprog</p>
+                </div>
+                <div class="modal-footer">
+                    <button data-bs-dismiss="modal" type="button" class="btn mainBtn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="wrapper">
         <!-- Promo Section -->
         <div id="promoSection" class="promo-section">
@@ -208,6 +230,7 @@
                         <a href="#" class="btn mainBtn w-100 mb-10">Send besked</a>
                         <a href="#" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Gem</a>
                         <a href="#" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Bedøm</a>
+                        <a href="#phoneModal" data-bs-toggle="modal" data-bs-target="#phoneModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Phone numbers</a>
                     </div>
                 </div>
                 <!-- Filter tabs start-->
