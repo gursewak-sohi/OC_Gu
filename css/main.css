@@ -141,6 +141,10 @@ a:active {
     color: #eb783e;
 }
 
+.text-success {
+    color: #00ca4c !important;
+}
+
 .text-muted {
     color: #6b6b6b !important;
 }
@@ -1774,13 +1778,21 @@ a.hover:hover:before {
 .nav-reavel {
     background: #fff;
     position: sticky;
-    top: 0;
-    transition: top 0.2s ease-in-out;
+    top: 62px;
+    transition: all 0.2s ease-in-out;
     width: 100%;
     z-index: 10;
     display: none;
     margin: 0;
     border-bottom: solid 1px #DFDFE8;
+}
+
+.nav-pills {
+    white-space: nowrap;
+}
+
+.nav-reavel.has-effect {
+    transform: translateY(-100%);
 }
 
 .nav-up {

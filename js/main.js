@@ -229,6 +229,33 @@
      }
 
 
+     // Slide Effect Header
+     const slideTopEffect = (selector) => {
+         let slider = document.querySelectorAll(selector),
+             lastScrollTop = 0;
+         if (slider) {
+             window.addEventListener("scroll", function() {
+
+                 let scrollTopPos = window.pageYOffset || document.documentElement.scrollTop;
+                 if (scrollTopPos > 100) {
+                     if (scrollTopPos > lastScrollTop) {
+                         slider.forEach(link => {
+                             link.classList.add('has-effect');
+                         });
+                     } else {
+                         slider.forEach(link => {
+                             link.classList.remove('has-effect');
+                         });
+                     }
+                     lastScrollTop = scrollTopPos <= 0 ? 0 : scrollTopPos; // For Mobile or negative scrolling
+                 }
+
+             }, false);
+         }
+     }
+     slideTopEffect('#figure');
+
+
 
      // Toggle Menu
      const toggleMenu = (toggleID, toggleNav) => {
