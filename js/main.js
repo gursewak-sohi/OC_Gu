@@ -291,7 +291,14 @@
 
      toggleMenu("#top-nav-toggle", "#top-bar__nav");
 
-
+     //  Load more
+     let loadModal = document.querySelector('.load-modal');
+     if (loadModal) {
+         $('.load-modal').on('click', function(e) {
+             e.preventDefault();
+             $('#contentModal').modal('show').find('.modal-body').load($(this).attr('href'));
+         });
+     }
 
 
      // Hide Header on on scroll down
