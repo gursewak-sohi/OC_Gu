@@ -91,6 +91,9 @@
         border: 0 !important;
         padding: 0
     }
+    .header .rightNav {
+        margin-right: -15px;
+    }
     .headerProfile .innerNav {
         border-bottom: solid 1px rgba(0, 0, 0, 0.1);
         padding: 0 0
@@ -107,13 +110,6 @@
     .header .rightNav {
         padding: 10px 0 8px 0;
         transition: all 0.3s ease;
-        padding-right: 40px;
-    }
-    .header .rightNav ul li {
-        width: 65px;
-    }
-    .header .rightNav ul li img {
-        /* width: 20px; */
     }
     .headerNav {
         font-size: 12px;
@@ -122,11 +118,11 @@
         background-color: #fff;
         font-weight: 800;
     }
+    .header .rightNav ul li {
+        width: 65px;
+    }
     .headerNav li {
         padding: 0 7px;
-    }
-    .hamburger {
-        right: 20px;
     }
     .top-bar {
         position: absolute;
@@ -689,17 +685,6 @@
     .header .logo img {
         width: 100%;
     }
-    .header .rightNav {
-        padding: 10px 0 8px 0;
-        transition: all 0.3s ease;
-        padding-right: 40px;
-    }
-    .header .rightNav ul li {
-        width: 65px;
-    }
-    .header .rightNav ul li img {
-        width: 20px;
-    }
     .headerNav {
         font-size: 12px;
         padding: 9px 0 10px 0;
@@ -709,9 +694,6 @@
     }
     .headerNav li {
         padding: 0 7px;
-    }
-    .hamburger {
-        right: 20px;
     }
     .top-bar {
         position: absolute;
@@ -935,10 +917,6 @@
     .header .rightNav {
         padding: 14px 0 8px 0;
         transition: all 0.3s ease;
-        padding-right: 55px;
-    }
-    .header .rightNav ul li {
-        width: 67px;
     }
     .header .rightNav ul li img {
         width: 20px;
@@ -951,9 +929,6 @@
     }
     .headerNav li {
         padding: 0 7px;
-    }
-    .hamburger {
-        right: 30px;
     }
     .top-bar {
         position: absolute;
@@ -1039,10 +1014,6 @@
     .header .rightNav {
         padding: 14px 0 8px 0;
         transition: all 0.3s ease;
-        padding-right: 55px;
-    }
-    .header .rightNav ul li {
-        width: 67px;
     }
     .header .rightNav ul li img {
         width: 20px;
@@ -1055,9 +1026,6 @@
     }
     .headerNav li {
         padding: 0 7px;
-    }
-    .hamburger {
-        right: 30px;
     }
     .top-bar {
         position: absolute;
