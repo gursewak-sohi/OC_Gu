@@ -958,7 +958,7 @@
     .top-bar {
         position: absolute;
         z-index: 9999;
-        top: 14px;
+        top: 14.5px;
         width: 100%;
         right: 0;
     }
@@ -1062,7 +1062,7 @@
     .top-bar {
         position: absolute;
         z-index: 9999;
-        top: 14px;
+        top: 14.5px;
         width: 100%;
         right: 0;
     }
