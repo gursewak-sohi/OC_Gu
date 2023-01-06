@@ -113,7 +113,7 @@
         width: 65px;
     }
     .header .rightNav ul li img {
-        width: 20px;
+        /* width: 20px; */
     }
     .headerNav {
         font-size: 12px;
@@ -933,7 +933,7 @@
         width: 100%;
     }
     .header .rightNav {
-        padding: 15px 0 8px 0;
+        padding: 14px 0 8px 0;
         transition: all 0.3s ease;
         padding-right: 55px;
     }
@@ -958,7 +958,7 @@
     .top-bar {
         position: absolute;
         z-index: 9999;
-        top: 16px;
+        top: 15px;
         width: 100%;
         right: 0;
     }
@@ -1037,7 +1037,7 @@
         width: 100%;
     }
     .header .rightNav {
-        padding: 15px 0 8px 0;
+        padding: 14px 0 8px 0;
         transition: all 0.3s ease;
         padding-right: 55px;
     }
@@ -1062,7 +1062,7 @@
     .top-bar {
         position: absolute;
         z-index: 9999;
-        top: 16px;
+        top: 15px;
         width: 100%;
         right: 0;
     }

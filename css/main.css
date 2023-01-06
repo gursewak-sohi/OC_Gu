@@ -1420,7 +1420,7 @@ a.hover:hover:before {
     margin: 0;
     position: relative;
     text-align: right;
-    padding: 20px 0 15px 0;
+    padding: 19px 0 15px 0;
     transition: all 0.3s ease;
     padding-right: 45px;
 }
@@ -1461,15 +1461,21 @@ a.hover:hover:before {
     font-size: 9px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
+    margin-top: auto;
 }
 
-.header .rightNav ul img {
+
+/* .header .rightNav ul img {
     margin-bottom: 5px;
-}
+} */
 
 .header .rightNav ul a {
     color: #000;
     text-decoration: none;
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .header .rightNav .value {
@@ -1484,6 +1490,11 @@ a.hover:hover:before {
     position: absolute;
     top: -2px;
     right: 15px;
+}
+
+.header .rightNav ul li:first-child img {
+    position: relative;
+    top: 2px;
 }
 
 .header .rightNav .signInicon {
@@ -1511,7 +1522,7 @@ a.hover:hover:before {
 .top-bar {
     position: absolute;
     z-index: 99999;
-    top: 22px;
+    top: 21px;
     width: 300px !important;
     right: -25px;
 }
@@ -1730,6 +1741,7 @@ a.hover:hover:before {
     position: absolute;
     height: 28px;
     right: 47px;
+    top: -1px;
 }
 
 .hamburger span {
