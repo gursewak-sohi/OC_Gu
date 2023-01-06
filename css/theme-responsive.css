@@ -131,7 +131,7 @@
     .top-bar {
         position: absolute;
         z-index: 9999;
-        top: 12px;
+        top: 11px;
         width: 100%;
         right: 0;
     }
