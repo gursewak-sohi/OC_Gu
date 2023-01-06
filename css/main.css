@@ -1522,7 +1522,7 @@ a.hover:hover:before {
 .top-bar {
     position: absolute;
     z-index: 99999;
-    top: 20.5px;
+    top: 21px;
     width: 300px !important;
     right: -25px;
 }
