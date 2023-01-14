@@ -3816,6 +3816,10 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     .col-md-5-5 {
         width: 100%;
     }
+    .floated-image {
+        position: absolute;
+        right: 0;
+    }
 }
 
 @media (min-width: 1200px) {
