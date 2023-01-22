@@ -30,6 +30,9 @@
         font-size: 15px;
         text-align: center;
     }
+    .dropdown-profile {
+        top: 23px !important
+    }
     .promo-block {
         gap: 10px;
     }
