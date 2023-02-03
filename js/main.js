@@ -1,5 +1,41 @@
  $(document).ready(function() {
 
+     //  Create Folder
+     if ($('#folderBlock').length > 0) {
+         $('#createFolder').click(function() {
+             $(this).hide()
+             $('#createFolderBlock').fadeIn()
+         });
+         $('#cancelFolderBtn').click(function() {
+             $("#folderName").val('');
+             $('#createFolderBlock').hide()
+             $('#createFolder').fadeIn()
+         });
+         $('#createFolderBtn').click(function() {
+             let folderName = $('#folderName').val();
+             let listCount = $('#folderList .form-check').length;
+             if (folderName.length > 0) {
+                 let list = `<div class="form-check d-flex align-items-center gap-2">
+                                 <input type="checkbox" class="form-check-input cursor-pointer" id="folder${listCount+1}">
+                                 <label class="form-check-label cursor-pointer font-size-16px" for="folder${listCount+1}">${folderName}</label>
+                             </div>`;
+                 $('#folderList').append(list)
+                 $("#folderName").val('');
+                 $('#createFolder').fadeIn()
+                 $('#createFolderBlock').hide()
+             }
+         });
+     }
+
+     $('#slider-range-4-4').keypress(function(e) {
+         var key = e.which;
+         if (key == 13) // the enter key code
+         {
+             rangeSlider4.noUiSlider.set([null, this.value]);
+             $(this).select();
+         }
+     });
+
      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 

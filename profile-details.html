@@ -63,15 +63,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-body py-4 d-flex flex-column">
-                    <button type="button" class="uplaodBtn mb-4">Create Folder</button>
-                    <div class="d-flex gap-3 mb-4">
-                        <input class="form-control" placeholder="Name" type="text" />
-                        <button type="button" class="btn mainBtn py-1 h-auto line-height-20 w-auto px-4">Create</button>
-                        <button type="button" class="uplaodBtn py-1">Cancel</button>
+                <div id="folderBlock" class="modal-body py-4 d-flex flex-column">
+                    <button id="createFolder" type="button" class="uplaodBtn mb-4">Create Folder</button>
+                    <div id="createFolderBlock" style="display:none">
+                        <div class="d-flex gap-3 mb-4">
+                            <input id="folderName" class="form-control" placeholder="Name" type="text" />
+                            <button id="createFolderBtn" type="button" class="mainBtn py-1 h-auto line-height-20 w-auto px-4">Create</button>
+                            <button id="cancelFolderBtn" type="button" class="uplaodBtn py-1">Cancel</button>
+                        </div>
                     </div>
                     <p class="mb-2 font-size-18px">Choose folder to save profile in</p>
-                    <div class="d-flex flex-column gap-1">
+                    <div id="folderList" class="d-flex flex-column gap-1">
                         <div class="form-check d-flex align-items-center gap-2">
                             <input type="checkbox" class="form-check-input cursor-pointer" id="folder1">
                             <label class="form-check-label cursor-pointer font-size-16px" for="folder1">Folder 1</label>
@@ -80,14 +82,9 @@
                             <input type="checkbox" class="form-check-input cursor-pointer" id="folder2">
                             <label class="form-check-label cursor-pointer font-size-16px" for="folder2">Folder 2</label>
                         </div>
-                        <div class="form-check d-flex align-items-center gap-2">
-                            <input type="checkbox" class="form-check-input cursor-pointer" id="anotherFolder">
-                            <label class="form-check-label cursor-pointer font-size-16px" for="anotherFolder">Another Folder</label>
-                        </div>
-                        <div class="mt-3">
-                            <button type="button" class="btn mainBtn">Save</button>
-                        </div>
-
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn mainBtn">Save</button>
                     </div>
                 </div>
                 <div class="modal-footer">
