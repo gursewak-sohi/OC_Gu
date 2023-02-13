@@ -221,6 +221,15 @@
          })
      }
 
+     //  Show All 
+     let triggerGallery = document.getElementById("triggerGallery");
+     if (triggerGallery) {
+         $("#triggerGallery").on("click", function() {
+             $("#parent").find('.grid-item:first-child a').click()
+         });
+     }
+
+
      // Viewport Height
      let vh = window.innerHeight * 0.01;
      document.documentElement.style.setProperty("--vh", `${vh}px`);
