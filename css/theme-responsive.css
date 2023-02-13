@@ -141,11 +141,12 @@
     }
     .filter-area .filterBtn {
         border-radius: 16px;
-        display: block;
+        display: flex;
         padding: 0px 14px;
         font-size: 13px;
         color: #19191C;
         margin-top: -3px;
+        justify-content: center;
     }
     .filter-area .inner {
         padding: 16px 0;
