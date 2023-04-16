@@ -630,6 +630,11 @@
     .auditionsItem .eye-icon {
         display: none;
     }
+    .auditionsItem .eye-icon.eye-icon-xs {
+        display: block;
+        top: auto;
+        bottom: 0;
+    }
     .auditionsItem .eye-icon:hover {
         color: #eb783e
     }
