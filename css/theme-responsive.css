@@ -632,8 +632,7 @@
     }
     .auditionsItem .eye-icon.eye-icon-xs {
         display: block;
-        top: auto;
-        bottom: 0;
+        top: 150px;
     }
     .auditionsItem .eye-icon:hover {
         color: #eb783e
