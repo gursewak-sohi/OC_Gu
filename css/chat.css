@@ -646,6 +646,10 @@
         bottom: 12px;
     }
 
+    .chat-textbox button {
+      color: #000;
+    }
+
     .chat-inquiry-row {
         padding: 10px 0;
     }
