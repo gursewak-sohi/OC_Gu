@@ -347,7 +347,9 @@
     background-color: transparent;
     border: none;
     transition: 0.3s all ease;
+    color: #000;
 }
+
 .btn-icon:hover {
     background-color: hsl(300, 5.3%, 96.3%);
 }
@@ -565,6 +567,7 @@
     .chat-layout {
         display: flex;
         height: calc(100vh - 62px);
+        height: calc((var(--vh, 1vh) * 100) - 62px);
     }
     .chat-layout {
         overflow: hidden;
