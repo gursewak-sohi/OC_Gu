@@ -18,15 +18,9 @@
     border-right: solid 1px rgba(0, 0, 0, 0.1);
     overflow: auto;
     background-color: white;
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
 }
 
-.chat-sidebar::-webkit-scrollbar {
-    display: none;
-}
+ 
 
 .chat-main {
     flex: 1;
@@ -35,19 +29,13 @@
     align-items: center;
     flex-direction: column;
     overflow: auto;
-    -ms-overflow-style: none;
     z-index: 50;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
 }
 
-.chat-main::-webkit-scrollbar {
-    display: none;
-}
+ 
 
 .chat-main-inner {
-    padding: 20px;
+    padding: 20px 20px 0;
     width: 100%;
     max-width: 700px;
     display: flex;
@@ -63,9 +51,6 @@
     width: 320px;
     border-left: solid 1px rgba(0, 0, 0, 0.1);
     overflow: auto;
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
     transition: 0.3s all ease;
     margin-right: -320px;
 }
@@ -74,9 +59,7 @@
     margin-right: 0;
 }
 
-.chat-details::-webkit-scrollbar {
-    display: none;
-}
+ 
 
 .chat-avatar {
     height: 46px;
@@ -168,6 +151,21 @@
     visibility: visible;
 }
 
+.chat-row.unread .chat-row-inner span.fw-bold {
+    font-weight: 800 !important;
+    color: #000 !important;    
+}
+
+.chat-row.unread .chat-row-inner h5 {
+    font-weight: 700 !important;
+    color: #000 !important;    
+}
+
+.chat-row.unread .chat-row-inner p {
+    font-weight: 700 !important;
+    color: #000 !important;    
+}
+
 .chat-row-time {
     visibility: visible;
     opacity: 1;
@@ -224,7 +222,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    bottom: 20px;
+    bottom: 0;
     background-color: white;
 }
 
@@ -557,6 +555,18 @@
     padding: 10px;
     border-radius: 10px;
 }
+
+.chat-sidebar-header .dropdown-container .dropdown-toggle {
+    padding: 0;
+}
+.chat-sidebar-header .dropdown-toggle::before {
+    right: -15px;
+}
+
+.chat-sidebar-header .filter-dropdown {
+    right: auto !important;
+}
+
 @media (max-width: 1199px) {
     .chat-layout {
         display: flex;
@@ -636,7 +646,7 @@
         padding: 0;
     }
     .chat-main-inner {
-        padding: 12px;
+        padding: 12px 12px 0;
 
     }
 

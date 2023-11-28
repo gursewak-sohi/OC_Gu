@@ -2,6 +2,14 @@ $(document).ready(function() {
   const $showDetails = $('#showDetails');
   const $chatDetails = $('#chatDetails');
 
+  let smWidth;
+     screen.width < 768 ? smWidth = true : smWidth = false;
+
+  if (!smWidth) {
+    $chatDetails.addClass('active');
+    $showDetails.removeClass('d-lg-block');
+  }
+
   $showDetails.click(function() {
     $showDetails.removeClass('d-lg-block');
     $chatDetails.addClass('active');
