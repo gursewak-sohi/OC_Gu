@@ -224,6 +224,8 @@
     gap: 10px;
     bottom: 0;
     background-color: white;
+    width: 100%;
+  max-width: 660px
 }
 
 .chat-textbox button {
@@ -653,7 +655,6 @@
     .chat-textbox {
         padding: 12px;
         display: flex;
-        bottom: 12px;
     }
 
     .chat-textbox button {
