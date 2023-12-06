@@ -82,8 +82,8 @@
     border-radius: 50%;
     display: block;
     content: "";
-    height: 28%;
-    width: 28%;
+    height: 14px;
+    width: 14px;
     left: -1px;
     top: -1px;
     border: 2px solid white;
@@ -95,6 +95,23 @@
 
 .chat-avatar-offline::before {
     background: hsl(0, 0%, 61%);
+}
+
+.chat-avatar-starred {
+    background: hsl(20.1, 81.2%, 58.2%);
+    position: absolute;
+    border-radius: 50%;
+    display: block;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: -1px;
+    top: -1px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
 }
 
 .chat-row {
@@ -225,7 +242,8 @@
     bottom: 0;
     background-color: white;
     width: 100%;
-  max-width: 660px
+    max-width: 660px;
+    z-index: 100;
 }
 
 .chat-textbox button {

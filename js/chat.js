@@ -15,7 +15,7 @@ $(document).ready(function() {
     $chatDetails.addClass('active');
   });
 
-  $('#showDetailsMobile').click(function() {
+  $('[data-reservation="show"]').click(function() {
     $chatDetails.addClass('active');
   });
 
