@@ -16,6 +16,8 @@
       <link rel="stylesheet" href="css/chat.css">
       <!-- Owl Stylesheets -->
       <link rel="stylesheet" href="css/owl.carousel.min.css">
+      <!-- Fancy Box -->
+      <link rel="stylesheet" href="css/jquery.fancybox.min.css">
    </head>
    <body>
 
@@ -29,7 +31,7 @@
                      </div>
                      <h5 class="modal-title text-center" id="exampleModalLabel">More Filters</h5>
                  </div>
-                 <div class="modal-body">
+                 <div id="chatModal" class="modal-body chat-modal-body">
                   <div class="entry-content">
                      <div class="field">
                         <h2>Search (Optional)</h2>
@@ -40,7 +42,7 @@
                     </div>
                      
                      <div class="mb-5">
-                         <h2 class="mb-0">Open castings:</h2>
+                         <h2 class="mb-4">Open castings:</h2>
                          <div class="auditionsItem">
                            <div class="row">
                                  <div class="col-12">
@@ -53,7 +55,7 @@
                                              </span>
                                           </label>
                                       </div>
-                                      <div class="relative">
+                                      <div class="relative flex-grow-1">
                                           <div class="item-img">
                                              <a href="#"><img src="img/profile-1.png" alt="" class="w-100 shadow rounded"></a>
                                           </div>
@@ -70,7 +72,7 @@
                            </div>
                          </div>
          
-                         <div class="auditionsItem hightlight-row">
+                         <div class="auditionsItem">
                            <div class="row">
                                  <div class="col-12">
                                     <div class="d-flex gap-2 align-items-center">
@@ -82,7 +84,7 @@
                                              </span>
                                           </label>
                                       </div>
-                                      <div class="relative">
+                                      <div class="relative flex-grow-1">
                                           <div class="item-img">
                                              <a href="#"><img src="img/profile-5.png" alt="" class="w-100 shadow rounded"></a>
                                           </div>
@@ -100,7 +102,7 @@
                          </div>
                      </div>
                      <div class="mb-5">
-                         <h2 class="mb-0">Closed castings:</h2>
+                         <h2 class="mb-4">Closed castings:</h2>
 
                          <div class="auditionsItem">
                            <div class="row">
@@ -114,7 +116,7 @@
                                              </span>
                                           </label>
                                       </div>
-                                      <div class="relative">
+                                      <div class="relative flex-grow-1">
                                           <div class="item-img">
                                              <a href="#"><img src="img/profile-1.png" alt="" class="w-100 shadow rounded"></a>
                                           </div>
@@ -131,7 +133,7 @@
                            </div>
                          </div>
          
-                         <div class="auditionsItem hightlight-row">
+                         <div class="auditionsItem">
                            <div class="row">
                                  <div class="col-12">
                                     <div class="d-flex gap-2 align-items-center">
@@ -143,7 +145,7 @@
                                              </span>
                                           </label>
                                       </div>
-                                      <div class="relative">
+                                      <div class="relative flex-grow-1">
                                           <div class="item-img">
                                              <a href="#"><img src="img/profile-5.png" alt="" class="w-100 shadow rounded"></a>
                                           </div>
@@ -458,6 +460,9 @@
                               </div>
                            </div>
                            <div class="chat-avatar">
+                              <span class="chat-avatar-starred starred-lg">
+                                 <ion-icon name="star"></ion-icon>
+                              </span>
                               <img class="w-100 h-100 img-fluid rounded-circle object-cover" src="img/profile-1.png" alt="#" class="avatar-img">
                            </div>
                            <div class="d-flex flex-column text-truncate gap-1 position-relative w-100">
@@ -660,32 +665,31 @@
                            <div class="d-flex flex-column gap-1 position-relative">
                               <h5 class="font-size-15px mb-0 fw-bolder">Muhammad Ali <span class="fw-semibold ml-1 font-size-11px text-muted">4:02 PM</span></h5>
                               <div class="d-flex flex-column gap-3 mt-2 mb-2">
-                                 <h5 class="mb-0">Actor looking for job</h5>
-                                 <p class="mb-0 fw-semibold">In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document.</p>
-                                 <ul class="ps-0 mb-1 d-flex flex-column gap-1 font-size-15px fw-semibold">
+                                 <h1 class="mb-0">Actor looking for job</h1>
+                                 <p class="mb-0 font-size-18px line-height-30">In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document.</p>
+                                 <ul class="ps-0 mb-1 d-flex flex-column gap-1 font-size-18px">
                                     <li>
                                        <a class="d-flex align-items-center gap-2 text-decoration-underline" href="mailto:sohi.gursewak@gmail.com">
-                                          <ion-icon class="font-size-17px" name="mail-outline"></ion-icon>sohi.gursewak@gmail.com
+                                          <ion-icon class="font-size-18px" name="mail-outline"></ion-icon>sohi.gursewak@gmail.com
                                        </a>
                                     </li>
                                     <li>
                                        <a class="d-flex align-items-center gap-2 text-decoration-underline" href="tel:8968949939">
-                                          <ion-icon class="font-size-17px" name="call-outline"></ion-icon>8968949939</li>
+                                          <ion-icon class="font-size-18px" name="call-outline"></ion-icon>8968949939</li>
                                        </a>
                                  </ul>
                                  <div class="ratio ratio-16x9 w-100">
-                                    <iframe src="https://player.vimeo.com/video/886548745?h=" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                                    <iframe class="rounded" src="https://player.vimeo.com/video/886548745?h=" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
                                  </div>
-                                 <div class="w-100">
-                                    <img class="img-fluid w-50" src="img/unsplash_V3YxRZLTbyY.png" alt="user"/>
+                                 <div class="w-100 d-flex gap-2">
+                                    <a class="w-50" href="img/unsplash_V3YxRZLTbyY.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY.png" alt="" /></a>
+                                    <a class="w-50" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
                                  </div>
-                                 <div class="w-100 d-flex mt-3 mb-3">
-                                    <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-auto"><ion-icon name="thumbs-down-outline"></ion-icon> Deny and archieve</a>
+                                 <div class="w-100 d-flex mt-3 mb-3 flex-wrap gap-3">
+                                    <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"><ion-icon name="thumbs-down-outline"></ion-icon> Deny and archieve</a>
+                                    <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"><ion-icon name="thumbs-up-outline"></ion-icon> Upvote</a>
                                  </div>
                               </div>
-                              
-                              
-                              
                               <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
                            </div>
                         </div>
@@ -848,6 +852,8 @@
       <script src="js/owl.carousel.min.js"></script>
       <!-- main-->
       <script src="js/range-slider.js"></script>
+       <!-- Fancybox -->
+       <script src="js/jquery.fancybox.min.js"></script>
       <!-- Chat JS -->
       <script src="js/chat.js"></script>
       <!-- main-->

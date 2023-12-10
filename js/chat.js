@@ -45,4 +45,24 @@ $(document).ready(function() {
     });
   });
 
+
+  
+  $('#chatModal .auditionsItem input[type="checkbox"]').change(function() {
+    // Get the corresponding auditionsItem
+    var auditionsItem = $(this).closest('.auditionsItem');
+      // Check if the checkbox is selected
+      if ($(this).prop('checked')) {
+          // Add active class to the corresponding auditionsItem
+          auditionsItem.addClass('active');
+      } else {
+          // Remove active class from the corresponding auditionsItem
+          auditionsItem.removeClass('active');
+      }
+  });
+
+  $('#chatModal .auditionsItem input[type="checkbox"]:checked').each(function() {
+      var auditionsItem = $(this).closest('.auditionsItem');
+      auditionsItem.addClass('active');
+  });
+
 });

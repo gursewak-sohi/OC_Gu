@@ -113,6 +113,13 @@
     justify-content: center;
     color: #fff;
 }
+.starred-lg { 
+    height: 18px;
+  width: 18px;
+  font-size: 14px;
+  left: -2px;
+  top: -2px;
+}
 
 .chat-row {
     position: relative;
@@ -587,6 +594,26 @@
     right: auto !important;
 }
 
+
+.chat-modal-body .auditionsItem {
+    border-bottom: solid 1px #e8e8e8;
+    border-top: solid 1px #e8e8e8;
+    margin-top: -1px;
+    transition: 0.2s all ease;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-left: -30px;
+    margin-right: -30px;
+}
+
+.chat-modal-body .auditionsItem:hover {
+    background-color: #f9f9f9;
+}
+
+.chat-modal-body .auditionsItem.active {
+    background-color: rgba(235,120,62,0.1);
+}
+
 @media (max-width: 1199px) {
     .chat-layout {
         display: flex;
@@ -689,4 +716,19 @@
   .chat-sidebar-header h5 {
     padding: 0;
   }
+}
+
+@media (max-width: 767px) {
+    .chat-modal-body .auditionsItem {
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: -20px;
+        margin-right: -20px;
+      }
+}
+
+@media (min-width: 768px) {
+    .w-md-auto {
+        width: auto !important;
+    }
 }
