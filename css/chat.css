@@ -587,13 +587,37 @@
     padding: 0;
 }
 .chat-sidebar-header .dropdown-toggle::before {
-    right: -15px;
+    position: static;
+    order: 2;
+    margin: 4px 0 0px 6px;
 }
 
 .chat-sidebar-header .filter-dropdown {
     right: auto !important;
 }
+.casting-dropdown {
+    right: 0 !important;
+  padding: 0 !important;
+  left: auto !important;
+  width: 250px !important;
+}
 
+.casting-dropdown ul { 
+   max-height: 246px;
+   overflow: auto !important;
+} 
+ 
+.casting-dropdown li { 
+    display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 10px 12px 10px 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.casting-dropdown li a:hover { 
+    color: #eb783e !important;
+} 
 
 .chat-modal-body .auditionsItem {
     border-bottom: solid 1px #e8e8e8;
@@ -613,6 +637,33 @@
 .chat-modal-body .auditionsItem.active {
     background-color: rgba(235,120,62,0.1);
 }
+
+/* .btn-main-sm {
+    background-color: #fff;
+    border: none;
+    color: #19191C;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    border: solid 2px #19191C;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+ 
+
+.uplaodBtn:hover {
+    background-color: #19191C;
+    color: #fff;
+} */
 
 @media (max-width: 1199px) {
     .chat-layout {
