@@ -682,15 +682,43 @@
                      </li>
                   </ul>
                </div>
-               <div class="chat-textbox">
-                  <button type="button">
-                     <ion-icon name="attach"></ion-icon>
-                  </button>
-                  <textarea id="chatInput" placeholder="Type a message"></textarea>
-                  <button id="sendBtn" class="btn-send" type="button">
-                     <ion-icon name="send"></ion-icon>
-                  </button>
+               <div class="chat-textbox-outer">
+                  <div class="chat-textbox">
+                     <!-- Trigger for file upload -->
+                    <button class="uploadTrigger" type="button">
+                       <ion-icon name="attach"></ion-icon>
+                    </button>
+                    <!-- Hidden file input -->
+                    <input type="file" class="fileInput" hidden multiple>
+                    <textarea id="chatInput" placeholder="Type a message"></textarea>
+                    <button id="sendBtn" class="btn-send" type="button">
+                       <ion-icon name="send"></ion-icon>
+                    </button>
+                 </div>
+                 <div class="uploadsContainer"></div>
+                  <!-- Template for file display -->
+                  <script type="text/template" id="fileDisplayTemplate">
+                        <div class="fileDisplayArea" style="display: none;">
+                           <div class="fileInfo">
+                              <div class="fileContainer">
+                                 <span class="fileIcon"><ion-icon name="document-outline"></ion-icon></span>
+                                 <div class="imagePreview" style="display: none;"></div>
+                              </div>
+                              <div class="fileTextContainer">
+                                 <span class="fileName"></span>
+                                 <div class="fileInfo">
+                                    <span class="fileSize"></span><span class="uploadComplete" style="display: none;"><ion-icon name="checkmark-outline"></ion-icon></span>
+                                 </div>
+                              </div>
+                              <button class="removeFile"><ion-icon name="close-outline"></ion-icon></button>
+                           </div>
+                           <div class="progressBarContainer" style="display: none;">
+                              <div class="progressBar" style="width: 0%;"></div>
+                           </div>
+                        </div>
+                  </script>
                </div>
+               
             </div>
             <div id="chatDetails" class="chat-details">
                <div class="chat-details-header">

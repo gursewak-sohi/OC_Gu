@@ -100,6 +100,87 @@ $(document).ready(function() {
  
 
 
+    $(document).ready(function() {
+      // Trigger file input when button is clicked
+      $('.uploadTrigger').click(function() {
+          $('.fileInput').click();
+      });
+  
+      // Handle file selection
+      $('.fileInput').change(function() {
+          var files = this.files;
+          var uploadsContainer = $('.uploadsContainer');
+          
+          $.each(files, function(index, file) {
+              var fileDisplay = $($('#fileDisplayTemplate').html()).appendTo(uploadsContainer);
+              fileDisplay.show();
+              fileDisplay.find('.fileName').text(file.name);
+              fileDisplay.find('.fileSize').text('' + (file.size / 1024).toFixed(2) + ' KB');
+  
+              if (file.type.startsWith('image/')) {
+                  var reader = new FileReader();
+                  reader.onload = function(e) {
+                      fileDisplay.find('.imagePreview').html('<img src="' + e.target.result + '" alt="Image preview" style="max-width: 100px; max-height: 100px;">').show();
+                      fileDisplay.find('.fileIcon').hide(); // Hide the file icon
+                  };
+                  reader.readAsDataURL(file);
+              } else {
+                  fileDisplay.find('.fileIcon').html('<ion-icon name="document-outline"></ion-icon>'); // Show file icon for non-image files
+                  fileDisplay.find('.imagePreview').hide();
+              }
+  
+              var progressBar = fileDisplay.find('.progressBar');
+              var progressBarContainer = fileDisplay.find('.progressBarContainer');
+              progressBarContainer.show();
+  
+              // Simulate file upload progress
+              var progress = 0;
+              var interval = setInterval(function() {
+                  progress += 10;
+                  progressBar.css('width', progress + '%');
+  
+                  if (progress >= 100) {
+                      clearInterval(interval);
+                      progressBarContainer.hide();
+                      fileDisplay.find('.uploadComplete').show();
+                  }
+              }, 1000);
+  
+              fileDisplay.find('.removeFile').click(function() {
+                  fileDisplay.remove();
+              });
+          });
+      });
+    });
 
+    $(document).ready(function() {
+      $.ajax({
+          url: 'https://www.onlinecasting.co.za/apichat/JSON_CHAT_conversations.asp',
+          data: {
+              skip: 5,
+              limit: 20
+          },
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+              // console.log("API response:", data); // Log the entire response
+              if (data && Array.isArray(data)) {
+                  data.forEach(function(message) {
+                      console.log(message, 'message');
+                  });
+              } else {
+                  console.log("Data is not an array or is empty");
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error("Error fetching chat data:", status, error);
+          }
+      });
+  });
+  
+  
+  
+  
+  
 
 });
