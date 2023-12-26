@@ -1,5 +1,5 @@
 /* Chat CSS */
-
+[x-cloak] { display: none !important; }
 .object-cover {
     object-fit: cover;
 }
@@ -18,6 +18,7 @@
     border-right: solid 1px rgba(0, 0, 0, 0.1);
     overflow: auto;
     background-color: white;
+    position: relative;
 }
 
  
@@ -130,7 +131,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 12px;
+    padding: 17.5px 12px;
     position: sticky;
     top: 0;
     background-color: white;
@@ -177,7 +178,38 @@
 
 .chat-row.unread .chat-row-inner span.fw-bold {
     font-weight: 800 !important;
-    color: #000 !important;    
+    /* color: #000 !important;     */
+}
+
+.chat-loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b6b6b;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.chat-fetching {
+	position: sticky;
+	width: 100%;
+	padding: 8px;
+	bottom: 0;
+	background-color: white;
+	display: flex;
+	z-index: 10;
+	align-items: center;
+	justify-content: center;
+	color: #6b6b6b;
+	font-weight: 500;
+	font-size: 16px;
+}
+.filter-dropdown ul li a.active {
+    background-color: #eb783e !important;
+    color: #fff !important;
 }
 
 .chat-row.unread .chat-row-inner h5 {

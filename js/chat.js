@@ -153,34 +153,10 @@ $(document).ready(function() {
       });
     });
 
-    $(document).ready(function() {
-      $.ajax({
-          url: 'https://www.onlinecasting.co.za/apichat/JSON_CHAT_conversations.asp',
-          data: {
-              skip: 5,
-              limit: 20
-          },
-          type: 'GET',
-          dataType: 'json',
-          success: function(data) {
-              // console.log("API response:", data); // Log the entire response
-              if (data && Array.isArray(data)) {
-                  data.forEach(function(message) {
-                      console.log(message, 'message');
-                  });
-              } else {
-                  console.log("Data is not an array or is empty");
-              }
-          },
-          error: function(xhr, status, error) {
-              console.error("Error fetching chat data:", status, error);
-          }
-      });
-  });
+    
+ 
   
-  
-  
-  
-  
+
+
 
 });
