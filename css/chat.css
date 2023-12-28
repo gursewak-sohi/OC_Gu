@@ -31,6 +31,7 @@
     flex-direction: column;
     overflow: auto;
     z-index: 50;
+    position: relative;
 }
 
  
@@ -191,6 +192,7 @@
     color: #6b6b6b;
     font-weight: 500;
     font-size: 16px;
+  
 }
 
 .chat-fetching {

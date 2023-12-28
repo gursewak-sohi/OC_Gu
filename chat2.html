@@ -182,31 +182,22 @@
             </div>
          </header>
          <!-- Chat Area -->
-         <section class="chat-layout">
-            <div x-data="chatComponent()" x-init="init" id="chatSidebar" class="chat-sidebar">
-                <div x-show="isInitialLoading" class="chat-loader">Loading..</div>
-                <div x-show="isError" class="chat-loader" x-text="errorMessage"></div>
+         <section x-data="chatComponent()" x-init="init"  class="chat-layout">
+            <div id="chatSidebar" class="chat-sidebar">
+                <div x-show="isInitialUserLoading" class="chat-loader">Loading..</div>
+                <div x-show="isUserError" class="chat-loader" x-text="errorUserMessage"></div> 
                <div class="chat-sidebar-header">
                   <div class="dropdown-container dropdown-solid">
                      <div data-bs-toggle="dropdown" data-bs-auto-close="inside" class="dropdown-toggle">
-                        <h5>
-                          <span x-show="currentFolder == 'ALL'">All</span>
-                          <span x-show="currentFolder == 'STARRED'">Starred</span>
-                          <span x-show="currentFolder == 'UNREAD'">Unread</span>
-                          conversations
-                        </h5>
+                        <h5 x-text="currentFolderName"></h5>
                      </div>
                      <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
                         <ul>
-                          <li>
-                            <a x-bind:class="{ 'active': currentFolder == 'ALL' }" x-on:click="switchFolder('ALL')" href="javascript:;">All conversations</a>
-                          </li>
-                           <li>
-                            <a x-bind:class="{ 'active': currentFolder == 'STARRED' }" x-on:click="switchFolder('STARRED')" href="javascript:;">Starred conversations</a>
-                           </li>
-                           <li>
-                            <a x-bind:class="{ 'active': currentFolder == 'UNREAD' }" x-on:click="switchFolder('UNREAD')" href="javascript:;">Unread conversations</a>
-                         </li>
+                           <template x-for="folder in folders" :key="folder.name">
+                              <li>
+                                 <a x-bind:class="{ 'active': currentFolder == folder.searchname }" x-on:click="switchFolder(folder.searchname, folder.name)" x-text="folder.name" href="javascript:;"></a>
+                               </li>
+                           </template>
                         </ul>
                      </div>
                   </div>
@@ -260,7 +251,7 @@
                     <ul class="d-flex flex-column m-0 p-0">
                         <template x-for="user in users" :key="user.conversationid">
                           <!-- Add active class when chat is active -->
-                          <li  class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO' }"> 
+                          <li x-on:click="setCurrentConversation(user.conversationid)" class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO', 'active': user.conversationid == currentConversationID }"> 
                             <div class="chat-row-inner">
                                <div data-bs-toggle="dropdown" class="dropdown-container dropdown-solid chat-row-dropdown">
                                   <div class="dropdown-toggle click-dropdown">
@@ -281,35 +272,41 @@
                                   </div>
                                </div>
                                <div x-bind:class="{ 'chat-avatar-online': user.conversation_participant_status == 'ACTIVE' }" class="chat-avatar">
-                                  <!-- <span x-if="user.conversation_participant_status == 'ACTIVE'" class="chat-avatar-starred starred-lg">
+                                  <span x-show="currentFolder == 'STARRED'" class="chat-avatar-starred starred-lg">
                                     <ion-icon name="star"></ion-icon>
-                                  </span> -->
-                                  <img x-bind:src="user.image"  class="w-100 h-100 img-fluid rounded-circle object-cover avatar-img" alt="user">
+                                  </span>
+                                  <img x-bind:src="user.image" class="w-100 h-100 img-fluid rounded-circle object-cover avatar-img" alt="user">
                                </div>
                                <div class="d-flex flex-column text-truncate gap-1 position-relative w-100">
-                                  <span class="position-absolute fw-bold font-size-11px text-muted chat-row-time"></span>
+                                  <span x-text="user.date" class="position-absolute fw-bold font-size-11px text-muted chat-row-time"></span>
                                   <span x-bind:class="{ 'text-orange': user.auditionid == '0' }" x-text="user.headline" class="d-block fw-bold font-size-12px"></span>
                                   <h5 x-text="user.firstName" class="text-muted font-size-14px mb-0 fw-bold"></h5>
                                   <p x-text="user.text" class="mb-0 text-muted text-truncate fw-semibold"></p>
-                                  <span x-text="user.headline" class="font-size-12px fw-bold text-muted text-truncate"></span>
+                                  <span x-text="user.subheadline" class="font-size-12px fw-bold text-muted text-truncate"></span>
                                </div>
                             </div>
                          </li>
                         </template>
                     </ul>
-                 
-
                </div>
-               <div x-cloak x-show="isFetching && !isInitialLoading" class="chat-fetching">Loading..</div>
+               <div x-cloak x-show="isUsersFetching && !isInitialUserLoading" class="chat-fetching">Loading..</div>
             </div>
             <div id="chatMain" class="chat-main">
+               <template x-if="isInitialMessageLoading">
+                  <div class="chat-loader">Loading..</div>
+               </template>
+               <template x-if="isMessagesError">
+                  <div class="chat-loader" x-text="errorMessageMessage"></div>
+               </template>
+              
+               
                <div class="chat-main-header">
                   <div class="d-flex align-items-center gap-2">
                      <button id="backToChat" class="btn-icon d-lg-none"  class="fs-6 cursor-pointer">
                         <ion-icon name="chevron-back"></ion-icon>
                      </button>
                      <div class="d-lg-block d-none">
-                        <h5>Muhammad Ali<span class="text-muted fw-semibold">, Copenhagen</span> </h5>
+                        <h5><span x-text="messagesData.name"></span><span class="text-muted fw-semibold">, Location here</span> </h5>
                      </div>
                      
                      <div data-reservation="show" class="d-flex d-lg-none gap-2 align-items-center cursor-pointer">
@@ -355,127 +352,57 @@
                </div>
                <div class="chat-main-inner">
                   <ul class="d-flex flex-column p-0 mt-auto">
-                     <li class="chat-inquiry-row">
-                        <a class="chat-inquiry-row-inner" href="javascript:;">
-                           <div class="font-size-17px d-flex text-muted">
-                              <ion-icon name="document-text"></ion-icon>
-                           </div>
-                           <p class="mb-0 fw-bold font-size-14px text-muted">Inquiry send, 5 guests, Oct 6 - 11</p>
-                        </a>
-                     </li>
-                     <li class="chat-main-row">
-                        <div class="chat-new-date">Sep 10, 2022</div>
-                        <div class="chat-main-row-inner">
-                           <div class="chat-avatar-sm">
-                              <img class="w-100 h-100 img-fluid rounded-circle object-cover" src="img/profile-2.png" alt="#" class="avatar-img">
-                           </div>
-                           <div class="d-flex flex-column gap-1 position-relative">
-                              <h5 class="font-size-15px mb-0 fw-bolder">Muhammad Ali <span class="fw-semibold ml-1 font-size-11px text-muted">4:02 PM</span></h5>
-                              <div class="d-flex flex-column gap-3 mt-2 mb-2">
-                                 <h1 class="mb-0">Actor looking for job</h1>
-                                 <p class="mb-0 font-size-18px line-height-30">In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document.</p>
-                                 <ul class="ps-0 mb-1 d-flex flex-column gap-1 font-size-18px">
-                                    <li>
-                                       <a class="d-flex align-items-center gap-2 text-decoration-underline" href="mailto:sohi.gursewak@gmail.com">
-                                          <ion-icon class="font-size-18px" name="mail-outline"></ion-icon>sohi.gursewak@gmail.com
-                                       </a>
-                                    </li>
-                                    <li>
-                                       <a class="d-flex align-items-center gap-2 text-decoration-underline" href="tel:8968949939">
-                                          <ion-icon class="font-size-18px" name="call-outline"></ion-icon>8968949939</li>
-                                       </a>
-                                 </ul>
-                                 <div class="ratio ratio-16x9 w-100">
-                                    <iframe class="rounded" src="https://player.vimeo.com/video/886548745?h=" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
-                                 </div>
-                                 <div class="w-100 d-flex gap-2">
-                                    <a class="w-50" href="img/unsplash_V3YxRZLTbyY.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY.png" alt="" /></a>
-                                    <a class="w-50" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
-                                 </div>
-                                 <div class="w-100 d-flex mt-3 mb-3 flex-wrap gap-3">
-                                    <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"><ion-icon name="thumbs-down-outline"></ion-icon> Deny and archieve</a>
-                                    <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"><ion-icon name="thumbs-up-outline"></ion-icon> Upvote</a>
-                                 </div>
+                     <template x-if="messagesData.applicationheader">
+                        <li class="chat-inquiry-row">
+                           <a class="chat-inquiry-row-inner" href="javascript:;">
+                              <div class="font-size-17px d-flex text-muted">
+                                 <ion-icon name="document-text"></ion-icon>
                               </div>
-                              <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="chat-main-row">
-                        <div class="chat-main-row-inner">
-                           <div class="chat-avatar-sm">
-                              <img class="w-100 h-100 img-fluid rounded-circle object-cover" src="img/profile-3.png" alt="#" class="avatar-img">
-                           </div>
-                           <div class="d-flex flex-column gap-1 position-relative">
-                              <h5 class="font-size-15px mb-0 fw-bolder">Muhammad Ali <span class="fw-semibold ml-1 font-size-11px text-muted">4:02 PM</span></h5>
-                              <p class="mb-0 fw-semibold">Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.</p>
-                              <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
-                                <a download href="img/dummy.pdf" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px" name="document-attach-outline"></ion-icon>Beskrivelse af roller.pdf</a>
-                                <div class="d-flex flex-wrap gap-2">
-                                  <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
-                                  <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
-                               </div>
+                              <p x-text="messagesData.applicationheader" class="mb-0 fw-bold font-size-14px text-muted"></p>
+                           </a>
+                        </li>
+                     </template>
+                     
+                     <template x-for="(message, index) in [...messages].reverse()" :key="message.messageid">
+                        <li class="chat-main-row">
+                           <!-- <template x-if="isDateDifferentFromPrevious(index)">
+                              <div class="chat-new-date" x-text="message.date"></div>
+                          </template> -->
+                           <div class="chat-new-date" x-text="message.date"></div>
+                          
+                           <div class="chat-main-row-inner">
+                              <div class="chat-avatar-sm">
+                                 <img x-bind:src="message.imagethumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user">
                               </div>
-                              <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="chat-main-row">
-                        <div class="chat-new-date">Sep 11, 2022</div>
-                        <div class="chat-main-row-inner">
-                           <div class="chat-avatar-sm">
-                              <img class="w-100 h-100 img-fluid rounded-circle object-cover" src="img/profile-5.png" alt="KP" class="avatar-img">
-                           </div>
-                           <div class="d-flex flex-column gap-1 position-relative">
-                              <h5 class="font-size-15px mb-0 fw-bolder">Kasper <span class="fw-semibold ml-1 font-size-11px text-muted">4:02 PM</span></h5>
-                              <p class="mb-0 fw-semibold">Premium designed icons for use in web, iOS, Android, and desktop apps. Support for SVG. Completely open source, MIT licensed and built by</p>
-                              <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
-                                <a class="w-100 link" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
-                                <div class="d-flex flex-wrap gap-2">
-                                  <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
-                                  <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
-                               </div>
+                              <div class="d-flex flex-column gap-1 position-relative">
+                                 
+                                 <h5 class="font-size-15px mb-0 fw-bolder">Name Here <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span></h5>
+                                 <template x-if="message.mimetype == 'Text'">
+                                    <p x-text="message.message" class="mb-0 fw-semibold"></p>
+                                 </template>
+                                 <template x-if="message.mimetype == 'Image'">
+                                    <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
+                                       <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
+                                       <div class="d-flex flex-wrap gap-2">
+                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                         <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                      </div>
+                                     </div>
+                                 </template>
+                                 <template x-if="message.mimetype == 'PDF'">
+                                    <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
+                                       <a download href="img/dummy.pdf" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px" name="document-attach-outline"></ion-icon>Beskrivelse af roller.pdf</a>
+                                       <div class="d-flex flex-wrap gap-2">
+                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                         <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                      </div>
+                                     </div>
+                                 </template>
+                                 <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
                               </div>
-                              <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
                            </div>
-                        </div>
-                     </li>
-                     <li class="chat-main-row">
-                        <div class="chat-main-row-inner">
-                           <div class="chat-avatar-sm">
-                              <img class="w-100 h-100 img-fluid rounded-circle object-cover" src="img/profile-2.png" alt="#" class="avatar-img">
-                           </div>
-                           <div class="d-flex flex-column gap-1 position-relative">
-                              <h5 class="font-size-15px mb-0 fw-bolder">Muhammad Ali <span class="fw-semibold ml-1 font-size-11px text-muted">4:02 PM</span></h5>
-                              <p class="mb-0 fw-semibold">Hello! <br>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. <br>Thank you very much!</p>
-                              <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="chat-main-row">
-                        <div class="chat-main-row-inner">
-                           <div class="chat-avatar-sm">
-                              <img class="w-100 h-100 img-fluid rounded-circle object-cover" src="img/profile-3.png" alt="#" class="avatar-img">
-                           </div>
-                           <div class="d-flex flex-column gap-1 position-relative">
-                              <h5 class="font-size-15px mb-0 fw-bolder">Muhammad Ali <span class="fw-semibold ml-1 font-size-11px text-muted">4:02 PM</span></h5>
-                              <p class="mb-0 fw-semibold">Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator.</p>
-                              <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
-                           </div>
-                        </div>
-                     </li>
-                     <li class="chat-main-row">
-                        <div class="chat-main-row-inner">
-                           <div class="chat-avatar-sm">
-                              <img class="w-100 h-100 img-fluid rounded-circle object-cover" src="img/profile-6.png" alt="KP" class="avatar-img">
-                           </div>
-                           <div class="d-flex flex-column gap-1 position-relative">
-                              <h5 class="font-size-15px mb-0 fw-bolder">Kasper <span class="fw-semibold ml-1 font-size-11px text-muted">4:02 PM</span></h5>
-                              <p class="mb-0 fw-semibold">Premium designed icons for use in web, iOS, Android, and desktop apps. Support for SVG. Completely open source, MIT licensed and built by</p>
-                              <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
-                           </div>
-                        </div>
-                     </li>
+                        </li>
+                     </template>
                   </ul>
                </div>
                <div class="chat-textbox-outer">
@@ -610,7 +537,8 @@
        <script src="js/chat.js"></script>
 
         <!-- Apline JS -->
+        <script  src="js/chatData.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-       <script src="js/chatData.js"></script>
+       
    </body>
 </html>
