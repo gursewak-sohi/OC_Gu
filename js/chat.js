@@ -33,18 +33,7 @@ $(document).ready(function() {
     }
   });
 
-  const $chatSidebar = $('#chatSidebar');
-
-  $('#backToChat').click(function() {
-    $chatSidebar.removeClass('hide');
-  });
-
-  $('#chatSidebar .chat-row-inner').each(function() {
-    $(this).click(function() {
-      $chatSidebar.addClass('hide');
-    });
-  });
-
+   
 
   
   $('#chatModal .auditionsItem input[type="checkbox"]').change(function() {

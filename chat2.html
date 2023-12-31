@@ -183,12 +183,12 @@
          </header>
          <!-- Chat Area -->
          <section x-data="chatComponent()" x-init="init"  class="chat-layout">
-            <div id="chatSidebar" class="chat-sidebar">
+            <div id="chatSidebar" class="chat-sidebar" x-bind:class="{ 'hide': isChatSidebarClosed }">
                 <div x-show="isInitialUserLoading" class="chat-loader">Loading..</div>
                 <div x-show="isUserError" class="chat-loader" x-text="errorUserMessage"></div> 
                <div class="chat-sidebar-header">
                   <div class="dropdown-container dropdown-solid">
-                     <div data-bs-toggle="dropdown" data-bs-auto-close="inside" class="dropdown-toggle">
+                     <div data-bs-toggle="dropdown" data-bs-auto-close="true" class="dropdown-toggle">
                         <h5 x-text="currentFolderName"></h5>
                      </div>
                      <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
@@ -202,7 +202,7 @@
                      </div>
                   </div>
                   <div class="dropdown-container dropdown-solid">
-                    <div class="dropdown-toggle click-dropdown">
+                    <div data-bs-toggle="dropdown" data-bs-auto-close="true"  class="dropdown-toggle">
                        <h5>Castings</h5>
                     </div>
                     <div class="dropdown-menu casting-dropdown font-size-13px mt-2">
@@ -251,10 +251,10 @@
                     <ul class="d-flex flex-column m-0 p-0">
                         <template x-for="user in users" :key="user.conversationid">
                           <!-- Add active class when chat is active -->
-                          <li x-on:click="setCurrentConversation(user.conversationid)" class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO', 'active': user.conversationid == currentConversationID }"> 
+                          <li x-on:click="isChatSidebarClosed = true; setCurrentConversation(user.conversationid);" class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO', 'active': user.conversationid == currentConversationID }"> 
                             <div class="chat-row-inner">
-                               <div data-bs-toggle="dropdown" class="dropdown-container dropdown-solid chat-row-dropdown">
-                                  <div class="dropdown-toggle click-dropdown">
+                               <div x-on:click.stop data-bs-toggle="dropdown" data-bs-toggle="dropdown"  class="dropdown-container dropdown-solid chat-row-dropdown">
+                                  <div class="dropdown-toggle">
                                      <ion-icon name="ellipsis-horizontal"></ion-icon>
                                   </div>
                                   <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
@@ -271,7 +271,8 @@
                                      </ul>
                                   </div>
                                </div>
-                               <div x-bind:class="{ 'chat-avatar-online': user.conversation_participant_status == 'ACTIVE' }" class="chat-avatar">
+                               <!-- x-bind:class="{ 'chat-avatar-online': user.conversation_participant_status == 'ACTIVE' }" -->
+                               <div class="chat-avatar">
                                   <span x-show="currentFolder == 'STARRED'" class="chat-avatar-starred starred-lg">
                                     <ion-icon name="star"></ion-icon>
                                   </span>
@@ -302,7 +303,7 @@
                
                <div class="chat-main-header">
                   <div class="d-flex align-items-center gap-2">
-                     <button id="backToChat" class="btn-icon d-lg-none"  class="fs-6 cursor-pointer">
+                     <button x-on:click="isChatSidebarClosed = false;" class="btn-icon d-lg-none"  class="fs-6 cursor-pointer">
                         <ion-icon name="chevron-back"></ion-icon>
                      </button>
                      <div class="d-lg-block d-none">
@@ -311,11 +312,11 @@
                      
                      <div data-reservation="show" class="d-flex d-lg-none gap-2 align-items-center cursor-pointer">
                         <div class="chat-avatar-sm">
-                           <img class="w-100 h-100 img-fluid rounded-circle object-cover" src="img/profile-2.png" alt="#">
+                           <img x-bind:src="messagesData.image_thumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user"/>
                         </div>
                         <div class="d-flex flex-column">
-                           <h4 class="mb-0 font-size-16px">Anna, 44ar</h4>
-                           <p class="text-uppercase text-muted mb-0 fw-bold font-size-12px">Copenhagan</p>
+                           <h4 x-text="messagesData.name" class="mb-0 font-size-16px"></h4>
+                           <p class="text-uppercase text-muted mb-0 fw-bold font-size-12px">Location here</p>
                         </div>
                      </div>
                   </div>
@@ -363,46 +364,49 @@
                         </li>
                      </template>
                      
-                     <template x-for="(message, index) in [...messages].reverse()" :key="message.messageid">
-                        <li class="chat-main-row">
-                           <!-- <template x-if="isDateDifferentFromPrevious(index)">
+                        <template x-for="message in reversedMessages" :key="'message.messageid' + index">
+                        <!-- <template  x-for="(message, index) in [...messages].reverse()" :key="'message.messageid' + index"> -->
+                           <li class="chat-main-row">
+                              <!-- <template x-if="isDateDifferentFromPrevious(index)">
+                                 <div class="chat-new-date" x-text="message.date"></div>
+                             </template> -->
                               <div class="chat-new-date" x-text="message.date"></div>
-                          </template> -->
-                           <div class="chat-new-date" x-text="message.date"></div>
-                          
-                           <div class="chat-main-row-inner">
-                              <div class="chat-avatar-sm">
-                                 <img x-bind:src="message.imagethumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user">
+                             
+                              <div class="chat-main-row-inner">
+                                 <div class="chat-avatar-sm">
+                                    <img x-bind:src="message.imagethumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user">
+                                 </div>
+                                 <div class="d-flex flex-column gap-1 position-relative">
+                                    
+                                    <h5 class="font-size-15px mb-0 fw-bolder">Name Here <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span></h5>
+                                    <template x-if="message.mimetype == 'Text'">
+                                       <p x-text="message.message" class="mb-0 fw-semibold"></p>
+                                    </template>
+                                    <template x-if="message.mimetype == 'Image'">
+                                       <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
+                                          <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
+                                          <div class="d-flex flex-wrap gap-2">
+                                            <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                            <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                         </div>
+                                        </div>
+                                    </template>
+                                    <template x-if="message.mimetype == 'PDF'">
+                                       <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
+                                          <a download href="img/dummy.pdf" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px" name="document-attach-outline"></ion-icon>Beskrivelse af roller.pdf</a>
+                                          <div class="d-flex flex-wrap gap-2">
+                                            <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                            <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                         </div>
+                                        </div>
+                                    </template>
+                                    <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
+                                 </div>
                               </div>
-                              <div class="d-flex flex-column gap-1 position-relative">
-                                 
-                                 <h5 class="font-size-15px mb-0 fw-bolder">Name Here <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span></h5>
-                                 <template x-if="message.mimetype == 'Text'">
-                                    <p x-text="message.message" class="mb-0 fw-semibold"></p>
-                                 </template>
-                                 <template x-if="message.mimetype == 'Image'">
-                                    <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
-                                       <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
-                                       <div class="d-flex flex-wrap gap-2">
-                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
-                                         <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
-                                      </div>
-                                     </div>
-                                 </template>
-                                 <template x-if="message.mimetype == 'PDF'">
-                                    <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
-                                       <a download href="img/dummy.pdf" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px" name="document-attach-outline"></ion-icon>Beskrivelse af roller.pdf</a>
-                                       <div class="d-flex flex-wrap gap-2">
-                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
-                                         <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
-                                      </div>
-                                     </div>
-                                 </template>
-                                 <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
-                              </div>
-                           </div>
-                        </li>
-                     </template>
+                           </li>
+                        </template>
+                     
+                     
                   </ul>
                </div>
                <div class="chat-textbox-outer">
@@ -413,8 +417,8 @@
                     </button>
                     <!-- Hidden file input -->
                     <input type="file" class="fileInput" hidden multiple>
-                    <textarea id="chatInput" placeholder="Type a message"></textarea>
-                    <button id="sendBtn" class="btn-send" type="button">
+                    <textarea x-model="newMessage" id="chatInput" placeholder="Type a message"></textarea>
+                    <button id="sendBtn" @click="postChatMessage()"  class="btn-send" type="button">
                        <ion-icon name="send"></ion-icon>
                     </button>
                  </div>
@@ -452,29 +456,16 @@
                </div>
                <div class="chat-details-inner">
                   <div class="profileItem">
-                     <div class="latestProfile owl-carousel owl-theme">
+                     <div class="">
                         <a href="#">
                            <div class="item">
-                              <div class="profileCard" style="background-image: url(img/profile-7.png);"></div>
-                           </div>
-                        </a>
-                        <a href="#">
-                           <div class="item">
-                              <div class="profileCard" style="background-image: url(img/profile-7.png);"></div>
-                           </div>
-                        </a>
-                        <a href="#">
-                           <div class="item">
-                              <div class="profileCard" style="background-image: url(img/profile-7.png);"></div>
-                           </div>
-                        </a>
-                        <a href="#">
-                           <div class="item">
-                              <div class="profileCard" style="background-image: url(img/profile-7.png);"></div>
+                              <div class="profileCard relative">
+                                 <img height="300" class="img-fluid object-cover position-absolute w-100 h-100 rounded-2"  x-bind:src="messagesData.image_thumb" alt="">
+                              </div>
                            </div>
                         </a>
                      </div>
-                     <h4 class="mb-1 mt-3 font-size-20px">Anna, 44ar</h4>
+                     <h4 x-text="messagesData.name" class="mb-1 mt-3 font-size-20px"></h4>
                      <p class="text-uppercase text-muted mb-0 fw-bold font-size-14px">Copenhagan</p>
                   </div>
                   <div class="row">
