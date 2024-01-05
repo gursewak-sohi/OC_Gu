@@ -55,6 +55,7 @@
     overflow: auto;
     transition: 0.3s all ease;
     margin-right: -320px;
+    position: relative;
 }
 
 .chat-details.active {
