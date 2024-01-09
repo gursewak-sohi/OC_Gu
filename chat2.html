@@ -251,9 +251,9 @@
                     <ul class="d-flex flex-column m-0 p-0">
                         <template x-for="user in users" :key="user.conversationid">
                           <!-- Add active class when chat is active -->
-                          <li x-on:click="isChatSidebarClosed = true; setCurrentConversation(user.conversationid, user.profileid);" class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO', 'active': user.conversationid == currentConversationID }"> 
+                          <li x-on:click="isChatSidebarClosed = true;  setCurrentConversation(user);" class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO', 'active': user.conversationid == currentConversationID }"> 
                             <div class="chat-row-inner">
-                               <div x-on:click.stop data-bs-toggle="dropdown" data-bs-toggle="dropdown"  class="dropdown-container dropdown-solid chat-row-dropdown">
+                               <div x-on:click.stop data-bs-toggle="dropdown" class="dropdown-container dropdown-solid chat-row-dropdown">
                                   <div class="dropdown-toggle">
                                      <ion-icon name="ellipsis-horizontal"></ion-icon>
                                   </div>
@@ -265,8 +265,11 @@
                                         <li>
                                            <a href="#">Option 2</a>
                                         </li>
-                                        <li>
-                                           <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
+                                        <li @click="toggleStar(user, 'YES')" x-show="user.starred == 'NO'">
+                                          <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
+                                       </li>
+                                        <li  @click="toggleStar(user, 'NO')" x-show="user.starred == 'YES'">
+                                           <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Remove</a>
                                         </li>
                                      </ul>
                                   </div>
@@ -332,7 +335,7 @@
                      </button>
                      <button id="showDetails" class="btn btn-main-sm ms-2 d-none d-lg-block">Show Details</button>
                      <div class="dropdown-container dropdown-solid chat-dropdown d-lg-none">
-                        <div class="dropdown-toggle click-dropdown">
+                        <div data-bs-toggle="dropdown" data-bs-auto-close="true"  class="dropdown-toggle">
                            <ion-icon name="ellipsis-vertical"></ion-icon>
                         </div>
                         <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
@@ -343,9 +346,16 @@
                               <li>
                                  <a href="#">Option 2</a>
                               </li>
-                              <li>
+                              <li @click="toggleStar(currentConversation, 'YES')" x-show="currentConversation.starred == 'NO'">
+                                 <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
+                              </li>
+                               <li  @click="toggleStar(currentConversation, 'NO')" x-show="currentConversation.starred == 'YES'">
+                                  <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Remove</a>
+                               </li>
+
+                              <!-- <li>
                                 <a data-bs-toggle="modal" data-bs-target="#reportModal" href="javascript:;">Report User</a>
-                             </li>
+                             </li> -->
                            </ul>
                         </div>
                      </div>
@@ -365,11 +375,7 @@
                      </template>
                      
                      <template x-for="message in reversedMessages" :key="'message.messageid' + index">
-                     <!-- <template  x-for="(message, index) in [...messages].reverse()" :key="'message.messageid' + index"> -->
                         <li class="chat-main-row">
-                           <!-- <template x-if="isDateDifferentFromPrevious(index)">
-                              <div class="chat-new-date" x-text="message.date"></div>
-                           </template> -->
                            <div class="chat-new-date" x-text="message.date"></div>
                            
                            <div class="chat-main-row-inner">

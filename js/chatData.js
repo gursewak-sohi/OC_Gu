@@ -83,6 +83,7 @@ document.addEventListener("alpine:init", () => {
 
         // Users Data
         users: [],
+        currentConversation: {},
         currentConversationID : '',
         currentProfileID : '',
         isInitialUserLoading: true,
@@ -94,6 +95,7 @@ document.addEventListener("alpine:init", () => {
         currentFolderName: 'Loading..',
         isUserError: false,
         errorUserMessage: '',
+        
         fetchChatUsers() {
             if (this.isUsersFetching) return;
             this.isUsersFetching = true;
@@ -102,9 +104,11 @@ document.addEventListener("alpine:init", () => {
                 .then(response => response.json())
                 .then(data => {
                     if (data && Array.isArray(data.users)) {
+                        // console.log(data.users, 'users');
                         if (this.isInitialUserLoading) {
                             this.currentConversationID  = data.users[0].conversationid
                             this.currentProfileID  = data.users[0].profileid
+                            // Fetch chat message on change conversation
                             this.fetchChatMessages();
                             this.fetchProfileImages();
                         }
@@ -131,10 +135,12 @@ document.addEventListener("alpine:init", () => {
                 });
         },
        
+       
 
-        setCurrentConversation(conversationid, profileId) {
-            this.currentConversationID = conversationid;
-            this.currentProfileID = profileId;
+        setCurrentConversation(user) {
+            this.currentConversation = user
+            this.currentConversationID = user.conversationid;
+            this.currentProfileID = user.profileId;
             this.messagesData = {},
             this.messages = [];
             this.messagesSkip = 0;
@@ -261,7 +267,7 @@ document.addEventListener("alpine:init", () => {
                 .then(data => {
                     
                     this.profileImages = data
-                    console.log(this.profileImages, 'profile data')
+                    // console.log(this.profileImages, 'profile data')
                     this.$nextTick(() => {
                         // Reset the containers
                         let singleImageContainer = document.querySelector('.single-image-container');
@@ -300,7 +306,6 @@ document.addEventListener("alpine:init", () => {
          //  Post Messages
          newMessage: '',
          postChatMessage() {    
-             // const url = "https://cors-anywhere.herokuapp.com/https://www.onlinecasting.co.za/apichat/CASTER_post_message.asp";
              const url = "https://proxy.cors.sh/https://www.onlinecasting.co.za/apichat/CASTER_post_message.asp";
              
              const data = {
@@ -333,7 +338,25 @@ document.addEventListener("alpine:init", () => {
                  console.error('Error:', error);
              });
          },
-  
+
+         
+        toggleStar(user, setAsStarred) {
+            console.log(user, 'as')
+            
+            const apiUrl = `https://www.onlinecasting.co.za/apichat/CASTER_star_message.asp?ConversationID=${user.conversationid}&ConversationParticipantID=${user.conversation_participant_id}&CasterID=1&ProfileID=${user.profileid}&SetAsStarred=${setAsStarred}`;
+
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Star toggled', data);
+                    // Update the user's starred status in the Alpine state
+                    user.starred = setAsStarred;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        },
+
         init() {
           let debounceTimerForUsers;
           let debounceTimerForMessages;
