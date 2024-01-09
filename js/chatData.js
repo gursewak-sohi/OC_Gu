@@ -83,7 +83,6 @@ document.addEventListener("alpine:init", () => {
 
         // Users Data
         users: [],
-        currentConversation: {},
         currentConversationID : '',
         currentProfileID : '',
         isInitialUserLoading: true,
@@ -95,7 +94,7 @@ document.addEventListener("alpine:init", () => {
         currentFolderName: 'Loading..',
         isUserError: false,
         errorUserMessage: '',
-        
+        currentUser: {},
         fetchChatUsers() {
             if (this.isUsersFetching) return;
             this.isUsersFetching = true;
@@ -135,12 +134,13 @@ document.addEventListener("alpine:init", () => {
                 });
         },
        
-       
+        setCurrentUser(user) {
+            this.currentUser = user
+        },
 
-        setCurrentConversation(user) {
-            this.currentConversation = user
-            this.currentConversationID = user.conversationid;
-            this.currentProfileID = user.profileId;
+        setCurrentConversation(conversationid, profileId) {
+            this.currentConversationID = conversationid;
+            this.currentProfileID = profileId;
             this.messagesData = {},
             this.messages = [];
             this.messagesSkip = 0;
@@ -341,7 +341,7 @@ document.addEventListener("alpine:init", () => {
 
          
         toggleStar(user, setAsStarred) {
-            console.log(user, 'as')
+            // console.log(user, 'user')
             
             const apiUrl = `https://www.onlinecasting.co.za/apichat/CASTER_star_message.asp?ConversationID=${user.conversationid}&ConversationParticipantID=${user.conversation_participant_id}&CasterID=1&ProfileID=${user.profileid}&SetAsStarred=${setAsStarred}`;
 

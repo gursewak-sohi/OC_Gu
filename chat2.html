@@ -251,9 +251,9 @@
                     <ul class="d-flex flex-column m-0 p-0">
                         <template x-for="user in users" :key="user.conversationid">
                           <!-- Add active class when chat is active -->
-                          <li x-on:click="isChatSidebarClosed = true;  setCurrentConversation(user);" class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO', 'active': user.conversationid == currentConversationID }"> 
+                          <li x-on:click="isChatSidebarClosed = true; setCurrentUser(user); setCurrentConversation(user.conversationid, user.profileid);" class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO', 'active': user.conversationid == currentConversationID }"> 
                             <div class="chat-row-inner">
-                               <div x-on:click.stop data-bs-toggle="dropdown" class="dropdown-container dropdown-solid chat-row-dropdown">
+                               <div x-on:click.stop data-bs-toggle="dropdown"    class="dropdown-container dropdown-solid chat-row-dropdown">
                                   <div class="dropdown-toggle">
                                      <ion-icon name="ellipsis-horizontal"></ion-icon>
                                   </div>
@@ -346,10 +346,10 @@
                               <li>
                                  <a href="#">Option 2</a>
                               </li>
-                              <li @click="toggleStar(currentConversation, 'YES')" x-show="currentConversation.starred == 'NO'">
+                              <li @click="toggleStar(currentUser, 'YES')" x-show="currentUser.starred == 'NO'">
                                  <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
                               </li>
-                               <li  @click="toggleStar(currentConversation, 'NO')" x-show="currentConversation.starred == 'YES'">
+                               <li  @click="toggleStar(currentUser, 'NO')" x-show="currentUser.starred == 'YES'">
                                   <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Remove</a>
                                </li>
 
