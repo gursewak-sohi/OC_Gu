@@ -144,7 +144,9 @@ document.addEventListener("alpine:init", () => {
                             this.fetchChatMessages();
                             this.fetchProfileImages();
                         }
+                        
                         this.conversations = [...this.conversations, ...data.conversations];
+                        // console.log(this.conversations, 'this.conversations')
                         this.conversationsSkip += this.conversationsLimit;
                     } else {
                         console.log("Data is not an array or is empty");
@@ -208,11 +210,11 @@ document.addEventListener("alpine:init", () => {
             if (fetchOlderMessages) {
                 this.messagesSkip += this.messagesLimit;
             }
-             
-            fetch(`https://www.onlinecasting.co.za/apichat/JSON_CASTER_conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
+           
+            fetch(`https://www.onlinecasting.co.za/api/chat/conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
-               
+                    console.log(data, 'data')
                   if (data && Array.isArray(data.messages)) {
                         this.messagesData = data  
                         if (fetchOlderMessages) {

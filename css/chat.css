@@ -178,9 +178,7 @@
     visibility: visible;
 }
 
-.chat-row .chat-row-inner span.fw-bold {
-  
-    color: #000 !important;
+.chat-row .chat-row-inner span.text-orange {
     max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
