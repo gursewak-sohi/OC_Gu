@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- Page Title -->
+      <title>OnlineCasting</title>
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <!-- Main Styles -->
+      <link rel="stylesheet" href="css/main.css">
+      <!-- Responsive Styles -->
+      <link rel="stylesheet" href="css/theme-responsive.css">
+      <!-- Chat Styles -->
+      <link rel="stylesheet" href="css/chat.css">
+      <!-- Owl Stylesheets -->
+      <link rel="stylesheet" href="css/owl.carousel.min.css">
+      <!-- Fancy Box -->
+      <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+     
+   </head>
+   <body>
+
+      <!-- Modal -->
+      <div class="modal fade filterModal" id="reportModal" tabindex="-1" aria-labelledby="reportModal" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                         <img src="img/close-icon.svg" alt="">
+                     </div>
+                     <h5 class="modal-title text-center">Regler</h5>
+                 </div>
+                 <div class="modal-body chat-modal-body">
+                    <p class="font-size-16px">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). <br> <br> There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                 </div>
+                 <div class="modal-footer">
+                     <a href="javascript:;"  data-bs-dismiss="modal" class="btn mainBtn">Luk</a>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+      <div class="wrapper">
+         <!-- header start here -->
+         <header class="header header-search">
+            <div class="innerNav" id="header">
+               <div class="container-fluid ">
+                  <div class="row">
+                     <div class="col-3 col-md-3">
+                        <div class="logo">
+                           <a href="index.html"><img src="img/onlineCasting.svg" alt=""></a>
+                        </div>
+                     </div>
+                     <div class="col-md-6 d-none d-md-block">
+                        <ul class="headerNav">
+                           <li>
+                              <a href="#">CASTINGS &amp; JOBS</a>
+                           </li>
+                           <li>
+                              <a href="#">Search talents</a>
+                           </li>
+                        </ul>
+                     </div>
+                     <div class="col-9 col-md-3">
+                        <div class="rightNav">
+                           <ul>
+                              <li>
+                                 <a href="#">
+                                    <ion-icon style="font-size:25px" name="mail-outline"></ion-icon>
+                                    <div class="value">2</div>
+                                    <span>beskedar</span>
+                                 </a>
+                              </li>
+                              <li>
+                                 <a href="#">
+                                    <i>
+                                       <div class="profileavtar" style="background-image: url(img/profile-2.png);"></div>
+                                    </i>
+                                    <div class="value">!</div>
+                                    <span>Kasper</span>
+                                 </a>
+                              </li>
+                              <li>
+                                 <a href="#">
+                                 <button class="top-bar__nav-toggle hamburger" id="top-nav-toggle">
+                                 <span></span>
+                                 <span></span>
+                                 <span></span>
+                                 </button>
+                                 <span>MENU</span>
+                                 </a>
+                              </li>
+                           </ul>
+                        </div>
+                        <div class="top-bar">
+                           <div class="top-bar__nav__wrapper" id="top-bar__nav">
+                              <nav class="top-bar__nav">
+                                 <div class="bordertp">
+                                    <div class="inner-col">
+                                       <h3>
+                                          <div class="avtar" style="background-image: url(img/exp-2.png);"></div>
+                                          My Profile
+                                       </h3>
+                                       <ul>
+                                          <li>
+                                             <a href="#">
+                                                <ion-icon name="create-outline"></ion-icon>
+                                                Edit profile
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a href="#">
+                                                <ion-icon name="image-outline"></ion-icon>
+                                                Upload image
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a href="#">
+                                                <ion-icon name="log-out-outline"></ion-icon>
+                                                Log out
+                                             </a>
+                                          </li>
+                                       </ul>
+                                       <h3>Casters &amp; Producers</h3>
+                                       <ul>
+                                          <li>
+                                             <a href="#">See profiles</a>
+                                          </li>
+                                          <li>
+                                             <a href="#">Saved profiles</a>
+                                          </li>
+                                          <li>
+                                             <a href="#">Join us</a>
+                                          </li>
+                                       </ul>
+                                       <h3>Generals</h3>
+                                       <ul>
+                                          <li>
+                                             <a href="#">Contact us</a>
+                                          </li>
+                                          <li>
+                                             <a href="#">About onlinecasting</a>
+                                          </li>
+                                          <li>
+                                             <a href="#">What is this?</a>
+                                          </li>
+                                       </ul>
+                                       <h3>Generals</h3>
+                                       <ul>
+                                          <li>
+                                             <a href="#">Contact us</a>
+                                          </li>
+                                          <li>
+                                             <a href="#">About onlinecasting</a>
+                                          </li>
+                                          <li>
+                                             <a href="#">What is this?</a>
+                                          </li>
+                                       </ul>
+                                       <h3>Generals</h3>
+                                       <ul>
+                                          <li>
+                                             <a href="#">Contact us</a>
+                                          </li>
+                                          <li>
+                                             <a href="#">About onlinecasting</a>
+                                          </li>
+                                          <li>
+                                             <a href="#">What is this?</a>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </nav>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </header>
+         <!-- Chat Area -->
+         <section x-data="chatComponent()" x-init="init"  class="chat-layout">
+            <div id="chatSidebar" class="chat-sidebar" x-bind:class="{ 'hide': isChatSidebarClosed }">
+                <div x-show="isInitialUserLoading" class="chat-loader">Loading..</div>
+                <div x-show="isUserError" class="chat-loader" x-text="errorUserMessage"></div> 
+               <div class="chat-sidebar-header">
+                  <div class="dropdown-container dropdown-solid">
+                     <div data-bs-toggle="dropdown" data-bs-auto-close="true" class="dropdown-toggle">
+                        <h5 x-text="currentFolderName"></h5>
+                     </div>
+                     <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
+                        <ul>
+                           <template x-for="folder in folders" :key="folder.name">
+                              <li>
+                                 <a x-bind:class="{ 'active': currentFolder == folder.searchname }" x-on:click="switchFolder(folder.searchname, folder.name)" x-text="folder.name" href="javascript:;"></a>
+                               </li>
+                           </template>
+                        </ul>
+                     </div>
+                  </div>
+                  <div class="dropdown-container dropdown-solid">
+                    <div data-bs-toggle="dropdown" data-bs-auto-close="true"  class="dropdown-toggle">
+                       <h5>Castings</h5>
+                    </div>
+                    <div class="dropdown-menu casting-dropdown font-size-13px mt-2">
+                       <ul>
+                          <li>
+                              <div class="font-size-12px text-muted ps-3 fw-semibold mb-1">Sep 11, 2023</div>
+                              <a class="fw-bold d-flex gap-1" href="#">
+                                <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
+                                <div class="">
+                                  Lorem ipsum is a placeholder text commonly used to demonstrate.
+                                </div>
+                             </a>
+                          </li>
+                          <li>
+                            <div class="font-size-12px text-muted ps-3 fw-semibold mb-1">Sep 11, 2023</div>
+                            <a class="fw-bold d-flex gap-1" href="#">
+                              <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
+                              <div class="">
+                                Lorem ipsum is a placeholder text commonly used to demonstrate.
+                              </div>
+                           </a>
+                        </li>
+                        <li>
+                          <div class="font-size-12px text-muted ps-3 fw-semibold mb-1">Sep 11, 2023 - <span class="text-orange">Afsluttet</span></div>
+                          <a class="fw-bold d-flex gap-1" href="#">
+                            <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
+                            <div class="">
+                              Lorem ipsum is a placeholder text commonly used to demonstrate.
+                            </div>
+                         </a>
+                        </li>
+                        <li>
+                          <div class="font-size-12px text-muted ps-3 fw-semibold mb-1">Sep 11, 2023</div>
+                          <a class="fw-bold d-flex gap-1" href="#">
+                            <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
+                            <div class="">
+                              Lorem ipsum is a placeholder text commonly used to demonstrate.
+                            </div>
+                        </a>
+                         </li>
+                       </ul>
+                    </div>
+                 </div>
+               </div>
+                <div class="d-flex flex-column flex-1 relative">
+                    <ul class="d-flex flex-column m-0 p-0">
+                        <template x-for="user in users" :key="user.conversationid">
+                          <!-- Add active class when chat is active -->
+                          <li x-on:click="isChatSidebarClosed = true; setCurrentUser(user); setCurrentConversation(user.conversationid, user.profileid);" class="chat-row" x-bind:class="{ 'unread': user.isread == 'NO', 'active': user.conversationid == currentConversationID }"> 
+                            <div class="chat-row-inner">
+                               <div x-on:click.stop data-bs-toggle="dropdown"    class="dropdown-container dropdown-solid chat-row-dropdown">
+                                  <div class="dropdown-toggle">
+                                     <ion-icon name="ellipsis-horizontal"></ion-icon>
+                                  </div>
+                                  <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
+                                     <ul>
+                                        <li>
+                                           <a href="#">Option 1</a>
+                                        </li>
+                                        <li>
+                                           <a href="#">Option 2</a>
+                                        </li>
+                                        <li @click="toggleStar(user, 'YES')" x-show="user.starred == 'NO'">
+                                          <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
+                                       </li>
+                                        <li  @click="toggleStar(user, 'NO')" x-show="user.starred == 'YES'">
+                                           <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Remove</a>
+                                        </li>
+                                     </ul>
+                                  </div>
+                               </div>
+                               <!-- x-bind:class="{ 'chat-avatar-online': user.conversation_participant_status == 'ACTIVE' }" -->
+                               <div class="chat-avatar">
+                                  <span x-show="user.starred == 'YES'" class="chat-avatar-starred starred-lg">
+                                    <ion-icon name="star"></ion-icon>
+                                  </span>
+                                  <img x-bind:src="user.image" class="w-100 h-100 img-fluid rounded-circle object-cover avatar-img" alt="user">
+                               </div>
+                               <div class="d-flex flex-column text-truncate gap-1 position-relative w-100">
+                                  <span x-text="user.date" class="position-absolute fw-bold font-size-11px text-muted chat-row-time"></span>
+                                  <span x-bind:class="{ 'text-orange': user.auditionid == '0' }" x-text="user.headline" class="d-block fw-bold font-size-12px"></span>
+                                  <h5 x-text="user.firstName" class="text-muted font-size-14px mb-0 fw-bold"></h5>
+                                  <p x-text="user.text" class="mb-0 text-muted text-truncate fw-semibold"></p>
+                                  <span x-text="user.subheadline" class="font-size-12px fw-bold text-muted text-truncate"></span>
+                               </div>
+                            </div>
+                         </li>
+                        </template>
+                    </ul>
+               </div>
+               <div x-cloak x-show="isUsersFetching && !isInitialUserLoading" class="chat-fetching">Loading..</div>
+            </div>
+            <div id="chatMain" class="chat-main">
+               <template x-if="isInitialMessageLoading">
+                  <div class="chat-loader">Loading..</div>
+               </template>
+               <template x-if="isMessagesError">
+                  <div class="chat-loader" x-text="errorMessageMessage"></div>
+               </template>
+              
+               
+               <div class="chat-main-header">
+                  <div class="d-flex align-items-center gap-2">
+                     <button x-on:click="isChatSidebarClosed = false;" class="btn-icon d-lg-none"  class="fs-6 cursor-pointer">
+                        <ion-icon name="chevron-back"></ion-icon>
+                     </button>
+                     <div class="d-lg-block d-none">
+                        <h5><span x-text="messagesData.name"></span><span class="text-muted fw-semibold">, Location here</span> </h5>
+                     </div>
+                     
+                     <div data-reservation="show" class="d-flex d-lg-none gap-2 align-items-center cursor-pointer">
+                        <div class="chat-avatar-sm">
+                           <img x-bind:src="messagesData.image_thumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user"/>
+                        </div>
+                        <div class="d-flex flex-column">
+                           <h4 x-text="messagesData.name" class="mb-0 font-size-16px"></h4>
+                           <p class="text-uppercase text-muted mb-0 fw-bold font-size-12px">Location here</p>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="d-flex align-items-center gap-2">
+                      <button class="btn-icon d-none d-lg-flex" data-bs-toggle="modal" data-bs-target="#reportModal" class="fs-6 ms-1">
+                        <ion-icon name="hand-right-outline"></ion-icon>
+                    </button>
+                     <button class="btn-icon d-none d-lg-flex" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Type in the title for the casting. Example: Actors wanted for movie in Cape Town." class="fs-6 ms-1">
+                        <ion-icon name="archive-outline"></ion-icon>
+                     </button>
+                     <button class="btn-icon d-none d-lg-flex" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Type in the title for the casting. Example: Actors wanted for movie in Cape Town." class="fs-6 cursor-pointer">
+                        <ion-icon name="mail-outline"></ion-icon>
+                     </button>
+                     <button id="showDetails" class="btn btn-main-sm ms-2 d-none d-lg-block">Show Details</button>
+                     <div class="dropdown-container dropdown-solid chat-dropdown d-lg-none">
+                        <div data-bs-toggle="dropdown" data-bs-auto-close="true"  class="dropdown-toggle">
+                           <ion-icon name="ellipsis-vertical"></ion-icon>
+                        </div>
+                        <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
+                           <ul>
+                              <li>
+                                 <a data-reservation="show" href="javascript:;">Option 1</a>
+                              </li>
+                              <li>
+                                 <a href="#">Option 2</a>
+                              </li>
+                              <li @click="toggleStar(currentUser, 'YES')" x-show="currentUser.starred == 'NO'">
+                                 <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
+                              </li>
+                               <li  @click="toggleStar(currentUser, 'NO')" x-show="currentUser.starred == 'YES'">
+                                  <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Remove</a>
+                               </li>
+
+                              <!-- <li>
+                                <a data-bs-toggle="modal" data-bs-target="#reportModal" href="javascript:;">Report User</a>
+                             </li> -->
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="chat-main-inner">
+                  <ul class="d-flex flex-column p-0 mt-auto">
+                     <template x-if="messagesData.applicationheader">
+                        <li class="chat-inquiry-row">
+                           <a class="chat-inquiry-row-inner" href="javascript:;">
+                              <div class="font-size-17px d-flex text-muted">
+                                 <ion-icon name="document-text"></ion-icon>
+                              </div>
+                              <p x-text="messagesData.applicationheader" class="mb-0 fw-bold font-size-14px text-muted"></p>
+                           </a>
+                        </li>
+                     </template>
+                     
+                     <template x-for="message in reversedMessages" :key="'message.messageid' + index">
+                        <li class="chat-main-row">
+                           <div class="chat-new-date" x-text="message.date"></div>
+                           
+                           <div class="chat-main-row-inner">
+                              <div class="chat-avatar-sm">
+                                 <img x-bind:src="message.imagethumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user">
+                              </div>
+                              <div class="d-flex flex-column gap-1 position-relative">
+                                 
+                                 <h5 class="font-size-15px mb-0 fw-bolder">Name Here <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span></h5>
+                                 <template x-if="message.mimetype == 'Text'">
+                                    <p x-text="message.message" class="mb-0 fw-semibold"></p>
+                                 </template>
+                                 <template x-if="message.mimetype == 'Image'">
+                                    <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
+                                       <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
+                                       <div class="d-flex flex-wrap gap-2">
+                                          <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                          <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                       </div>
+                                       </div>
+                                 </template>
+                                 <template x-if="message.mimetype == 'PDF'">
+                                    <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
+                                       <a download href="img/dummy.pdf" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px" name="document-attach-outline"></ion-icon>Beskrivelse af roller.pdf</a>
+                                       <div class="d-flex flex-wrap gap-2">
+                                          <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                          <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                       </div>
+                                       </div>
+                                 </template>
+                                 <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
+                              </div>
+                           </div>
+                        </li>
+                     </template>
+                     
+                     
+                  </ul>
+               </div>
+               <div class="chat-textbox-outer">
+                  <div class="chat-textbox">
+                     <!-- Trigger for file upload -->
+                    <button class="uploadTrigger" type="button">
+                       <ion-icon name="attach"></ion-icon>
+                    </button>
+                    <!-- Hidden file input -->
+                    <input type="file" class="fileInput" hidden multiple>
+                    <textarea x-model="newMessage" id="chatInput" placeholder="Type a message"></textarea>
+                    <button id="sendBtn" @click="postChatMessage()"  class="btn-send" type="button">
+                       <ion-icon name="send"></ion-icon>
+                    </button>
+                 </div>
+                 <div class="uploadsContainer"></div>
+                  <!-- Template for file display -->
+                  <script type="text/template" id="fileDisplayTemplate">
+                        <div class="fileDisplayArea" style="display: none;">
+                           <div class="fileInfo">
+                              <div class="fileContainer">
+                                 <span class="fileIcon"><ion-icon name="document-outline"></ion-icon></span>
+                                 <div class="imagePreview" style="display: none;"></div>
+                              </div>
+                              <div class="fileTextContainer">
+                                 <span class="fileName"></span>
+                                 <div class="fileInfo">
+                                    <span class="fileSize"></span><span class="uploadComplete" style="display: none;"><ion-icon name="checkmark-outline"></ion-icon></span>
+                                 </div>
+                              </div>
+                              <button class="removeFile"><ion-icon name="close-outline"></ion-icon></button>
+                           </div>
+                           <div class="progressBarContainer" style="display: none;">
+                              <div class="progressBar" style="width: 0%;"></div>
+                           </div>
+                        </div>
+                  </script>
+               </div>
+               
+            </div>
+            <div id="chatDetails" class="chat-details">
+
+               <template x-if="isProfileImagesLoading">
+                  <div class="chat-loader">Loading..</div>
+               </template>
+               <template x-if="isProfileImagesError">
+                  <div class="chat-loader" x-text="errorProfileImagesMessage"></div>
+               </template>
+
+
+               <div class="chat-details-header">
+                  <h5>Reservation details</h5>
+                  <button id="hideDetails" class="btn-icon" class="fs-6 cursor-pointer">
+                     <ion-icon name="close"></ion-icon>
+                  </button>
+               </div>
+               <div class="chat-details-inner">
+                  <div class="profileItem">
+                        <!-- Container for muliple Images -->
+                        <div class="owl-slider owl-carousel owl-theme"></div>
+                        <!-- Container for Single Image -->
+                        <div class="single-image-container"></div>
+                     <h4 x-text="messagesData.name" class="mb-1 mt-3 font-size-20px"></h4>
+                     <p class="text-uppercase text-muted mb-0 fw-bold font-size-14px">Copenhagan</p>
+                  </div>
+                  <div class="row">
+                     <div class="col-12">
+                        <div class="row py-2">
+                           <div class="col-6 font-size-14px font-weight-700">Alder:</div>
+                           <div class="col-6 text-end font-size-14px">29 år</div>
+                        </div>
+                        <div class="row py-2">
+                           <div class="col-6 font-size-14px font-weight-700">Højde:</div>
+                           <div class="col-6 text-end font-size-14px">169 cm</div>
+                        </div>
+                        <div class="row py-2">
+                           <div class="col-6 font-size-14px font-weight-700">Vægt:</div>
+                           <div class="col-6 text-end font-size-14px">60 kg</div>
+                        </div>
+                        <div class="row py-2">
+                           <div class="col-6 font-size-14px font-weight-700">Øjenfarve:</div>
+                           <div class="col-6 text-end font-size-14px">Brun</div>
+                        </div>
+                        <div class="row py-2">
+                           <div class="col-6 font-size-14px font-weight-700">Øjenfarve:</div>
+                           <div class="col-6 text-end font-size-14px">Brun</div>
+                        </div>
+                        <div class="row py-2">
+                           <div class="col-6 font-size-14px font-weight-700">Hårlængde:</div>
+                           <div class="col-6 text-end font-size-14px">Langt</div>
+                        </div>
+                        <div class="row py-2">
+                           <div class="col-6 font-size-14px font-weight-700">Skostørrelse:</div>
+                           <div class="col-6 text-end font-size-14px">36</div>
+                        </div>
+                        <div class="row py-2">
+                           <div class="col-6 font-size-14px font-weight-700">Bryst:</div>
+                           <div class="col-6 text-end font-size-14px">79 cm</div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="my-4">
+                     <a x-bind:href="profileImages.profileurl ? profileImages.profileurl : 'javascript:;'" class="btn mainBtn btnoutlineSecondary w-100">Gem</a>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/jquery.js"></script>
+      <!-- Icon Fonts -->
+      <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+      <!-- Owl Slider -->
+      <script src="js/owl.carousel.min.js"></script>
+      <!-- main-->
+      <script src="js/range-slider.js"></script>
+       <!-- Fancybox -->
+       <script src="js/jquery.fancybox.min.js"></script>
+       <!-- main-->
+       <script  src="js/main.js"></script>
+      
+       <!-- Chat JS -->
+       <script src="js/chat.js"></script>
+
+        <!-- Apline JS -->
+        <script  src="js/chatData.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+       
+   </body>
+</html>
