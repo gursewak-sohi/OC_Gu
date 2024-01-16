@@ -49,7 +49,8 @@ document.addEventListener("alpine:init", () => {
        // Chat Data
         isChatSidebarClosed : false,
         fetchFolders() {
-            fetch(`https://www.onlinecasting.co.za/apichat/JSON_CASTER_conversations_folder.asp`)
+            // fetch(`https://www.onlinecasting.co.za/apichat/JSON_CASTER_conversations_folder.asp`)
+            fetch(`https://www.onlinecasting.co.za/api/chat/conversations_folders.asp`)
                 .then(response => response.json())
                 .then(data => {
                     if (data && Array.isArray(data.folders)) {
@@ -60,6 +61,7 @@ document.addEventListener("alpine:init", () => {
                             this.currentFolder = defaultFolder.searchname;
                             this.currentFolderName = defaultFolder.name;
                         }
+                        this.fetchChatConversations();
                     }
                 })
         },
@@ -67,9 +69,9 @@ document.addEventListener("alpine:init", () => {
         switchFolder(folder, folderName) {
             this.currentFolder = folder;
             this.currentFolderName = folderName;
-            this.users = [];
-            this.usersSkip = 0;
-            this.isInitialUserLoading = true;
+            this.conversations = [];
+            this.conversationsSkip = 0;
+            this.isInitialConversatationsLoading = true;
 
             this.messagesData = {},
             this.messages = [];
@@ -78,69 +80,99 @@ document.addEventListener("alpine:init", () => {
             this.isInitialMessageLoading = true;
             this.errorMessageMessage = '';
 
-            this.fetchChatUsers();
+            this.fetchChatConversations();
         },
 
-        // Users Data
-        users: [],
+        // Auditons
+        auditions : [],
+        currentAudition: '', 
+        fetchAuditions() {
+            fetch(`https://www.onlinecasting.co.za/api/chat/conversations_auditions.asp`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && Array.isArray(data.auditions)) {
+                        this.auditions = data.auditions;
+                        // console.log(this.auditions, 'auditons');
+                    }
+                })
+        },
+
+        switchAudition(auditionid) {
+            this.currentAudition = auditionid;
+            this.conversations = [];
+            this.conversationsSkip = 0;
+            this.isInitialConversatationsLoading = true;
+
+            this.messagesData = {},
+            this.messages = [];
+            this.messagesSkip = 0;
+            this.initialMessagesLoaded = false;
+            this.isInitialMessageLoading = true;
+            this.errorMessageMessage = '';
+
+            this.fetchChatConversations();
+        },
+
+        // Conversation Data
+        conversations: [],
+        currentConversation: {},
         currentConversationID : '',
         currentProfileID : '',
-        isInitialUserLoading: true,
-        usersSkip: 0,
-        usersLimit: 10,
-        isUsersFetching: false,
+        isInitialConversatationsLoading: true,
+        conversationsSkip: 0,
+        conversationsLimit: 10,
+        isConversationsFetching: false,
         folders : [],
         currentFolder: '',
         currentFolderName: 'Loading..',
-        isUserError: false,
-        errorUserMessage: '',
-        currentUser: {},
-        fetchChatUsers() {
-            if (this.isUsersFetching) return;
-            this.isUsersFetching = true;
-            this.isUserError = false;
-            fetch(`https://www.onlinecasting.co.za/apichat/JSON_CASTER_conversations.asp?skip=${this.usersSkip}&limit=${this.usersLimit}&folder=${this.currentFolder}`)
+        isConversationError: false,
+        errorConversationMessage: '',
+        
+        fetchChatConversations() {
+            if (this.isConversationsFetching) return;
+            this.isConversationsFetching = true;
+            this.isConversationError = false;
+            fetch(`https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAudition}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data && Array.isArray(data.users)) {
-                        // console.log(data.users, 'users');
-                        if (this.isInitialUserLoading) {
-                            this.currentConversationID  = data.users[0].conversationid
-                            this.currentProfileID  = data.users[0].profileid
+                    // console.log("API Data:", data);
+                    if (data && Array.isArray(data.conversations)) {
+                        if (data.conversations.length > 0 && this.isInitialConversatationsLoading) {
+                            this.currentConversationID  = data.conversations[0].conversationid
+                            this.currentProfileID  = data.conversations[0].profileid
                             // Fetch chat message on change conversation
                             this.fetchChatMessages();
                             this.fetchProfileImages();
                         }
-                        this.users = [...this.users, ...data.users];
-                        this.usersSkip += this.usersLimit;
+                        this.conversations = [...this.conversations, ...data.conversations];
+                        this.conversationsSkip += this.conversationsLimit;
                     } else {
                         console.log("Data is not an array or is empty");
                     }
                 })
                 .catch(error => {
                     console.error("Error fetching chat data:", error);
-                    this.isUserError = true;
-                    this.errorUserMessage = 'An error occurred while fetching data'; 
+                    this.isConversationError = true;
+                    this.errorConversationMessage = 'An error occurred while fetching data'; 
                     
                     this.isMessagesError = true;
                     this.errorMessageMessage = 'An error occurred while fetching data'; 
                 })
                 .finally(() => {
-                    this.isInitialUserLoading = false;
-                    this.isUsersFetching = false;
+                    this.isInitialConversatationsLoading = false;
+                    this.isConversationsFetching = false;
 
                     this.isInitialMessageLoading = false;
                     this.isMessagesFetching = false;
                 });
         },
        
-        setCurrentUser(user) {
-            this.currentUser = user
-        },
+      
 
-        setCurrentConversation(conversationid, profileId) {
-            this.currentConversationID = conversationid;
-            this.currentProfileID = profileId;
+        setCurrentConversation(conversation) {
+            this.currentConversation = conversation
+            this.currentConversationID = conversation.conversationid;
+            this.currentProfileID = conversation.profileId;
             this.messagesData = {},
             this.messages = [];
             this.messagesSkip = 0;
@@ -176,12 +208,13 @@ document.addEventListener("alpine:init", () => {
             if (fetchOlderMessages) {
                 this.messagesSkip += this.messagesLimit;
             }
+             
             fetch(`https://www.onlinecasting.co.za/apichat/JSON_CASTER_conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
+               
                   if (data && Array.isArray(data.messages)) {
                         this.messagesData = data  
-                        // console.log(this.messagesData, 'data')
                         if (fetchOlderMessages) {
                             this.messages = [...JSON.parse(JSON.stringify(this.messages)), ...data.messages];
                         }
@@ -340,17 +373,17 @@ document.addEventListener("alpine:init", () => {
          },
 
          
-        toggleStar(user, setAsStarred) {
-            // console.log(user, 'user')
+        toggleStar(conversation, setAsStarred) {
+           
             
-            const apiUrl = `https://www.onlinecasting.co.za/apichat/CASTER_star_message.asp?ConversationID=${user.conversationid}&ConversationParticipantID=${user.conversation_participant_id}&CasterID=1&ProfileID=${user.profileid}&SetAsStarred=${setAsStarred}`;
+            const apiUrl = `https://www.onlinecasting.co.za/apichat/CASTER_star_message.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversation_participant_id}&CasterID=1&ProfileID=${conversation.profileid}&SetAsStarred=${setAsStarred}`;
 
             fetch(apiUrl)
                 .then(response => response.text())
                 .then(data => {
                     console.log('Star toggled', data);
-                    // Update the user's starred status in the Alpine state
-                    user.starred = setAsStarred;
+                    // Update the conversation's starred status in the Alpine state
+                    conversation.starred = setAsStarred;
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -358,20 +391,20 @@ document.addEventListener("alpine:init", () => {
         },
 
         init() {
-          let debounceTimerForUsers;
+          let debounceTimerForConversations;
           let debounceTimerForMessages;
           const chatComponent = this; // Store the component context
   
-          // For Chat Sidebar Users Listing
+          // For Chat Sidebar Conversation Listing
           document.querySelector('#chatSidebar').addEventListener('scroll', function() {
               const threshold = 100; // Pixels from the bottom of the page
               const position = this.scrollTop + this.offsetHeight; // ScrollTop + height of the element
               const height = this.scrollHeight; // Total scrollable height
   
-              clearTimeout(debounceTimerForUsers);
-              debounceTimerForUsers = setTimeout(() => {
+              clearTimeout(debounceTimerForConversations);
+              debounceTimerForConversations = setTimeout(() => {
                   if (position > height - threshold) {
-                      chatComponent.fetchChatUsers();
+                      chatComponent.fetchChatConversations();
                   }
               }, 300);
           });
@@ -392,7 +425,7 @@ document.addEventListener("alpine:init", () => {
           
            // Initial fetch
           this.fetchFolders();
-          this.fetchChatUsers();
+          this.fetchAuditions();
           this.$nextTick(() => {
             initOwlCarousel(); // Initialize carousel after Alpine updates the DOM
           });

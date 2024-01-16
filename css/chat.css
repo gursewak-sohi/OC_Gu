@@ -178,9 +178,17 @@
     visibility: visible;
 }
 
+.chat-row .chat-row-inner span.fw-bold {
+  
+    color: #000 !important;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .chat-row.unread .chat-row-inner span.fw-bold {
     font-weight: 800 !important;
-    /* color: #000 !important;     */
+     
 }
 
 .chat-loader {
