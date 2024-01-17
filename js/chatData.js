@@ -138,7 +138,7 @@ document.addEventListener("alpine:init", () => {
             if (this.isConversationsFetching) return;
             this.isConversationsFetching = true;
             this.isConversationError = false;
-            fetch(`https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAuditionID}`)
+            fetch(`https://proxy.cors.sh/https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAuditionID}`)
                 .then(response => response.json())
                 .then(data => {
                     // console.log("API Data:", data);
@@ -361,7 +361,7 @@ document.addEventListener("alpine:init", () => {
              fetch(url, {
                  method: 'POST',
                  headers: {
-                     'x-cors-api-key': 'temp_bef707c6c5da2f9897ee6e7fa039a93c',
+                     'x-cors-api-key': 'temp_eef745625cb54bc7665a1785f4bee6a9',
                      'Content-Type': 'application/x-www-form-urlencoded'
                  },
                  body: new URLSearchParams(data).toString()
