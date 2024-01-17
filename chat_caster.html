@@ -205,14 +205,15 @@
                   </div>
                   <div x-show="auditions.length > 0" class="dropdown-container dropdown-solid">
                     <div data-bs-toggle="dropdown" data-bs-auto-close="true"  class="dropdown-toggle">
-                       <h5>Castings</h5>
+                       <h5 x-show="currentAudition == ''">Castings</h5>
+                       <h6 x-show="currentAudition !== ''" x-text="currentAudition.title" class="casting-title"></h6>
                     </div>
                     <div  class="dropdown-menu casting-dropdown font-size-13px mt-2">
                       <ul>
                           <template x-for="audition in auditions" :key="audition.auditionid">
                             <li>
-                              <div class="font-size-12px text-muted ps-3 fw-semibold mb-1"><span x-text="audition.date"></span> <span class="text-orange">(<span x-text="audition.status"></span>)</span></div>
-                              <a x-on:click="switchAudition(audition.auditionid)" class="fw-bold d-flex gap-1" href="#">
+                              <div class="font-size-12px text-muted ps-3 fw-semibold mb-1"><span x-text="audition.date"></span> <span x-show="audition.status !== ''" class="text-orange">(<span x-text="audition.status"></span>)</span></div>
+                              <a x-on:click="switchAudition(audition)" class="fw-bold d-flex gap-1" href="#">
                                 <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
                                 <div x-text="audition.title"></div>
                             </a>
@@ -249,10 +250,10 @@
                                         <li>
                                            <a href="#">Option 2</a>
                                         </li>
-                                        <li @click="toggleStar(conversation, 'YES')" x-show="conversation.starred == 'NO'">
+                                        <li @click="toggleStar(conversation, 'STARRED')" x-show="conversation.tag == ''">
                                           <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
                                        </li>
-                                        <li  @click="toggleStar(conversation, 'NO')" x-show="conversation.starred == 'YES'">
+                                        <li  @click="toggleStar(conversation, '')"  x-show="conversation.tag == 'STARRED'">
                                            <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Remove</a>
                                         </li>
                                      </ul>
@@ -364,10 +365,10 @@
                               </div>
                               <div class="d-flex flex-column gap-1 position-relative">
                                  <h5 class="font-size-15px mb-0 fw-bolder"><span x-text="message.name"></span> <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span></h5>
-                                 <template x-if="message.mimetype == 'Text'">
+                                 <p x-html="message.message" class="mb-0 fw-semibold"></p>
+                                 <!-- <template x-if="message.mimetype == 'Text'">
                                     <p x-text="message.message" class="mb-0 fw-semibold"></p>
                                  </template>
-                                 <p x-html="message.message" class="mb-0 fw-semibold"></p>
                                  <template x-if="message.mimetype == 'Image'">
                                     <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
                                        <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
@@ -385,7 +386,7 @@
                                           <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
                                        </div>
                                        </div>
-                                 </template>
+                                 </template> -->
                                  <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
                               </div>
                            </div>

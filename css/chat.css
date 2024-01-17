@@ -201,6 +201,14 @@
     font-size: 16px;
   
 }
+.casting-title {
+    font-size: 16px;
+    margin-bottom: 0;
+    padding-left: 6px;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .chat-fetching {
 	position: sticky;

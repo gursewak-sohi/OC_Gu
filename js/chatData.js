@@ -49,7 +49,6 @@ document.addEventListener("alpine:init", () => {
        // Chat Data
         isChatSidebarClosed : false,
         fetchFolders() {
-            // fetch(`https://www.onlinecasting.co.za/apichat/JSON_CASTER_conversations_folder.asp`)
             fetch(`https://www.onlinecasting.co.za/api/chat/conversations_folders.asp`)
                 .then(response => response.json())
                 .then(data => {
@@ -86,8 +85,13 @@ document.addEventListener("alpine:init", () => {
         // Auditons
         auditions : [],
         currentAudition: '', 
+        currentAuditionID: 0,
         fetchAuditions() {
-            fetch(`https://www.onlinecasting.co.za/api/chat/conversations_auditions.asp`)
+            let url = `https://www.onlinecasting.co.za/api/chat/conversations_auditions.asp`;
+            if (this.currentAuditionID) {
+                url += `?auditionid=${this.currentAuditionID}`;
+            }
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     if (data && Array.isArray(data.auditions)) {
@@ -97,8 +101,9 @@ document.addEventListener("alpine:init", () => {
                 })
         },
 
-        switchAudition(auditionid) {
-            this.currentAudition = auditionid;
+        switchAudition(audition) {
+            this.currentAudition = audition;
+            this.currentAuditionID = audition.auditionid;
             this.conversations = [];
             this.conversationsSkip = 0;
             this.isInitialConversatationsLoading = true;
@@ -111,6 +116,7 @@ document.addEventListener("alpine:init", () => {
             this.errorMessageMessage = '';
 
             this.fetchChatConversations();
+            this.fetchAuditions();
         },
 
         // Conversation Data
@@ -132,7 +138,7 @@ document.addEventListener("alpine:init", () => {
             if (this.isConversationsFetching) return;
             this.isConversationsFetching = true;
             this.isConversationError = false;
-            fetch(`https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAudition}`)
+            fetch(`https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAuditionID}`)
                 .then(response => response.json())
                 .then(data => {
                     // console.log("API Data:", data);
@@ -214,7 +220,7 @@ document.addEventListener("alpine:init", () => {
             fetch(`https://www.onlinecasting.co.za/api/chat/conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
-                    console.log(data, 'data')
+                    // console.log(data, 'data')
                   if (data && Array.isArray(data.messages)) {
                         this.messagesData = data  
                         if (fetchOlderMessages) {
@@ -376,16 +382,13 @@ document.addEventListener("alpine:init", () => {
 
          
         toggleStar(conversation, setAsStarred) {
-           
-            
-            const apiUrl = `https://www.onlinecasting.co.za/apichat/CASTER_star_message.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversation_participant_id}&CasterID=1&ProfileID=${conversation.profileid}&SetAsStarred=${setAsStarred}`;
-
+            const apiUrl = `https://www.onlinecasting.co.za/api/chat/tag_conversation.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversationparticipantid}&Tag=${setAsStarred}`;
             fetch(apiUrl)
                 .then(response => response.text())
                 .then(data => {
                     console.log('Star toggled', data);
                     // Update the conversation's starred status in the Alpine state
-                    conversation.starred = setAsStarred;
+                    conversation.tag = setAsStarred;
                 })
                 .catch(error => {
                     console.error('Error:', error);
