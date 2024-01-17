@@ -180,7 +180,7 @@ document.addEventListener("alpine:init", () => {
         setCurrentConversation(conversation) {
             this.currentConversation = conversation
             this.currentConversationID = conversation.conversationid;
-            this.currentProfileID = conversation.profileId;
+            this.currentProfileID = conversation.profileid;
             this.messagesData = {},
             this.messages = [];
             this.messagesSkip = 0;
@@ -297,11 +297,11 @@ document.addEventListener("alpine:init", () => {
         // Fetch Profile 
         profileImages : {},
         isProfileImagesLoading: true,
-        
         isProfileImagesError: false,
         errorProfileImagesMessage: '',
 
         fetchProfileImages() {
+            
             if (!this.currentProfileID) return;
             fetch(`https://www.onlinecasting.co.za/apichat/JSON_CASTER_profile_images.asp?profileid=${this.currentProfileID}`)
                 .then(response => response.json())

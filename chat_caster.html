@@ -205,8 +205,8 @@
                   </div>
                   <div x-show="auditions.length > 0" class="dropdown-container dropdown-solid">
                     <div data-bs-toggle="dropdown" data-bs-auto-close="true"  class="dropdown-toggle">
-                       <h5 x-show="currentAudition == ''">Castings</h5>
-                       <h6 x-show="currentAudition !== ''" x-text="currentAudition.title" class="casting-title"></h6>
+                       <h5 x-show="!currentAudition.date">Castings</h5>
+                       <h6 x-show="currentAudition.date" x-text="currentAudition.title" class="casting-title"></h6>
                     </div>
                     <div  class="dropdown-menu casting-dropdown font-size-13px mt-2">
                       <ul>
