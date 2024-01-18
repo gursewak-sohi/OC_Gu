@@ -138,7 +138,7 @@ document.addEventListener("alpine:init", () => {
             if (this.isConversationsFetching) return;
             this.isConversationsFetching = true;
             this.isConversationError = false;
-            fetch(`https://proxy.cors.sh/https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAuditionID}`)
+            fetch(`https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAuditionID}`)
                 .then(response => response.json())
                 .then(data => {
                     // console.log("API Data:", data);
