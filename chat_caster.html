@@ -247,9 +247,12 @@
                                         <li>
                                            <a href="#">Option 1</a>
                                         </li>
-                                        <li>
-                                           <a href="#">Option 2</a>
-                                        </li>
+                                        <li @click="toggleArchieve(conversation, 'DEFAULT')" x-show="conversation.chatfolder === 'ARCHIVED'">
+                                          <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt-outline"></ion-icon> Un-archive</a>
+                                       </li>
+                                       <li @click="toggleArchieve(conversation, 'ARCHIVED')" x-show="conversation.chatfolder !== 'ARCHIVED'">
+                                          <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt-outline"></ion-icon> Archive</a>
+                                       </li>
                                         <li @click="toggleStar(conversation, 'STARRED')" x-show="conversation.tag == ''">
                                           <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
                                        </li>

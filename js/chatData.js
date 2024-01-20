@@ -395,6 +395,20 @@ document.addEventListener("alpine:init", () => {
                 });
         },
 
+        toggleArchieve(conversation, setAsArchieved) {
+            const apiUrl = `https://www.onlinecasting.co.za/api/chat/change_folder_conversation.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&folder=${setAsArchieved}`;
+            fetch(apiUrl)
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Archieved toggled', data);
+                    // Update the conversation's starred status in the Alpine state
+                    conversation.chatfolder = setAsArchieved;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        },
+
         init() {
           let debounceTimerForConversations;
           let debounceTimerForMessages;
