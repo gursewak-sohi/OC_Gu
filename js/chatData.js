@@ -144,11 +144,13 @@ document.addEventListener("alpine:init", () => {
                     // console.log("API Data:", data);
                     if (data && Array.isArray(data.conversations)) {
                         if (data.conversations.length > 0 && this.isInitialConversatationsLoading) {
+                            this.currentConversation  = data.conversations[0]
                             this.currentConversationID  = data.conversations[0].conversationid
                             this.currentProfileID  = data.conversations[0].profileid
                             // Fetch chat message on change conversation
                             this.fetchChatMessages();
                             this.fetchProfileImages();
+                            this.fetchProfileData();
                         }
                         
                         this.conversations = [...this.conversations, ...data.conversations];
@@ -159,6 +161,7 @@ document.addEventListener("alpine:init", () => {
                     }
                 })
                 .catch(error => {
+                    // this.conversations = [];
                     console.error("Error fetching chat data:", error);
                     this.isConversationError = true;
                     this.errorConversationMessage = 'An error occurred while fetching data'; 
@@ -189,6 +192,7 @@ document.addEventListener("alpine:init", () => {
             this.isInitialMessageLoading = true;
             this.fetchChatMessages()
             this.fetchProfileImages()
+            this.fetchProfileData()
             this.stopMessageFetchTimer();
          },
   
@@ -249,7 +253,7 @@ document.addEventListener("alpine:init", () => {
               .catch(error => {
                   console.error("Error fetching chat data:", error);
                   this.isMessagesError = true;
-                  this.errorMessageMessage = 'An error occurred while fetching data'; 
+                  this.errorMessageMessage = 'An error occurred while fetching data';
               })
               .finally(() => {
                   this.isInitialMessageLoading = false;
@@ -300,10 +304,11 @@ document.addEventListener("alpine:init", () => {
         isProfileImagesError: false,
         errorProfileImagesMessage: '',
 
+        profileData : {},
+
         fetchProfileImages() {
-            
             if (!this.currentProfileID) return;
-            fetch(`https://www.onlinecasting.co.za/apichat/JSON_CASTER_profile_images.asp?profileid=${this.currentProfileID}`)
+            fetch(`https://www.onlinecasting.co.za/api/chat/profile_images.asp?profileid=${this.currentProfileID}`)
                 .then(response => response.json())
                 .then(data => {
                     
@@ -343,6 +348,26 @@ document.addEventListener("alpine:init", () => {
                     this.isProfileImagesLoading = false;
                 });
         },
+
+        fetchProfileData() {
+            if (!this.currentProfileID) return;
+            fetch(`https://www.onlinecasting.co.za/api/chat/profile_data.asp?profileid=${this.currentProfileID}`)
+                .then(response => response.json())
+                .then(data => {
+                    this.profileData = data
+                    // console.log(this.profileData, 'profile data')
+                })
+                .catch(error => {
+                    this.profileData = {}
+                    console.error("Error fetching chat data:", error);
+                    // this.isProfileImagesError = true;
+                    // this.errorProfileImagesMessage = 'An error occurred while fetching data';  
+                })
+                .finally(() => {
+                    // this.isProfileImagesLoading = false;
+                });
+        },
+
 
          //  Post Messages
          newMessage: '',
