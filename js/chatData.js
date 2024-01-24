@@ -29,6 +29,20 @@ function appendItemsToOwlCarousel(items) {
     owlSlider.trigger('refresh.owl.carousel');
 }
 
+document.getElementById('chatInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && event.shiftKey) {
+        this.style.height = ''; // Clear any inline height
+        this.style.height = this.scrollHeight + 'px'; // Set new height
+    }
+});
+
+// Optional: Automatically adjust height when the textarea content changes
+document.getElementById('chatInput').addEventListener('input', function() {
+    this.style.height = ''; // Reset height
+    this.style.height = this.scrollHeight + 'px'; // Adjust height
+});
+
+
 
 function updateSingleImageContent(image) {
     let singleImageContainer = document.querySelector('.single-image-container');

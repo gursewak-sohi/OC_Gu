@@ -404,6 +404,16 @@
                         </li>
                      </template>
                      
+                     <template x-if="currentConversation.isblocked === 'YES'">
+                        <li class="chat-inquiry-row">
+                           <a class="chat-inquiry-row-inner" href="javascript:;">
+                              <div class="font-size-17px d-flex text-muted">
+                                 <ion-icon name="hand-right"></ion-icon>
+                              </div>
+                              <p class="mb-0 fw-bold font-size-14px text-muted">isBlockedText</p>
+                           </a>
+                        </li>
+                     </template>
                      
                   </ul>
                </div>

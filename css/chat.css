@@ -315,6 +315,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: flex-end;
 }
 .chat-textbox button:hover {
     background-color: hsl(300, 5.3%, 96.3%);
@@ -328,6 +329,7 @@
     box-shadow: none;
     outline: 0 none;
     resize: none;
+    max-height: 400px;
 }
 .chat-textbox textarea:focus {
     box-shadow: none;
