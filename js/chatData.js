@@ -225,6 +225,12 @@ document.addEventListener("alpine:init", () => {
             this.fetchProfileImages()
             this.fetchProfileData()
             this.stopMessageFetchTimer();
+
+            this.newMessage = ''
+            const textarea = document.getElementById('chatInput');
+            if (textarea) {
+                textarea.style.height = ''; // Reset to the initial height (adjust as needed)
+            }
          },
   
 
