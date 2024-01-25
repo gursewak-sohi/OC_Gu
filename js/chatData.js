@@ -31,10 +31,27 @@ function appendItemsToOwlCarousel(items) {
 
 document.getElementById('chatInput').addEventListener('keydown', function(event) {
     if (event.key === 'Enter' && event.shiftKey) {
+
+        this.newMessage += '<br/>';
+
         this.style.height = ''; // Clear any inline height
         this.style.height = this.scrollHeight + 'px'; // Set new height
     }
 });
+
+// document.getElementById('chatInput').addEventListener('keydown', function(event) {
+//     if (event.key === 'Enter' && event.shiftKey) {
+//         // Prevent default Enter behavior (new line or submit form)
+//         event.preventDefault();
+
+//         // Append <br/> tag to the message
+//         this.newMessage += '<br/>';
+
+//         // Adjust the height of the textarea
+//         this.style.height = ''; // Clear any inline height
+//         this.style.height = this.scrollHeight + 'px'; // Set new height
+//     }
+// });
 
 // Optional: Automatically adjust height when the textarea content changes
 document.getElementById('chatInput').addEventListener('input', function() {
@@ -365,7 +382,8 @@ document.addEventListener("alpine:init", () => {
 
         fetchProfileData() {
             if (!this.currentProfileID) return;
-            fetch(`https://www.onlinecasting.co.za/api/chat/profile_data.asp?profileid=${this.currentProfileID}`)
+            if (!this.currentConversationID) return;
+            fetch(`https://www.onlinecasting.co.za/api/chat/profile_data.asp?profileid=${this.currentProfileID}&conversationid=${this.currentConversationID}`)
                 .then(response => response.json())
                 .then(data => {
                     this.profileData = data
@@ -385,14 +403,19 @@ document.addEventListener("alpine:init", () => {
 
          //  Post Messages
          newMessage: '',
-         postChatMessage() {    
+         postChatMessage() {  
+           
+             
              const url = "https://proxy.cors.sh/https://www.onlinecasting.co.za/apichat/CASTER_post_message.asp";
              
+             // Convert newlines to <br/> tags
+             const formattedMessage = this.newMessage.replace(/\n/g, '<br/>');
+
              const data = {
                  ConversationID: this.currentConversationID,
                  CasterID: 1,
                  ProfileID: 1,
-                 Message: this.newMessage,
+                 Message: formattedMessage,
                  MimeType: "Text",
                  ContentURL: ""
              };
@@ -413,6 +436,11 @@ document.addEventListener("alpine:init", () => {
                  this.fetchChatMessages();
                  this.lastMessageTimestamp = Date.now(); // Update the timestamp
                  this.startMessageFetchTimer();
+
+                const textarea = document.getElementById('chatInput');
+                if (textarea) {
+                    textarea.style.height = ''; // Reset to the initial height (adjust as needed)
+                }
              })
              .catch((error) => {
                  console.error('Error:', error);
@@ -440,8 +468,37 @@ document.addEventListener("alpine:init", () => {
                 .then(response => response.text())
                 .then(data => {
                     console.log('Archieved toggled', data);
+                    console.log(this.currentConversationID, 'currentConversationID')
                     // Update the conversation's starred status in the Alpine state
                     conversation.chatfolder = setAsArchieved;
+                       // Find the index of the conversation to be archived
+                    const index = this.conversations.findIndex(convo => convo.conversationid === conversation.conversationid);
+
+                    // Remove the archived conversation from the list
+                    this.conversations.splice(index, 1);
+
+                    // Determine the next conversation to focus on
+                    if (this.conversations.length > 0) {
+                        let newIndex = index;
+                        if (newIndex >= this.conversations.length) {
+                            // If the archived conversation was the last one, focus on the new last conversation
+                            newIndex = this.conversations.length - 1;
+                        }
+
+                        // Set the current conversation to the next one in the list
+                        this.currentConversation = this.conversations[newIndex];
+                        this.currentConversationID = this.conversations[newIndex].conversationid;
+                        this.currentProfileID = this.conversations[newIndex].profileid;
+
+                        this.fetchChatMessages();
+                        this.fetchProfileImages();
+                        this.fetchProfileData();
+                    } else {
+                        this.currentConversation = null;
+                        this.currentConversationID = '';
+                        this.currentProfileID = '';
+                    }
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
