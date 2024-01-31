@@ -172,7 +172,7 @@ document.addEventListener("alpine:init", () => {
             fetch(`https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAuditionID}`)
                 .then(response => response.json())
                 .then(data => {
-                    // console.log("API Data:", data);
+                    console.log("API Data:", data);
                     if (data && Array.isArray(data.conversations)) {
                         if (data.conversations.length > 0 && this.isInitialConversatationsLoading) {
                             this.currentConversation  = data.conversations[0]
@@ -411,7 +411,6 @@ document.addEventListener("alpine:init", () => {
          newMessage: '',
          postChatMessage() {  
            
-             
              const url = "https://proxy.cors.sh/https://www.onlinecasting.co.za/apichat/CASTER_post_message.asp";
              
              // Convert newlines to <br/> tags
@@ -474,7 +473,7 @@ document.addEventListener("alpine:init", () => {
                 .then(response => response.text())
                 .then(data => {
                     console.log('Archieved toggled', data);
-                    console.log(this.currentConversationID, 'currentConversationID')
+                    // console.log(this.currentConversationID, 'currentConversationID')
                     // Update the conversation's starred status in the Alpine state
                     conversation.chatfolder = setAsArchieved;
                        // Find the index of the conversation to be archived
@@ -504,11 +503,154 @@ document.addEventListener("alpine:init", () => {
                         this.currentConversationID = '';
                         this.currentProfileID = '';
                     }
-
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
+        },
+
+        //  Block User
+        blockMessage: '',
+        blockStatus : '',
+        blockStatusMessage : '',
+        blockConversation() {  
+            const url = "https://proxy.cors.sh/https://www.onlinecasting.co.za/api/chat/block_user.asp";
+            const data = {
+                ConversationID: this.currentConversationID,
+                CasterID: this.currentConversation.casterid,
+                ProfileID: this.currentProfileID,
+                BlockedCasterID: this.currentConversation.casterid,
+                BlockedProfileID: this.currentProfileID,
+                Reason: this.blockMessage,
+            };
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'x-cors-api-key': 'temp_9194204b2d7148834b89969a8d83bfa4',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams(data).toString()
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);
+                this.blockStatus = data.Status;
+                this.blockStatusMessage = data.StatusMessage;
+
+                this.currentConversation.chatfolder = 'BLOCKED';
+
+                // Close the modal after the fetch response
+                const reportModal = document.getElementById('reportModal');
+                const reportModalInstance = bootstrap.Modal.getInstance(reportModal);
+                reportModalInstance.hide();
+
+                this.blockMessage = '';
+
+                // Open Status Modal
+               
+
+                const statusModal = document.getElementById('statusModal');
+                let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                if (!statusModalInstance) {
+                    // Initialize the modal if it hasn't been initialized
+                    statusModalInstance = new bootstrap.Modal(statusModal);
+                }
+               
+                setTimeout(() => {
+                    statusModalInstance.show();
+                }, 300);
+
+              
+
+                // Find the index of the conversation to be archived
+                const index = this.conversations.findIndex(convo => convo.conversationid === this.currentConversation.conversationid);
+
+                // Remove the archived conversation from the list
+                this.conversations.splice(index, 1);
+
+                // Determine the next conversation to focus on
+                if (this.conversations.length > 0) {
+                    let newIndex = index;
+                    if (newIndex >= this.conversations.length) {
+                        // If the archived conversation was the last one, focus on the new last conversation
+                        newIndex = this.conversations.length - 1;
+                    }
+
+                    // Set the current conversation to the next one in the list
+                    this.currentConversation = this.conversations[newIndex];
+                    this.currentConversationID = this.conversations[newIndex].conversationid;
+                    this.currentProfileID = this.conversations[newIndex].profileid;
+
+                    this.fetchChatMessages();
+                    this.fetchProfileImages();
+                    this.fetchProfileData();
+                } else {
+                    this.currentConversation = null;
+                    this.currentConversationID = '';
+                    this.currentProfileID = '';
+                }
+                })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        },
+
+        unBlockConversation(conversation) {  
+            const apiUrl = `https://www.onlinecasting.co.za/api/chat/unblock_user.asp?ConversationID=${conversation.conversationid}&CasterID=${conversation.casterid}&ProfileID=${conversation.profileid}&BlockedCasterID=${conversation.casterid}&BlockedProfileID=${conversation.profileid}`;
+            fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);
+                this.blockStatus = data.Status;
+                this.blockStatusMessage = data.StatusMessage;
+
+                conversation.chatfolder = 'DEFAULT';
+
+                const statusModal = document.getElementById('statusModal');
+                let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                if (!statusModalInstance) {
+                    // Initialize the modal if it hasn't been initialized
+                    statusModalInstance = new bootstrap.Modal(statusModal);
+                }
+               
+                setTimeout(() => {
+                    statusModalInstance.show();
+                }, 300);
+
+              
+
+                // Find the index of the conversation to be archived
+                const index = this.conversations.findIndex(convo => convo.conversationid === this.currentConversation.conversationid);
+
+                // Remove the archived conversation from the list
+                this.conversations.splice(index, 1);
+
+                // Determine the next conversation to focus on
+                if (this.conversations.length > 0) {
+                    let newIndex = index;
+                    if (newIndex >= this.conversations.length) {
+                        // If the archived conversation was the last one, focus on the new last conversation
+                        newIndex = this.conversations.length - 1;
+                    }
+
+                    // Set the current conversation to the next one in the list
+                    this.currentConversation = this.conversations[newIndex];
+                    this.currentConversationID = this.conversations[newIndex].conversationid;
+                    this.currentProfileID = this.conversations[newIndex].profileid;
+
+                    this.fetchChatMessages();
+                    this.fetchProfileImages();
+                    this.fetchProfileData();
+                } else {
+                    this.currentConversation = null;
+                    this.currentConversationID = '';
+                    this.currentProfileID = '';
+                }
+                })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         },
 
         init() {

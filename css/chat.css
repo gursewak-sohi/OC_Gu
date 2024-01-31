@@ -321,6 +321,12 @@
     background-color: hsl(300, 5.3%, 96.3%);
 }
 
+.btn-disabled
+{
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .chat-textbox textarea {
     flex: 1;
     font-size: 16px;

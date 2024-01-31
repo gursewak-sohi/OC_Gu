@@ -20,23 +20,55 @@
       <link rel="stylesheet" href="css/jquery.fancybox.min.css">
      
    </head>
-   <body>
+   <body x-data="chatComponent()" x-init="init">
 
-      <!-- Modal -->
-      <div class="modal fade filterModal" id="reportModal" tabindex="-1" aria-labelledby="reportModal" aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+       <!-- Modal -->
+       <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
+         <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
              <div class="modal-content">
                  <div class="modal-header">
                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
                          <img src="img/close-icon.svg" alt="">
                      </div>
-                     <h5 class="modal-title text-center">Regler</h5>
+                     <h5 x-text="blockStatus" class="modal-title text-center"></h5>
                  </div>
                  <div class="modal-body chat-modal-body">
-                    <p class="font-size-16px">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). <br> <br> There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                    <p x-text="blockStatusMessage" class="font-size-16px"></p>
                  </div>
                  <div class="modal-footer">
-                     <a href="javascript:;"  data-bs-dismiss="modal" class="btn mainBtn">Luk</a>
+                     <button type="button" data-bs-dismiss="modal" class="btn mainBtn">Okay</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+      <!-- Modal -->
+      <div class="modal fade filterModal" id="reportModal" tabindex="-1" aria-labelledby="reportModal" aria-hidden="true">
+         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                         <img src="img/close-icon.svg" alt="">
+                     </div>
+                     <h5 class="modal-title text-center">Block User</h5>
+                 </div>
+                 <div class="modal-body chat-modal-body">
+                    <p class="font-size-16px">You're able to Block the profile.</p>
+                    <p class="font-size-16px">Please note, when you block a user, they will not be able to connect you, using Onlinecastings system.</p>
+                    <p class="font-size-16px">Note: Blocking a user IS ONLY for more serious offences. This is why you should state a reason here under.</p>
+                    <p class="font-size-16px">We will investigate this case if needed.</p>
+
+                    <p class="font-size-16px">Instead of BLOCKING a user, you can use the function, "Close conversation", which will also make sure that the other part of the conversation will not be able to respond anymore.</p>
+
+                    <div class="form-group mt-5 mb-4">
+                     <label class="form-label font-size-16px">Reason for blocking: </label>
+                     <textarea x-model="blockMessage" class="form-control" rows="8"></textarea>
+                     </div>
+
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary me-2">Close</button>
+                     <button :class="{ 'btn-disabled': blockMessage.trim() === '' }" @click="blockConversation()" type="button"class="btn mainBtn">Block + Notify us</button>
                  </div>
              </div>
          </div>
@@ -182,7 +214,7 @@
             </div>
          </header>
          <!-- Chat Area -->
-         <section x-data="chatComponent()" x-init="init"  class="chat-layout">
+         <section   class="chat-layout">
             <div id="chatSidebar" class="chat-sidebar" x-bind:class="{ 'hide': isChatSidebarClosed }">
                 <div x-show="isInitialConversatationsLoading" class="chat-loader">Loading..</div>
                 <div x-show="isConversationError" class="chat-loader" x-text="errorConversationMessage"></div> 
@@ -244,9 +276,13 @@
                                   </div>
                                   <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
                                      <ul>
-                                        <li>
-                                           <a href="#">Option 1</a>
-                                        </li>
+                                       <!-- <li data-bs-toggle="modal" data-bs-target="#reportModal" x-show="conversation.isblocked === 'NO'">
+                                          <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="hand-right"></ion-icon> Block</a>
+                                       </li>
+                                        -->
+                                        <li @click="unBlockConversation(conversation)" x-show="conversation.isblocked === 'YES'">
+                                          <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="hand-right-outline"></ion-icon> Unblock</a>
+                                       </li>
                                         <li @click="toggleArchieve(conversation, 'DEFAULT')" x-show="conversation.chatfolder === 'ARCHIVED'">
                                           <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt-outline"></ion-icon> Unarchive</a>
                                        </li>
@@ -313,22 +349,40 @@
                   </div>
                   <div class="d-flex align-items-center gap-2">
                      <div x-show="currentConversation.isblocked === 'NO'">
-                        <button  class="btn-icon d-none d-lg-flex" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Block" data-bs-toggle="modal" data-bs-target="#reportModal" class="fs-6 ms-1">
+                        <button  class="btn-icon d-none d-lg-flex" data-bs-toggle="modal" data-bs-target="#reportModal" class="fs-6 ms-1">
                            <ion-icon name="hand-right"></ion-icon>
                        </button>
                      </div>
                     <div x-show="currentConversation.isblocked === 'YES'">
-                     <button   class="btn-icon d-none d-lg-flex" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Unblock" data-bs-toggle="modal" data-bs-target="#reportModal" class="fs-6 ms-1">
-                        <ion-icon name="hand-right-outline"></ion-icon>
-                    </button>
+                        <button @click="unBlockConversation(currentConversation)"  class="btn-icon d-none d-lg-flex" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Unblock" class="fs-6 ms-1">
+                           <ion-icon name="hand-right-outline"></ion-icon>
+                     </button>
                     </div>
-                    
-                     <button class="btn-icon d-none d-lg-flex" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Type in the title for the casting. Example: Actors wanted for movie in Cape Town." class="fs-6 ms-1">
-                        <ion-icon name="archive-outline"></ion-icon>
-                     </button>
-                     <button class="btn-icon d-none d-lg-flex" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Type in the title for the casting. Example: Actors wanted for movie in Cape Town." class="fs-6 cursor-pointer">
-                        <ion-icon name="mail-outline"></ion-icon>
-                     </button>
+
+                    <div x-show="currentConversation.chatfolder === 'ARCHIVED'">
+                        <button title="Unarchive" @click="toggleArchieve(currentConversation, 'DEFAULT')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
+                           <ion-icon name="receipt-outline"></ion-icon>
+                        </button>
+                     </div>
+
+                     <div x-show="currentConversation.chatfolder !== 'ARCHIVED'">
+                        <button title="Archive" @click="toggleArchieve(currentConversation, 'ARCHIVED')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
+                           <ion-icon name="receipt"></ion-icon>
+                        </button>
+                     </div>
+
+                     <div x-show="currentConversation.tag == ''">
+                        <button title="Starmark" @click="toggleStar(currentConversation, 'STARRED')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
+                           <ion-icon name="star"></ion-icon>
+                        </button>
+                     </div>
+
+                     <div x-show="currentConversation.tag == 'STARRED'">
+                        <button title="Unstar" @click="toggleStar(currentConversation, '')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
+                           <ion-icon name="star-outline"></ion-icon>
+                        </button>
+                     </div>
+               
                      <button id="showDetails" class="btn btn-main-sm ms-2 d-none d-lg-block">Show Details</button>
                      <div class="dropdown-container dropdown-solid chat-dropdown d-lg-none">
                         <div data-bs-toggle="dropdown" data-bs-auto-close="true"  class="dropdown-toggle">
@@ -336,19 +390,33 @@
                         </div>
                         <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
                            <ul>
-                              <li>
-                                 <a data-reservation="show" href="javascript:;">Option 1</a>
-                              </li>
-                              <li>
-                                 <a href="#">Option 2</a>
-                              </li>
+                               
                               <li @click="toggleStar(currentConversation, 'YES')" x-show="currentConversation.starred == 'NO'">
                                  <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Starmark</a>
                               </li>
                                <li  @click="toggleStar(currentConversation, 'NO')" x-show="currentConversation.starred == 'YES'">
                                   <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Remove</a>
                                </li>
- 
+
+                               <li data-bs-toggle="modal" data-bs-target="#reportModal" x-show="currentConversation.isblocked === 'NO'">
+                                 <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="hand-right"></ion-icon> Block</a>
+                              </li>
+                              <li @click="unBlockConversation(currentConversation)" x-show="currentConversation.isblocked === 'YES'">
+                                 <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="hand-right-outline"></ion-icon> Unblock</a>
+                              </li>
+                               <li @click="toggleArchieve(currentConversation, 'DEFAULT')" x-show="currentConversation.chatfolder === 'ARCHIVED'">
+                                 <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt-outline"></ion-icon> Unarchive</a>
+                              </li>
+                              <li @click="toggleArchieve(currentConversation, 'ARCHIVED')" x-show="currentConversation.chatfolder !== 'ARCHIVED'">
+                                 <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt"></ion-icon> Archive</a>
+                              </li>
+                               <li @click="toggleStar(currentConversation, 'STARRED')" x-show="currentConversation.tag == ''">
+                                 <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star"></ion-icon> Starmark</a>
+                              </li>
+                               <li  @click="toggleStar(currentConversation, '')"  x-show="currentConversation.tag == 'STARRED'">
+                                  <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Unstar</a>
+                               </li>
+
                            </ul>
                         </div>
                      </div>
@@ -406,12 +474,12 @@
                      
                      <template x-if="currentConversation.isblocked === 'YES'">
                         <li class="chat-inquiry-row">
-                           <a class="chat-inquiry-row-inner" href="javascript:;">
+                           <div class="chat-inquiry-row-inner">
                               <div class="font-size-17px d-flex text-muted">
                                  <ion-icon name="hand-right"></ion-icon>
                               </div>
-                              <p class="mb-0 fw-bold font-size-14px text-muted">isBlockedText</p>
-                           </a>
+                              <p x-text="currentConversation.isblockedtext" class="mb-0 fw-bold font-size-14px text-muted"></p>
+                           </div>
                         </li>
                      </template>
                      
