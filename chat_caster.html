@@ -280,9 +280,9 @@
                                           <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="hand-right"></ion-icon> Block</a>
                                        </li>
                                         -->
-                                        <li @click="unBlockConversation(conversation)" x-show="conversation.isblocked === 'YES'">
+                                        <!-- <li @click="unBlockConversation(conversation)" x-show="conversation.isblocked === 'YES'">
                                           <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="hand-right-outline"></ion-icon> Unblock</a>
-                                       </li>
+                                       </li> -->
                                         <li @click="toggleArchieve(conversation, 'DEFAULT')" x-show="conversation.chatfolder === 'ARCHIVED'">
                                           <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt-outline"></ion-icon> Unarchive</a>
                                        </li>
@@ -434,43 +434,52 @@
                            </a>
                         </li>
                      </template>
-                     
-                     <template x-for="message in reversedMessages" :key="'message.messageid' + index">
-                        <li class="chat-main-row">
-                           <div class="chat-new-date" x-text="message.date"></div>
-                           <div class="chat-main-row-inner">
-                              <div class="chat-avatar-sm">
-                                 <img x-bind:src="message.imagethumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user">
-                              </div>
-                              <div class="d-flex flex-column gap-1 position-relative">
-                                 <h5 class="font-size-15px mb-0 fw-bolder"><span x-text="message.name"></span> <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span></h5>
-                                 <p x-html="message.message" class="mb-0 fw-semibold"></p>
-                                 <!-- <template x-if="message.mimetype == 'Text'">
-                                    <p x-text="message.message" class="mb-0 fw-semibold"></p>
-                                 </template>
-                                 <template x-if="message.mimetype == 'Image'">
-                                    <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
-                                       <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
-                                       <div class="d-flex flex-wrap gap-2">
-                                          <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
-                                          <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
-                                       </div>
-                                       </div>
-                                 </template>
-                                 <template x-if="message.mimetype == 'PDF'">
-                                    <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
-                                       <a download href="img/dummy.pdf" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px" name="document-attach-outline"></ion-icon>Beskrivelse af roller.pdf</a>
-                                       <div class="d-flex flex-wrap gap-2">
-                                          <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
-                                          <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
-                                       </div>
-                                       </div>
-                                 </template> -->
-                                 <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
-                              </div>
-                           </div>
-                        </li>
-                     </template>
+
+                     <template x-for="(group, index) in reversedMessages" :key="`group-${group.DateGroup}-${index}`">
+                        <div>
+                            <div class="chat-new-date" x-text="group.DateGroup"></div>
+                            <template x-for="message in group.Messages" :key="message.messageid">
+                                <li class="chat-main-row">
+                                    <div class="chat-main-row-inner">
+                                        <div class="chat-avatar-sm">
+                                            <img :src="message.imagethumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user">
+                                        </div>
+                                        <div class="d-flex flex-column gap-1 position-relative">
+                                            <h5 class="font-size-15px mb-0 fw-bolder">
+                                                <span x-text="message.name"></span> 
+                                                <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span>
+                                            </h5>
+                                            <p x-html="message.message" class="mb-0 fw-semibold"></p>
+                                             <!-- <template x-if="message.mimetype == 'Text'">
+                                                   <p x-text="message.message" class="mb-0 fw-semibold"></p>
+                                                </template>
+                                                <template x-if="message.mimetype == 'Image'">
+                                                   <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
+                                                      <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
+                                                      <div class="d-flex flex-wrap gap-2">
+                                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                                         <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                                      </div>
+                                                      </div>
+                                                </template>
+                                                <template x-if="message.mimetype == 'PDF'">
+                                                   <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
+                                                      <a download href="img/dummy.pdf" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px" name="document-attach-outline"></ion-icon>Beskrivelse af roller.pdf</a>
+                                                      <div class="d-flex flex-wrap gap-2">
+                                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                                         <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                                      </div>
+                                                      </div>
+                                                </template> -->
+                                            <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </template>
+                        </div>
+                    </template>
+
+                    
                      
                      <template x-if="currentConversation.isblocked === 'YES'">
                         <li class="chat-inquiry-row">

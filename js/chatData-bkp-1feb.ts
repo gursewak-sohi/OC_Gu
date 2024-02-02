@@ -257,22 +257,19 @@ document.addEventListener("alpine:init", () => {
             if (fetchOlderMessages) {
                 this.messagesSkip += this.messagesLimit;
             }
-            
            
-            fetch(`https://www.onlinecasting.co.za/api/chat/conversation25jan.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
+            fetch(`https://www.onlinecasting.co.za/api/chat/conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
-                    // console.log(data, 'data')
-                  if (data && Array.isArray(data.GroupedMessages)) {
-                        // this.messagesData = data  
+                    console.log(data, 'data')
+                  if (data && Array.isArray(data.messages)) {
+                        this.messagesData = data  
                         if (fetchOlderMessages) {
-                            this.messages = [...JSON.parse(JSON.stringify(this.messages)), ...data.GroupedMessages];
-                        } else {
-                            // For initial or refreshed messages, just set it directly
-                            this.messages = data.GroupedMessages;
+                            this.messages = [...JSON.parse(JSON.stringify(this.messages)), ...data.messages];
                         }
-                        // console.log(this.messages, 'this.messages')
-
+                        else {
+                            this.messages = [...data.messages];
+                        }
                        this.$nextTick(() => {
                           if (!this.initialMessagesLoaded) {
                              // Scroll to bottom for Inital load
