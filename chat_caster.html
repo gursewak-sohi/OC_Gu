@@ -276,13 +276,6 @@
                                   </div>
                                   <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
                                      <ul>
-                                       <!-- <li data-bs-toggle="modal" data-bs-target="#reportModal" x-show="conversation.isblocked === 'NO'">
-                                          <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="hand-right"></ion-icon> Block</a>
-                                       </li>
-                                        -->
-                                        <!-- <li @click="unBlockConversation(conversation)" x-show="conversation.isblocked === 'YES'">
-                                          <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="hand-right-outline"></ion-icon> Unblock</a>
-                                       </li> -->
                                         <li @click="toggleArchieve(conversation, 'DEFAULT')" x-show="conversation.chatfolder === 'ARCHIVED'">
                                           <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt-outline"></ion-icon> Unarchive</a>
                                        </li>
@@ -348,36 +341,36 @@
                      </div>
                   </div>
                   <div class="d-flex align-items-center gap-2">
-                     <div x-show="currentConversation.isblocked === 'NO'">
+                     <div x-show="currentConversation.isblocked === 'NO'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Block">
                         <button  class="btn-icon d-none d-lg-flex" data-bs-toggle="modal" data-bs-target="#reportModal" class="fs-6 ms-1">
                            <ion-icon name="hand-right"></ion-icon>
                        </button>
                      </div>
-                    <div x-show="currentConversation.isblocked === 'YES'">
-                        <button @click="unBlockConversation(currentConversation)"  class="btn-icon d-none d-lg-flex" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Unblock" class="fs-6 ms-1">
+                    <div x-show="currentConversation.isblocked === 'YES'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Unblock">
+                        <button @click="unBlockConversation(currentConversation)" class="btn-icon d-none d-lg-flex"  class="fs-6 ms-1">
                            <ion-icon name="hand-right-outline"></ion-icon>
                      </button>
                     </div>
 
-                    <div x-show="currentConversation.chatfolder === 'ARCHIVED'">
-                        <button title="Unarchive" @click="toggleArchieve(currentConversation, 'DEFAULT')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
+                    <div x-show="currentConversation.chatfolder === 'ARCHIVED'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Unarchive">
+                        <button title="Unarchive" @click="toggleArchieve(currentConversation, 'DEFAULT')"  class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
                            <ion-icon name="receipt-outline"></ion-icon>
                         </button>
                      </div>
 
-                     <div x-show="currentConversation.chatfolder !== 'ARCHIVED'">
+                     <div x-show="currentConversation.chatfolder !== 'ARCHIVED'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Archive">
                         <button title="Archive" @click="toggleArchieve(currentConversation, 'ARCHIVED')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
                            <ion-icon name="receipt"></ion-icon>
                         </button>
                      </div>
 
-                     <div x-show="currentConversation.tag == ''">
+                     <div x-show="currentConversation.tag == ''" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Starmark">
                         <button title="Starmark" @click="toggleStar(currentConversation, 'STARRED')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
                            <ion-icon name="star"></ion-icon>
                         </button>
                      </div>
 
-                     <div x-show="currentConversation.tag == 'STARRED'">
+                     <div x-show="currentConversation.tag == 'STARRED'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Unstar">
                         <button title="Unstar" @click="toggleStar(currentConversation, '')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
                            <ion-icon name="star-outline"></ion-icon>
                         </button>
@@ -453,7 +446,7 @@
                                              <!-- <template x-if="message.mimetype == 'Text'">
                                                    <p x-text="message.message" class="mb-0 fw-semibold"></p>
                                                 </template>
-                                                <template x-if="message.mimetype == 'Image'">
+                                                <template x-if="message.mimetype == 'IMAGE'">
                                                    <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
                                                       <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
                                                       <div class="d-flex flex-wrap gap-2">
@@ -470,7 +463,7 @@
                                                          <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
                                                       </div>
                                                       </div>
-                                                </template> -->
+                                                </template>   -->
                                             <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
                                         </div>
                                     </div>

@@ -39,19 +39,16 @@ document.getElementById('chatInput').addEventListener('keydown', function(event)
     }
 });
 
-// document.getElementById('chatInput').addEventListener('keydown', function(event) {
-//     if (event.key === 'Enter' && event.shiftKey) {
-//         // Prevent default Enter behavior (new line or submit form)
-//         event.preventDefault();
 
-//         // Append <br/> tag to the message
-//         this.newMessage += '<br/>';
-
-//         // Adjust the height of the textarea
-//         this.style.height = ''; // Clear any inline height
-//         this.style.height = this.scrollHeight + 'px'; // Set new height
-//     }
-// });
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl, {
+        trigger: 'hover' // Specify that the tooltip should only trigger on hover
+      });
+    });
+  });
 
 // Optional: Automatically adjust height when the textarea content changes
 document.getElementById('chatInput').addEventListener('input', function() {
@@ -464,6 +461,9 @@ document.addEventListener("alpine:init", () => {
                     console.log('Star toggled', data);
                     // Update the conversation's starred status in the Alpine state
                     conversation.tag = setAsStarred;
+                    this.blockStatus = "SUCCESS";
+                    this.blockStatusMessage = "Updated Successfully";
+                    this.hideConversation()
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -479,33 +479,10 @@ document.addEventListener("alpine:init", () => {
                     // console.log(this.currentConversationID, 'currentConversationID')
                     // Update the conversation's starred status in the Alpine state
                     conversation.chatfolder = setAsArchieved;
-                       // Find the index of the conversation to be archived
-                    const index = this.conversations.findIndex(convo => convo.conversationid === conversation.conversationid);
+                    this.blockStatus = "SUCCESS";
+                    this.blockStatusMessage = "Updated Successfully";
 
-                    // Remove the archived conversation from the list
-                    this.conversations.splice(index, 1);
-
-                    // Determine the next conversation to focus on
-                    if (this.conversations.length > 0) {
-                        let newIndex = index;
-                        if (newIndex >= this.conversations.length) {
-                            // If the archived conversation was the last one, focus on the new last conversation
-                            newIndex = this.conversations.length - 1;
-                        }
-
-                        // Set the current conversation to the next one in the list
-                        this.currentConversation = this.conversations[newIndex];
-                        this.currentConversationID = this.conversations[newIndex].conversationid;
-                        this.currentProfileID = this.conversations[newIndex].profileid;
-
-                        this.fetchChatMessages();
-                        this.fetchProfileImages();
-                        this.fetchProfileData();
-                    } else {
-                        this.currentConversation = null;
-                        this.currentConversationID = '';
-                        this.currentProfileID = '';
-                    }
+                    this.hideConversation()
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -538,6 +515,8 @@ document.addEventListener("alpine:init", () => {
             .then(response => response.json())
             .then(data => {
                 console.log('Response:', data);
+
+
                 this.blockStatus = data.Status;
                 this.blockStatusMessage = data.StatusMessage;
 
@@ -550,54 +529,16 @@ document.addEventListener("alpine:init", () => {
 
                 this.blockMessage = '';
 
-                // Open Status Modal
-               
-
-                const statusModal = document.getElementById('statusModal');
-                let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-                if (!statusModalInstance) {
-                    // Initialize the modal if it hasn't been initialized
-                    statusModalInstance = new bootstrap.Modal(statusModal);
-                }
-               
-                setTimeout(() => {
-                    statusModalInstance.show();
-                }, 300);
-
-              
-
-                // Find the index of the conversation to be archived
-                const index = this.conversations.findIndex(convo => convo.conversationid === this.currentConversation.conversationid);
-
-                // Remove the archived conversation from the list
-                this.conversations.splice(index, 1);
-
-                // Determine the next conversation to focus on
-                if (this.conversations.length > 0) {
-                    let newIndex = index;
-                    if (newIndex >= this.conversations.length) {
-                        // If the archived conversation was the last one, focus on the new last conversation
-                        newIndex = this.conversations.length - 1;
-                    }
-
-                    // Set the current conversation to the next one in the list
-                    this.currentConversation = this.conversations[newIndex];
-                    this.currentConversationID = this.conversations[newIndex].conversationid;
-                    this.currentProfileID = this.conversations[newIndex].profileid;
-
-                    this.fetchChatMessages();
-                    this.fetchProfileImages();
-                    this.fetchProfileData();
-                } else {
-                    this.currentConversation = null;
-                    this.currentConversationID = '';
-                    this.currentProfileID = '';
-                }
+                this.hideConversation();
+                
                 })
             .catch((error) => {
                 console.error('Error:', error);
             });
         },
+
+      
+        
 
         unBlockConversation(conversation) {  
             const apiUrl = `https://www.onlinecasting.co.za/api/chat/unblock_user.asp?ConversationID=${conversation.conversationid}&CasterID=${conversation.casterid}&ProfileID=${conversation.profileid}&BlockedCasterID=${conversation.casterid}&BlockedProfileID=${conversation.profileid}`;
@@ -610,50 +551,54 @@ document.addEventListener("alpine:init", () => {
 
                 conversation.chatfolder = 'DEFAULT';
 
-                const statusModal = document.getElementById('statusModal');
-                let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-                if (!statusModalInstance) {
-                    // Initialize the modal if it hasn't been initialized
-                    statusModalInstance = new bootstrap.Modal(statusModal);
-                }
-               
-                setTimeout(() => {
-                    statusModalInstance.show();
-                }, 300);
-
-              
-
-                // Find the index of the conversation to be archived
-                const index = this.conversations.findIndex(convo => convo.conversationid === this.currentConversation.conversationid);
-
-                // Remove the archived conversation from the list
-                this.conversations.splice(index, 1);
-
-                // Determine the next conversation to focus on
-                if (this.conversations.length > 0) {
-                    let newIndex = index;
-                    if (newIndex >= this.conversations.length) {
-                        // If the archived conversation was the last one, focus on the new last conversation
-                        newIndex = this.conversations.length - 1;
-                    }
-
-                    // Set the current conversation to the next one in the list
-                    this.currentConversation = this.conversations[newIndex];
-                    this.currentConversationID = this.conversations[newIndex].conversationid;
-                    this.currentProfileID = this.conversations[newIndex].profileid;
-
-                    this.fetchChatMessages();
-                    this.fetchProfileImages();
-                    this.fetchProfileData();
-                } else {
-                    this.currentConversation = null;
-                    this.currentConversationID = '';
-                    this.currentProfileID = '';
-                }
+                this.hideConversation();
                 })
             .catch((error) => {
                 console.error('Error:', error);
             });
+        },
+
+        hideConversation () {
+
+            // Open Status Modal
+            const statusModal = document.getElementById('statusModal');
+            let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+            if (!statusModalInstance) {
+                // Initialize the modal if it hasn't been initialized
+                statusModalInstance = new bootstrap.Modal(statusModal);
+            }
+           
+            setTimeout(() => {
+                statusModalInstance.show();
+            }, 300);
+
+            // Find the index of the conversation to be archived
+            const index = this.conversations.findIndex(convo => convo.conversationid === this.currentConversation.conversationid);
+
+            // Remove the archived conversation from the list
+            this.conversations.splice(index, 1);
+
+            // Determine the next conversation to focus on
+            if (this.conversations.length > 0) {
+                let newIndex = index;
+                if (newIndex >= this.conversations.length) {
+                    // If the archived conversation was the last one, focus on the new last conversation
+                    newIndex = this.conversations.length - 1;
+                }
+
+                // Set the current conversation to the next one in the list
+                this.currentConversation = this.conversations[newIndex];
+                this.currentConversationID = this.conversations[newIndex].conversationid;
+                this.currentProfileID = this.conversations[newIndex].profileid;
+
+                this.fetchChatMessages();
+                this.fetchProfileImages();
+                this.fetchProfileData();
+            } else {
+                this.currentConversation = null;
+                this.currentConversationID = '';
+                this.currentProfileID = '';
+            }         
         },
 
         init() {

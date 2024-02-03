@@ -1,4 +1,6 @@
 $(document).ready(function() {
+   
+
   const $showDetails = $('#showDetails');
   const $chatDetails = $('#chatDetails');
 
