@@ -277,16 +277,22 @@
                                   <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
                                      <ul>
                                         <li @click="toggleArchieve(conversation, 'DEFAULT')" x-show="conversation.chatfolder === 'ARCHIVED'">
-                                          <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt-outline"></ion-icon> Unarchive</a>
+                                          <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="receipt-outline"></ion-icon> Unarchive</a>
                                        </li>
                                        <li @click="toggleArchieve(conversation, 'ARCHIVED')" x-show="conversation.chatfolder !== 'ARCHIVED'">
-                                          <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt"></ion-icon> Archive</a>
+                                          <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="receipt"></ion-icon> Archive</a>
                                        </li>
                                         <li @click="toggleStar(conversation, 'STARRED')" x-show="conversation.tag == ''">
-                                          <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star"></ion-icon> Starmark</a>
+                                          <a class="d-flex align-items-center gap-1" href="javascript:;"><ion-icon name="star"></ion-icon> Starmark</a>
                                        </li>
                                         <li  @click="toggleStar(conversation, '')"  x-show="conversation.tag == 'STARRED'">
-                                           <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Unstar</a>
+                                           <a class="d-flex align-items-center gap-1" href="javascript:;"><ion-icon name="star-outline"></ion-icon> Unstar</a>
+                                        </li>
+                                        <li @click="toggleReadyOnly(conversation, 'YES')" x-show="conversation.readonly == 'NO'">
+                                          <a class="d-flex align-items-center gap-1" href="javascript:;"><ion-icon name="lock-closed"></ion-icon> Close conversation</a>
+                                       </li>
+                                        <li  @click="toggleReadyOnly(conversation, 'NO')"  x-show="conversation.readonly == 'YES'">
+                                           <a class="d-flex align-items-center gap-1" href="javascript:;"><ion-icon name="lock-open-outline"></ion-icon> Open conversation</a>
                                         </li>
                                      </ul>
                                   </div>
@@ -505,7 +511,16 @@
                         </div>
                     </template>
 
-                    
+                    <template x-if="currentConversation.readonly === 'YES'">
+                     <li class="chat-inquiry-row">
+                        <div class="chat-inquiry-row-inner">
+                           <div class="font-size-17px d-flex text-muted">
+                              <ion-icon name="lock-closed"></ion-icon>
+                           </div>
+                           <p class="mb-0 fw-bold font-size-14px text-muted">This profile is readyonly and cannot reply this conversation. When you write to the profile here, your blocking will be removed.</p>
+                        </div>
+                     </li>
+                  </template>
                      
                      <template x-if="currentConversation.isblocked === 'YES'">
                         <li class="chat-inquiry-row">

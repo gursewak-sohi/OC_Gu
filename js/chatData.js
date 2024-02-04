@@ -259,7 +259,7 @@ document.addEventListener("alpine:init", () => {
             fetch(`https://www.onlinecasting.co.za/api/chat/conversation25jan.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
-                    console.log(data, 'data')
+                    // console.log(data, 'data')
                   if (data && Array.isArray(data.GroupedMessages)) {
                         // this.messagesData = data  
                         if (fetchOlderMessages) {
@@ -488,6 +488,24 @@ document.addEventListener("alpine:init", () => {
                     console.error('Error:', error);
                 });
         },
+
+        toggleReadyOnly(conversation, setReadStatus) {
+            const apiUrl = `https://www.onlinecasting.co.za/api/chat/change_readonly.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&ReadOnly=${setReadStatus}`;
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Ready only status toggled', data);
+                    // Update the conversation's starred status in the Alpine state
+                    conversation.readonly = setReadStatus;
+                    this.blockStatus = "SUCCESS";
+                    this.blockStatusMessage = "Updated Successfully";
+                    this.hideConversation()
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        },
+
 
         //  Block User
         blockMessage: '',
