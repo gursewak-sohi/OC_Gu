@@ -57,32 +57,33 @@ $(document).ready(function() {
   });
 
 
- 
-    // Copy Link functionality
-    $('.copyLink').click(function() {
-        var link = $(this).closest('.linkBlock').find('.link').attr('href');
-        navigator.clipboard.writeText(link).then(() => {
-            var tooltip = $('<div/>', {
-                text: 'Link Copied!',
-                css: {
-                    position: 'absolute',
-                    backgroundColor: '#000',
-                    color: 'white',
-                    fontWeight: '400',
-                    width: '90px',
-                    padding: '5px',
-                    borderRadius: '5px',
-                    bottom: '110%',
-                    left: '50%',
-                    transform: 'translateX(-50%)'
-                }
-            }).appendTo(this);
+  $(document).on('click', '.copyLink' , function() {
+    var link = $(this).closest('.linkBlock').find('.link').attr('href');
+    navigator.clipboard.writeText(link).then(() => {
+        var tooltip = $('<div/>', {
+            text: 'Link Copied!',
+            css: {
+                position: 'absolute',
+                backgroundColor: '#000',
+                color: 'white',
+                fontWeight: '400',
+                width: '90px',
+                padding: '5px',
+                borderRadius: '5px',
+                bottom: '110%',
+                left: '50%',
+                transform: 'translateX(-50%)'
+            }
+        }).appendTo(this);
 
-            setTimeout(function() {
-                tooltip.remove();
-            }, 2000);
-        });
+        setTimeout(function() {
+            tooltip.remove();
+        }, 2000);
     });
+  });
+
+ 
+   
 
     // Delete Link functionality
     $('.deleteLink').click(function() {

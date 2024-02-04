@@ -442,28 +442,61 @@
                                                 <span x-text="message.name"></span> 
                                                 <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span>
                                             </h5>
-                                            <p x-html="message.message" class="mb-0 fw-semibold"></p>
+                                             <div x-show="message.applicationid !== 0">
+                                                <h1 class="mb-3 mt-2" x-text="message.applicationtitle"></h1>
+                                             </div>
+                                             <p x-html="message.message" class="mb-0 fw-semibold"></p>
+                                             <div x-show="message.applicationemail !== ''">
+                                                <ul class="ps-0 mt-3 mb-3 d-flex flex-column gap-1 font-size-18px">
+                                                   <li>
+                                                      <a class="d-flex align-items-center gap-2 text-decoration-underline"  x-bind:href="'mailto:' + message.applicationemail">
+                                                         <ion-icon class="font-size-18px" name="mail-outline"></ion-icon> <span x-text="message.applicationemail"></span>
+                                                      </a>
+                                                   </li>
+                                                   <!-- <li>
+                                                      <a class="d-flex align-items-center gap-2 text-decoration-underline" href="tel:8968949939">
+                                                         <ion-icon class="font-size-18px" name="call-outline"></ion-icon>8968949939
+                                                      </a>
+                                                   </li> -->
+                                                </ul>
+                                             </div>
+                                            <template x-for="(media, index) in message.media" :key="`media-${media.mediaid}-${index}`">
+                                             <div>
+                                                <template x-if="media.mimetype === 'IMAGE'">
+                                                   <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
+                                                      <a class="w-100 link mt-1" x-bind:href="media.contenturl" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" x-bind:src="media.contenturl" alt="" /></a>
+                                                      <div class="d-flex flex-wrap gap-2">
+                                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                                         <div x-show="media.candelete === 'YES'">
+                                                            <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                                         </div>
+                                                      </div>
+                                                      </div>
+                                                </template>
+                                                <template x-if="media.mimetype === 'PDF' || media.mimetype === 'Application'">
+                                                   <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
+                                                      <a download x-bind:href="media.contenturl" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px flex-shrink-0" name="document-attach-outline"></ion-icon> 
+                                                      <span x-text="media.contenturl.split('/').pop()"></span>
+                                                      </a>
+                                                      <div class="d-flex flex-wrap gap-2">
+                                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                                         <div x-show="media.candelete === 'YES'">
+                                                            <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                                         </div>
+                                                      </div>
+                                                      </div>
+                                                </template>
+                                                <template x-if="media.mimetype === 'VIMEOVIDEO'">
+                                                   <div class="ratio ratio-16x9 w-100">
+                                                      <iframe class="rounded" x-bind:src="media.contenturl" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                                                   </div>
+                                                </template>
+                                             </div>
+                                            </template>
                                              <!-- <template x-if="message.mimetype == 'Text'">
                                                    <p x-text="message.message" class="mb-0 fw-semibold"></p>
-                                                </template>
-                                                <template x-if="message.mimetype == 'IMAGE'">
-                                                   <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
-                                                      <a class="w-100 link mt-1" href="img/unsplash_V3YxRZLTbyY2.png" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" src="img/unsplash_V3YxRZLTbyY2.png" alt="" /></a>
-                                                      <div class="d-flex flex-wrap gap-2">
-                                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
-                                                         <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
-                                                      </div>
-                                                      </div>
-                                                </template>
-                                                <template x-if="message.mimetype == 'PDF'">
-                                                   <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
-                                                      <a download href="img/dummy.pdf" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px" name="document-attach-outline"></ion-icon>Beskrivelse af roller.pdf</a>
-                                                      <div class="d-flex flex-wrap gap-2">
-                                                         <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
-                                                         <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
-                                                      </div>
-                                                      </div>
-                                                </template>   -->
+                                                </template> -->
+                                                 
                                             <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
                                         </div>
                                     </div>

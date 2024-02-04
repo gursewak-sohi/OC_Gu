@@ -259,7 +259,7 @@ document.addEventListener("alpine:init", () => {
             fetch(`https://www.onlinecasting.co.za/api/chat/conversation25jan.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
-                    // console.log(data, 'data')
+                    console.log(data, 'data')
                   if (data && Array.isArray(data.GroupedMessages)) {
                         // this.messagesData = data  
                         if (fetchOlderMessages) {
