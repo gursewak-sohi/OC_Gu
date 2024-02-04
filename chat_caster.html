@@ -347,6 +347,21 @@
                      </div>
                   </div>
                   <div class="d-flex align-items-center gap-2">
+
+                     
+                      <div x-show="currentConversation.readonly === 'NO'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Close conversation">
+                        <button @click="toggleReadyOnly(currentConversation, 'YES')" class="btn-icon d-none d-lg-flex"  class="fs-6 ms-1">
+                           <ion-icon name="lock-closed"></ion-icon>
+                        </button>
+                     </div>
+
+                     <div x-show="currentConversation.readonly === 'YES'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Open conversation">
+                        <button @click="toggleReadyOnly(currentConversation, 'YES')" class="btn-icon d-none d-lg-flex"  class="fs-6 ms-1">
+                           <ion-icon name="lock-open-outline"></ion-icon>
+                        </button>
+                     </div>
+
+
                      <div x-show="currentConversation.isblocked === 'NO'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Block">
                         <button  class="btn-icon d-none d-lg-flex" data-bs-toggle="modal" data-bs-target="#reportModal" class="fs-6 ms-1">
                            <ion-icon name="hand-right"></ion-icon>
@@ -415,7 +430,12 @@
                                <li  @click="toggleStar(currentConversation, '')"  x-show="currentConversation.tag == 'STARRED'">
                                   <a class="d-flex align-items-center gap-1" href="#"><ion-icon name="star-outline"></ion-icon> Unstar</a>
                                </li>
-
+                               <li @click="toggleReadyOnly(currentConversation, 'YES')" x-show="currentConversation.readonly == 'NO'">
+                                 <a class="d-flex align-items-center gap-1" href="javascript:;"><ion-icon name="lock-closed"></ion-icon> Close conversation</a>
+                              </li>
+                               <li  @click="toggleReadyOnly(currentConversation, 'NO')"  x-show="currentConversation.readonly == 'YES'">
+                                  <a class="d-flex align-items-center gap-1" href="javascript:;"><ion-icon name="lock-open-outline"></ion-icon> Open conversation</a>
+                               </li>
                            </ul>
                         </div>
                      </div>
