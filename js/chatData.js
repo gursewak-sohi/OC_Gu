@@ -455,7 +455,7 @@ document.addEventListener("alpine:init", () => {
                     conversation.tag = setAsStarred;
                     // this.blockStatus = "SUCCESS";
                     // this.blockStatusMessage = "Updated Successfully";
-                    this.hideConversation()
+                    // this.hideConversation()
                 })
                 .catch(error => {
                     console.error('Error:', error);
