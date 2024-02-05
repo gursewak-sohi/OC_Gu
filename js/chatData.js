@@ -489,9 +489,7 @@ document.addEventListener("alpine:init", () => {
                     console.log('Ready only status toggled', data);
                     // Update the conversation's starred status in the Alpine state
                     conversation.readonly = setReadStatus;
-                    if (data.HideConversationBox == 'YES' && this.currentFolder !== 'ARCHIVED') {
-                        // this.blockStatus = "SUCCESS";
-                        // this.blockStatusMessage = "Updated Successfully";
+                    if (data.HideConversationBox == 'YES') {
                         this.hideConversation()
                     }
                     if (data.ChangeToFolder === 'CONVERSATIONS') {
