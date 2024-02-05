@@ -472,7 +472,7 @@
                                                 <h1 class="mb-3 mt-2" x-text="message.applicationtitle"></h1>
                                              </div>
                                              <p x-html="message.message" class="mb-0 fw-semibold"></p>
-                                             <div x-show="message.applicationemail !== ''">
+                                             <div x-show="message.applicationid !== 0">
                                                 <ul class="ps-0 mt-3 mb-3 d-flex flex-column gap-1 font-size-18px">
                                                    <li>
                                                       <a class="d-flex align-items-center gap-2 text-decoration-underline"  x-bind:href="'mailto:' + message.applicationemail">
@@ -485,6 +485,12 @@
                                                       </a>
                                                    </li> -->
                                                 </ul>
+                                                <div x-show="message.agentstatus == 'NEW'">
+                                                   <div class="w-100 d-flex mt-3 mb-3 flex-wrap gap-3">
+                                                      <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-md-auto w-100">Reject & Close</a>
+                                                      <!-- <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"><ion-icon name="thumbs-up-outline"></ion-icon> Upvote</a> -->
+                                                   </div>
+                                                </div>
                                              </div>
                                             <template x-for="(media, index) in message.media" :key="`media-${media.mediaid}-${index}`">
                                              <div>

@@ -39,16 +39,8 @@ document.getElementById('chatInput').addEventListener('keydown', function(event)
     }
 });
 
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl, {
-        trigger: 'hover' // Specify that the tooltip should only trigger on hover
-      });
-    });
-  });
+ 
+  
 
 // Optional: Automatically adjust height when the textarea content changes
 document.getElementById('chatInput').addEventListener('input', function() {
@@ -461,8 +453,8 @@ document.addEventListener("alpine:init", () => {
                     console.log('Star toggled', data);
                     // Update the conversation's starred status in the Alpine state
                     conversation.tag = setAsStarred;
-                    this.blockStatus = "SUCCESS";
-                    this.blockStatusMessage = "Updated Successfully";
+                    // this.blockStatus = "SUCCESS";
+                    // this.blockStatusMessage = "Updated Successfully";
                     this.hideConversation()
                 })
                 .catch(error => {
@@ -479,8 +471,8 @@ document.addEventListener("alpine:init", () => {
                     // console.log(this.currentConversationID, 'currentConversationID')
                     // Update the conversation's starred status in the Alpine state
                     conversation.chatfolder = setAsArchieved;
-                    this.blockStatus = "SUCCESS";
-                    this.blockStatusMessage = "Updated Successfully";
+                    // this.blockStatus = "SUCCESS";
+                    // this.blockStatusMessage = "Updated Successfully";
 
                     this.hideConversation()
                 })
@@ -497,9 +489,14 @@ document.addEventListener("alpine:init", () => {
                     console.log('Ready only status toggled', data);
                     // Update the conversation's starred status in the Alpine state
                     conversation.readonly = setReadStatus;
-                    this.blockStatus = "SUCCESS";
-                    this.blockStatusMessage = "Updated Successfully";
-                    this.hideConversation()
+                    if (data.HideConversationBox == 'YES') {
+                        // this.blockStatus = "SUCCESS";
+                        // this.blockStatusMessage = "Updated Successfully";
+                        this.hideConversation()
+                    }
+                    if (data.ChangeToFolder === 'CONVERSATIONS') {
+                        this.switchFolder('CONVERSATIONS','Conversations');
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -543,6 +540,19 @@ document.addEventListener("alpine:init", () => {
                 // Close the modal after the fetch response
                 const reportModal = document.getElementById('reportModal');
                 const reportModalInstance = bootstrap.Modal.getInstance(reportModal);
+
+                // Open Status Modal
+                const statusModal = document.getElementById('statusModal');
+                let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                if (!statusModalInstance) {
+                    // Initialize the modal if it hasn't been initialized
+                    statusModalInstance = new bootstrap.Modal(statusModal);
+                }
+            
+                setTimeout(() => {
+                    statusModalInstance.show();
+                }, 300);
+
                 reportModalInstance.hide();
 
                 this.blockMessage = '';
@@ -564,8 +574,8 @@ document.addEventListener("alpine:init", () => {
             .then(response => response.json())
             .then(data => {
                 console.log('Response:', data);
-                this.blockStatus = data.Status;
-                this.blockStatusMessage = data.StatusMessage;
+                // this.blockStatus = data.Status;
+                // this.blockStatusMessage = data.StatusMessage;
 
                 conversation.chatfolder = 'DEFAULT';
 
@@ -578,17 +588,7 @@ document.addEventListener("alpine:init", () => {
 
         hideConversation () {
 
-            // Open Status Modal
-            const statusModal = document.getElementById('statusModal');
-            let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-            if (!statusModalInstance) {
-                // Initialize the modal if it hasn't been initialized
-                statusModalInstance = new bootstrap.Modal(statusModal);
-            }
-           
-            setTimeout(() => {
-                statusModalInstance.show();
-            }, 300);
+            
 
             // Find the index of the conversation to be archived
             const index = this.conversations.findIndex(convo => convo.conversationid === this.currentConversation.conversationid);
@@ -616,7 +616,12 @@ document.addEventListener("alpine:init", () => {
                 this.currentConversation = null;
                 this.currentConversationID = '';
                 this.currentProfileID = '';
-            }         
+            }   
+            const textarea = document.getElementById('chatInput');
+            // Check if the textarea exists to avoid errors
+            if (textarea) {
+                textarea.focus();
+            }      
         },
 
         init() {
