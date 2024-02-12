@@ -69,7 +69,7 @@ document.addEventListener("alpine:init", () => {
        // Chat Data
         isChatSidebarClosed : false,
         fetchFolders() {
-            fetch(`https://www.onlinecasting.co.za/api/chat/conversations_folders.asp`)
+            fetch(`http://84.247.163.91/api/chat/conversations_folders.asp`)
                 .then(response => response.json())
                 .then(data => {
                     if (data && Array.isArray(data.folders)) {
@@ -77,8 +77,8 @@ document.addEventListener("alpine:init", () => {
                         // Find the folder with default set to True
                         const defaultFolder = data.folders.find(folder => folder.default === "True");
                         if (defaultFolder) {
-                            this.currentFolder = defaultFolder.searchname;
-                            this.currentFolderName = defaultFolder.name;
+                            this.currentChatFolder = defaultFolder.searchname;
+                            this.currentChatFolderName = defaultFolder.name;
                         }
                         this.fetchChatConversations();
                     }
@@ -86,8 +86,8 @@ document.addEventListener("alpine:init", () => {
         },
 
         switchFolder(folder, folderName) {
-            this.currentFolder = folder;
-            this.currentFolderName = folderName;
+            this.currentChatFolder = folder;
+            this.currentChatFolderName = folderName;
             this.conversations = [];
             this.conversationsSkip = 0;
             this.isInitialConversatationsLoading = true;
@@ -107,7 +107,7 @@ document.addEventListener("alpine:init", () => {
         currentAudition: '', 
         currentAuditionID: 0,
         fetchAuditions() {
-            let url = `https://www.onlinecasting.co.za/api/chat/conversations_auditions.asp`;
+            let url = `http://84.247.163.91/api/chat/conversations_auditions.asp`;
             if (this.currentAuditionID) {
                 url += `?auditionid=${this.currentAuditionID}`;
             }
@@ -149,8 +149,9 @@ document.addEventListener("alpine:init", () => {
         conversationsLimit: 10,
         isConversationsFetching: false,
         folders : [],
-        currentFolder: '',
-        currentFolderName: 'Loading..',
+     
+        currentChatFolder: '',
+        currentChatFolderName: 'Loading..',
         isConversationError: false,
         errorConversationMessage: '',
         
@@ -158,7 +159,7 @@ document.addEventListener("alpine:init", () => {
             if (this.isConversationsFetching) return;
             this.isConversationsFetching = true;
             this.isConversationError = false;
-            fetch(`https://www.onlinecasting.co.za/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentFolder}&auditionid=${this.currentAuditionID}`)
+            fetch(`http://84.247.163.91/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentChatFolder}&auditionid=${this.currentAuditionID}`)
                 .then(response => response.json())
                 .then(data => {
                     // console.log("API Data:", data);
@@ -248,7 +249,7 @@ document.addEventListener("alpine:init", () => {
             }
             
            
-            fetch(`https://www.onlinecasting.co.za/api/chat/conversation25jan.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
+            fetch(`http://84.247.163.91/api/chat/conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
                     // console.log(data, 'data')
@@ -337,7 +338,7 @@ document.addEventListener("alpine:init", () => {
 
         fetchProfileImages() {
             if (!this.currentProfileID) return;
-            fetch(`https://www.onlinecasting.co.za/api/chat/profile_images.asp?profileid=${this.currentProfileID}`)
+            fetch(`http://84.247.163.91/api/chat/profile_images.asp?profileid=${this.currentProfileID}`)
                 .then(response => response.json())
                 .then(data => {
                     
@@ -381,7 +382,7 @@ document.addEventListener("alpine:init", () => {
         fetchProfileData() {
             if (!this.currentProfileID) return;
             if (!this.currentConversationID) return;
-            fetch(`https://www.onlinecasting.co.za/api/chat/profile_data.asp?profileid=${this.currentProfileID}&conversationid=${this.currentConversationID}`)
+            fetch(`http://84.247.163.91/api/chat/profile_data.asp?profileid=${this.currentProfileID}&conversationid=${this.currentConversationID}`)
                 .then(response => response.json())
                 .then(data => {
                     this.profileData = data
@@ -403,7 +404,7 @@ document.addEventListener("alpine:init", () => {
          newMessage: '',
          postChatMessage() {  
            
-             const url = "https://proxy.cors.sh/https://www.onlinecasting.co.za/apichat/CASTER_post_message.asp";
+             const url = "https://proxy.cors.sh/http://84.247.163.91/api/chat/post_message.asp";
              
              // Convert newlines to <br/> tags
              const formattedMessage = this.newMessage.replace(/\n/g, '<br/>');
@@ -446,7 +447,7 @@ document.addEventListener("alpine:init", () => {
 
          
         toggleStar(conversation, setAsStarred) {
-            const apiUrl = `https://www.onlinecasting.co.za/api/chat/tag_conversation.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversationparticipantid}&Tag=${setAsStarred}`;
+            const apiUrl = `http://84.247.163.91/api/chat/tag_conversation.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversationparticipantid}&Tag=${setAsStarred}`;
             fetch(apiUrl)
                 .then(response => response.text())
                 .then(data => {
@@ -463,18 +464,21 @@ document.addEventListener("alpine:init", () => {
         },
 
         toggleArchieve(conversation, setAsArchieved) {
-            const apiUrl = `https://www.onlinecasting.co.za/api/chat/change_folder_conversation.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&folder=${setAsArchieved}`;
+            
+            const apiUrl = `http://84.247.163.91/api/chat/change_folder_conversation.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&folder=${setAsArchieved}&chatfolder=${this.currentChatFolder}`;
             fetch(apiUrl)
                 .then(response => response.text())
                 .then(data => {
-                    console.log('Archieved toggled', data);
-                    // console.log(this.currentConversationID, 'currentConversationID')
-                    // Update the conversation's starred status in the Alpine state
-                    conversation.chatfolder = setAsArchieved;
-                    // this.blockStatus = "SUCCESS";
-                    // this.blockStatusMessage = "Updated Successfully";
-
-                    this.hideConversation()
+                    console.log('Archieved toggled');
+                    conversation.folder = setAsArchieved;
+                    if (data.HideConversationBox == 'YES') {
+                        this.hideConversation()
+                    }
+                    console.log('switch to', data.ChangeToFolder);
+                    if (data.ChangeToFolder) {
+                        this.switchFolder(data.ChangeToFolder, data.ChangeToFolder.toLowerCase());
+                        console.log('switched to', data.ChangeToFolder);
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -482,7 +486,7 @@ document.addEventListener("alpine:init", () => {
         },
 
         toggleReadyOnly(conversation, setReadStatus) {
-            const apiUrl = `https://www.onlinecasting.co.za/api/chat/change_readonly.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&ReadOnly=${setReadStatus}`;
+            const apiUrl = `http://84.247.163.91/api/chat/change_readonly.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&ReadOnly=${setReadStatus}`;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -507,7 +511,7 @@ document.addEventListener("alpine:init", () => {
         blockStatus : '',
         blockStatusMessage : '',
         blockConversation() {  
-            const url = "https://proxy.cors.sh/https://www.onlinecasting.co.za/api/chat/block_user.asp";
+            const url = "https://proxy.cors.sh/http://84.247.163.91/api/chat/block_user.asp";
             const data = {
                 ConversationID: this.currentConversationID,
                 CasterID: this.currentConversation.casterid,
@@ -567,7 +571,7 @@ document.addEventListener("alpine:init", () => {
         
 
         unBlockConversation(conversation) {  
-            const apiUrl = `https://www.onlinecasting.co.za/api/chat/unblock_user.asp?ConversationID=${conversation.conversationid}&CasterID=${conversation.casterid}&ProfileID=${conversation.profileid}&BlockedCasterID=${conversation.casterid}&BlockedProfileID=${conversation.profileid}`;
+            const apiUrl = `hhttp://84.247.163.91/api/chat/unblock_user.asp?ConversationID=${conversation.conversationid}&CasterID=${conversation.casterid}&ProfileID=${conversation.profileid}&BlockedCasterID=${conversation.casterid}&BlockedProfileID=${conversation.profileid}`;
             fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -585,8 +589,6 @@ document.addEventListener("alpine:init", () => {
         },
 
         hideConversation () {
-
-            
 
             // Find the index of the conversation to be archived
             const index = this.conversations.findIndex(convo => convo.conversationid === this.currentConversation.conversationid);
