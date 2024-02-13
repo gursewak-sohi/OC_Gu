@@ -536,6 +536,8 @@ document.addEventListener("alpine:init", () => {
         blockStatus : '',
         blockStatusMessage : '',
         blockConversation() {  
+            // console.log(this.currentConversation, 'curent');
+            
             const url = "https://proxy.cors.sh/http://84.247.163.91/api/chat/block_user.asp";
             const data = {
                 ConversationID: this.currentConversationID,
@@ -559,7 +561,7 @@ document.addEventListener("alpine:init", () => {
             .then(data => {
                 console.log('Response:', data);
 
-                this.currentConversation.chatfolder = 'BLOCKED';
+                this.currentConversation.isblocked = 'YES';
 
                 // Close the modal after the fetch response
                 const reportModal = document.getElementById('reportModal');
@@ -588,10 +590,8 @@ document.addEventListener("alpine:init", () => {
                 this.blockMessage = '';
 
                 if (data.HideConversationBox == 'YES') {
-                    this.hideConversation(conversation)
+                    this.hideConversation(this.currentConversation)
                 }
-
-               
                 
                 })
             .catch((error) => {
@@ -611,9 +611,13 @@ document.addEventListener("alpine:init", () => {
                 // this.blockStatus = data.Status;
                 // this.blockStatusMessage = data.StatusMessage;
 
-                conversation.chatfolder = 'DEFAULT';
+                this.currentConversation.isblocked = 'NO';
 
-                this.hideConversation(conversation);
+                if (data.HideConversationBox == 'YES') {
+                    this.hideConversation(conversation)
+                }
+
+                
                 })
             .catch((error) => {
                 console.error('Error:', error);
