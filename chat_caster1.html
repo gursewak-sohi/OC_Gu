@@ -267,19 +267,21 @@
                     
                     <ul class="d-flex flex-column m-0 p-0">
                         <template x-for="conversation in conversations" :key="conversation.conversationid">
+                          
                           <!-- Add active class when chat is active -->
                           <li x-on:click="isChatSidebarClosed = true; setCurrentConversation(conversation);" class="chat-row" x-bind:class="{ 'unread': conversation.isread == 'NO', 'active': conversation.conversationid == currentConversationID }"> 
                             <div class="chat-row-inner">
+                              
                                <div x-on:click.stop data-bs-toggle="dropdown"  class="dropdown-container dropdown-solid chat-row-dropdown">
                                   <div class="dropdown-toggle">
                                      <ion-icon name="ellipsis-horizontal"></ion-icon>
                                   </div>
                                   <div class="dropdown-menu filter-dropdown font-size-13px mt-2">
                                      <ul>
-                                        <li @click="toggleArchieve(conversation, 'DEFAULT')" x-show="conversation.folder === 'ARCHIVED'">
+                                        <li @click="toggleArchieve(conversation, 'DEFAULT')" x-show="conversation.folder === 'ARCHIVED' && currentChatFolder !== 'BLOCKED'">
                                           <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="receipt-outline"></ion-icon> Unarchive</a>
                                        </li>
-                                       <li @click="toggleArchieve(conversation, 'ARCHIVED')" x-show="conversation.folder === 'DEFAULT'">
+                                       <li @click="toggleArchieve(conversation, 'ARCHIVED')" x-show="conversation.folder === 'DEFAULT' && currentChatFolder !== 'BLOCKED'">
                                           <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="receipt"></ion-icon> Archive</a>
                                        </li>
                                         <li @click="toggleStar(conversation, 'STARRED')" x-show="conversation.tag == ''">
@@ -356,10 +358,12 @@
                      </div>
 
                      <div x-show="currentConversation.readonly === 'YES'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Open conversation">
-                        <button @click="toggleReadyOnly(currentConversation, 'YES')" class="btn-icon d-none d-lg-flex"  class="fs-6 ms-1">
+                        <button @click="toggleReadyOnly(currentConversation, 'NO')" class="btn-icon d-none d-lg-flex"  class="fs-6 ms-1">
                            <ion-icon name="lock-open-outline"></ion-icon>
                         </button>
                      </div>
+
+                    
 
 
                      <div x-show="currentConversation.isblocked === 'NO'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Block">
@@ -373,13 +377,13 @@
                      </button>
                     </div>
 
-                    <div x-show="currentConversation.folder === 'ARCHIVED'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Unarchive">
+                    <div x-show="currentConversation.folder === 'ARCHIVED' && currentChatFolder !== 'BLOCKED'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Unarchive">
                         <button title="Unarchive" @click="toggleArchieve(currentConversation, 'DEFAULT')"  class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
                            <ion-icon name="receipt-outline"></ion-icon>
                         </button>
                      </div>
 
-                     <div x-show="currentConversation.folder === 'DEFAULT'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Archive">
+                     <div x-show="currentConversation.folder === 'DEFAULT' && currentChatFolder !== 'BLOCKED'" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Archive">
                         <button title="Archive" @click="toggleArchieve(currentConversation, 'ARCHIVED')" class="btn-icon d-none d-lg-flex" class="fs-5 ms-1">
                            <ion-icon name="receipt"></ion-icon>
                         </button>
@@ -418,10 +422,10 @@
                               <li @click="unBlockConversation(currentConversation)" x-show="currentConversation.isblocked === 'YES'">
                                  <a class="d-flex align-items-center gap-1" href="javascript:;"> <ion-icon name="hand-right-outline"></ion-icon> Unblock</a>
                               </li>
-                               <li @click="toggleArchieve(currentConversation, 'DEFAULT')" x-show="currentConversation.folder === 'ARCHIVED'">
+                               <li @click="toggleArchieve(currentConversation, 'DEFAULT')" x-show="currentConversation.folder === 'ARCHIVED' && currentChatFolder !== 'BLOCKED'">
                                  <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt-outline"></ion-icon> Unarchive</a>
                               </li>
-                              <li @click="toggleArchieve(currentConversation, 'ARCHIVED')" x-show="currentConversation.folder === 'DEFAULT'">
+                              <li @click="toggleArchieve(currentConversation, 'ARCHIVED')" x-show="currentConversation.folder === 'DEFAULT' && currentChatFolder !== 'BLOCKED'">
                                  <a class="d-flex align-items-center gap-1" href="#"> <ion-icon name="receipt"></ion-icon> Archive</a>
                               </li>
                                <li @click="toggleStar(currentConversation, 'STARRED')" x-show="currentConversation.tag == ''">

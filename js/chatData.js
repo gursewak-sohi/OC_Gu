@@ -447,16 +447,22 @@ document.addEventListener("alpine:init", () => {
 
          
         toggleStar(conversation, setAsStarred) {
-            const apiUrl = `http://84.247.163.91/api/chat/tag_conversation.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversationparticipantid}&Tag=${setAsStarred}`;
+            const apiUrl = `http://84.247.163.91/api/chat/tag_conversation.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversationparticipantid}&Tag=${setAsStarred}&chatfolder=${this.currentChatFolder}`;
             fetch(apiUrl)
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(data => {
                     console.log('Star toggled', data);
                     // Update the conversation's starred status in the Alpine state
                     conversation.tag = setAsStarred;
-                    // this.blockStatus = "SUCCESS";
-                    // this.blockStatusMessage = "Updated Successfully";
-                    // this.hideConversation()
+                    
+                    if (data.HideConversationBox == 'YES') {
+                        this.hideConversation(conversation)
+                    }
+                    
+                    if (data.ChangeToFolder) {
+                        this.switchFolder(data.ChangeToFolder, data.ChangeToFolder.toLowerCase());
+                        console.log('switched to', data.ChangeToFolder);
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -467,14 +473,14 @@ document.addEventListener("alpine:init", () => {
             
             const apiUrl = `http://84.247.163.91/api/chat/change_folder_conversation.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&folder=${setAsArchieved}&chatfolder=${this.currentChatFolder}`;
             fetch(apiUrl)
-                .then(response => response.text())
+                .then(response => response.json())
                 .then(data => {
                     console.log('Archieved toggled');
                     conversation.folder = setAsArchieved;
                     if (data.HideConversationBox == 'YES') {
-                        this.hideConversation()
+                        this.hideConversation(conversation)
                     }
-                    console.log('switch to', data.ChangeToFolder);
+                    
                     if (data.ChangeToFolder) {
                         this.switchFolder(data.ChangeToFolder, data.ChangeToFolder.toLowerCase());
                         console.log('switched to', data.ChangeToFolder);
@@ -486,19 +492,38 @@ document.addEventListener("alpine:init", () => {
         },
 
         toggleReadyOnly(conversation, setReadStatus) {
-            const apiUrl = `http://84.247.163.91/api/chat/change_readonly.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&ReadOnly=${setReadStatus}`;
+            const apiUrl = `http://84.247.163.91/api/chat/change_readonly.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&ReadOnly=${setReadStatus}&chatfolder=${this.currentChatFolder}`;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
                     console.log('Ready only status toggled', data);
                     // Update the conversation's starred status in the Alpine state
                     conversation.readonly = setReadStatus;
+                   
                     if (data.HideConversationBox == 'YES') {
-                        this.hideConversation()
+                        this.hideConversation(conversation)
                     }
-                    if (data.ChangeToFolder === 'CONVERSATIONS') {
-                        this.switchFolder('CONVERSATIONS','Conversations');
+                    if (data.ShowMessage == 'YES') { 
+                        // Open Status Modal
+                        this.blockStatus = data.Status;
+                        this.blockStatusMessage = data.StatusMessage;
+
+                        const statusModal = document.getElementById('statusModal');
+                        let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                        if (!statusModalInstance) {
+                            // Initialize the modal if it hasn't been initialized
+                            statusModalInstance = new bootstrap.Modal(statusModal);
+                        }
+                        statusModalInstance.show();
+                       
                     }
+                
+
+                    if (data.ChangeToFolder) {
+                        this.switchFolder(data.ChangeToFolder, data.ChangeToFolder.toLowerCase());
+                        console.log('switched to', data.ChangeToFolder);
+                    }
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -519,6 +544,7 @@ document.addEventListener("alpine:init", () => {
                 BlockedCasterID: this.currentConversation.casterid,
                 BlockedProfileID: this.currentProfileID,
                 Reason: this.blockMessage,
+                chatfolder: this.currentChatFolder
             };
             
             fetch(url, {
@@ -533,33 +559,39 @@ document.addEventListener("alpine:init", () => {
             .then(data => {
                 console.log('Response:', data);
 
-
-                this.blockStatus = data.Status;
-                this.blockStatusMessage = data.StatusMessage;
-
                 this.currentConversation.chatfolder = 'BLOCKED';
 
                 // Close the modal after the fetch response
                 const reportModal = document.getElementById('reportModal');
                 const reportModalInstance = bootstrap.Modal.getInstance(reportModal);
 
-                // Open Status Modal
-                const statusModal = document.getElementById('statusModal');
-                let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-                if (!statusModalInstance) {
-                    // Initialize the modal if it hasn't been initialized
-                    statusModalInstance = new bootstrap.Modal(statusModal);
-                }
-            
-                setTimeout(() => {
-                    statusModalInstance.show();
-                }, 300);
+                 
+                    // Open Status Modal
+                    this.blockStatus = data.Status;
+                    this.blockStatusMessage = data.StatusMessage;
 
-                reportModalInstance.hide();
+                    const statusModal = document.getElementById('statusModal');
+                    let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                    if (!statusModalInstance) {
+                        // Initialize the modal if it hasn't been initialized
+                        statusModalInstance = new bootstrap.Modal(statusModal);
+                    }
+                
+                    setTimeout(() => {
+                        statusModalInstance.show();
+                    }, 300);
+
+                    reportModalInstance.hide();
+                 
+                
 
                 this.blockMessage = '';
 
-                this.hideConversation();
+                if (data.HideConversationBox == 'YES') {
+                    this.hideConversation(conversation)
+                }
+
+               
                 
                 })
             .catch((error) => {
@@ -581,18 +613,18 @@ document.addEventListener("alpine:init", () => {
 
                 conversation.chatfolder = 'DEFAULT';
 
-                this.hideConversation();
+                this.hideConversation(conversation);
                 })
             .catch((error) => {
                 console.error('Error:', error);
             });
         },
 
-        hideConversation () {
-
-            // Find the index of the conversation to be archived
-            const index = this.conversations.findIndex(convo => convo.conversationid === this.currentConversation.conversationid);
-
+        hideConversation (conversations) {
+           
+            // Find the index of the conversation  
+            const index = this.conversations.findIndex(convo => convo.conversationid === conversations.conversationid);
+             
             // Remove the archived conversation from the list
             this.conversations.splice(index, 1);
 
