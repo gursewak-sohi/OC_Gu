@@ -1,3 +1,5 @@
+ 
+
 document.addEventListener("alpine:init", () => {
   Alpine.data('searchComponent', () => ({
       isLoadingVideos: false,
@@ -43,6 +45,7 @@ document.addEventListener("alpine:init", () => {
         fetch(`https://www.onlinecasting.dk/api/profile_audio.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
+                console.log(data.audio)
                 this.audios = data.audio;
                 this.$nextTick(() => {
                   const fancyBoxItems = this.audios.map(audio => ({
@@ -54,9 +57,16 @@ document.addEventListener("alpine:init", () => {
                         iframe: {
                             preload: false,
                             css: {
-                              background: 'white', 
+                              background: 'black', 
                           }
-                        }
+                        },
+                        afterShow: function(instance, current) {
+                          $(".fancybox-content").css({
+                            "padding": "20px" 
+                          });
+                          $(".fancybox-content").append(`<div class='audio-filename'>${audio.filename}.mp3</div>`);
+                        },
+                        // caption: `${audio.filename}.mp3`,
                     }
                   }));
                   $.fancybox.open(fancyBoxItems, {
@@ -175,3 +185,5 @@ document.addEventListener("alpine:init", () => {
       }
   }));
 });
+
+ 

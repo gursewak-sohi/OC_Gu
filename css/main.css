@@ -3057,8 +3057,14 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     font-size: 32px;
     line-height: 40px;
     letter-spacing: -0.02em;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     color: #19191C;
+}
+ 
+.audio-filename {
+    color: #fff;
+    font-size: 18px;
+    position: absolute;
 }
 
 .filterModal .closeonheader {
@@ -3925,6 +3931,21 @@ input.gender-checkbox[type="checkbox"]:checked+label {
   opacity: 0.5;
   pointer-events: none;
 }
+
+.icon-wrapper .icon-solid {
+    display: none; 
+  }
+  .icon-wrapper .icon-outline {
+    display: flex;
+  }
+  
+  .icon-wrapper:hover .icon-outline {
+    display: none;  
+  }
+  
+  .icon-wrapper:hover .icon-solid {
+    display: flex; 
+  }
 
 @media (max-width: 767px) {
      
