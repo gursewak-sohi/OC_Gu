@@ -3911,6 +3911,30 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     float: left;
 }
 
+.modal-header-image {
+	width: 60px;
+	height: 60px;
+	object-fit: cover;
+	position: absolute;
+	right: 30px;
+	border-radius: 4px;
+}
+
+.btn-disabled
+{
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+     
+      .modal-header-image {
+        width: 30px;
+        height: 30px;
+        right: 20px;
+    }
+}
+
 @media (min-width: 768px) {
     .col-sm-5-cols {
         width: 25%;

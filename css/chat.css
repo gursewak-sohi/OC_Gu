@@ -322,11 +322,7 @@
     background-color: hsl(300, 5.3%, 96.3%);
 }
 
-.btn-disabled
-{
-  opacity: 0.5;
-  pointer-events: none;
-}
+
 
 .chat-textbox textarea {
     flex: 1;
@@ -930,6 +926,8 @@
   }
 }
 
+
+
 @media (max-width: 767px) {
     .chat-modal-body .auditionsItem {
         padding-left: 20px;
@@ -937,6 +935,7 @@
         margin-left: -20px;
         margin-right: -20px;
       }
+       
 }
 
 @media (min-width: 768px) {
@@ -944,3 +943,4 @@
         width: auto !important;
     }
 }
+

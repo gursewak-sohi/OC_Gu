@@ -29,18 +29,20 @@
                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
                          <img src="img/close-icon.svg" alt="">
                      </div>
-                     <h5 class="modal-title text-center">StatusMessageHeadline</h5>
+                     <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
                  </div>
                  <div class="modal-body chat-modal-body">
-                    <p class="font-size-16px">StatusMessage</p>
+                    <p x-text="statusMessage" class="font-size-16px"></p>
                  </div>
                  <div class="modal-footer">
-                     <button type="button" data-bs-dismiss="modal" class="btn mainBtn">Okay</button>
+                     <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
                  </div>
              </div>
          </div>
-     </div>
+        </div>
 
+
+    
       <!-- Modal -->
       <div class="modal fade filterModal" id="reportModal" tabindex="-1" aria-labelledby="reportModal" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
@@ -49,25 +51,25 @@
                     <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
                         <img src="img/close-icon.svg" alt="">
                     </div>
-                    <h5 class="modal-title text-center">User Name (Email)</h5>
+                    <h5 x-text="messageHeadline" class="modal-title text-center"></h5>
+                    <img class="modal-header-image" x-bind:src="messageImage" alt="image"/>
                 </div>
                 <div class="modal-body chat-modal-body">
-                  <p class="font-size-16px">Some text here</p>
-                  <p class="font-size-16px">Some more text</p>
- 
-                  <div class="form-group mt-5 mb-4">
-                    <label class="form-label font-size-16px">Info Job / casting*</label>
-                    <textarea class="form-control" rows="8"></textarea>
+                  <p x-html="messageTextHtml" class="font-size-16px"></p>
+
+                  <div class="form-group mt-4 mb-4">
+                    <label x-text="messageHeadlineMessageBox" class="form-label font-size-16px"></label>
+                    <textarea x-model="newMessage" class="form-control" rows="8"></textarea>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary me-2">Close</button>
-                    <button type="button"class="btn mainBtn">Send</button>
+                    <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary me-2"></button>
+                    <button :class="{ 'btn-disabled': newMessage.trim() === '' }" @click="postProfileMessage()" x-text="messageTextSubmit" type="button"class="btn mainBtn"></button>
                 </div>
             </div>
         </div>
-    </div>
+       </div>
 
      <!-- Modal -->
      <div class="modal fade filterModal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -469,7 +471,7 @@
               </div>
           </div>
       </div>
-  </div>
+      </div>
 
     <div class="wrapper">
         <!-- Promo Section -->
@@ -841,7 +843,7 @@
                                     <p class="mb-2">26 aR</p>
                                   </div>
                                   <div class="d-flex align-items-center gap-2 font-size-22px">
-                                    <a class="text-muted" data-bs-toggle="modal" data-bs-target="#reportModal" href="#reportModal" href="javascript:;">
+                                    <a @click="messageProfile('170690')" class="text-muted" href="javascript:;">
                                       <ion-icon name="mail-outline"></ion-icon>
                                     </a>
                                     <a class="text-muted" href="javascript:;">
@@ -876,7 +878,7 @@
                                         <p class="mb-2">26 aR</p>
                                       </div>
                                       <div class="d-flex align-items-center gap-2 font-size-22px">
-                                        <a class="text-muted" data-bs-toggle="modal" data-bs-target="#statusModal" href="#statusModal">
+                                        <a @click="messageProfile('1706900')" class="text-muted" href="javascript:;">
                                           <ion-icon name="mail-outline"></ion-icon>
                                         </a>
                                         <a class="text-muted" href="javascript:;">
@@ -913,7 +915,7 @@
                                       <p class="mb-2">26 aR</p>
                                     </div>
                                     <div class="d-flex align-items-center gap-2 font-size-22px">
-                                      <a class="text-muted" data-bs-toggle="modal" data-bs-target="#statusModal" href="#statusModal">
+                                      <a @click="messageProfile('170690')" class="text-muted" href="javascript:;">
                                         <ion-icon name="mail-outline"></ion-icon>
                                       </a>
                                       <a class="text-muted" href="javascript:;">
