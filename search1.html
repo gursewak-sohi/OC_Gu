@@ -937,17 +937,41 @@
                             </a>
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-5-cols">
-                            <a href="#">
+                           
                                 <div class="profileItem">
+                                  <a href="#">
                                     <div class="profileCard" style="background-image: url(img/profile-4.png);">
                                         <div class="bookmark">
                                             <ion-icon name="star" class="stariconFill"></ion-icon>
                                         </div>
                                     </div>
-                                    <h4>Olga</h4>
-                                    <p>26 aR</p>
+                                  </a>
+                                    <div class="d-flex justify-content-between d-md-block">
+                                      <div>
+                                        <h4>Olga</h4>
+                                        <p>26 aR</p>
+                                      </div>
+                                      <div class="d-flex align-items-center gap-2 font-size-22px">
+                                        <a @click="messageProfile('170655')" class="text-muted" href="javascript:;">
+                                          <ion-icon name="mail-outline"></ion-icon>
+                                        </a>
+                                        <a class="text-muted" href="javascript:;">
+                                          <ion-icon name="ellipsis-vertical-circle-outline"></ion-icon>
+                                        </a>
+                                        <div class="video-wrapper">
+                                          <a @click="fetchVideos('170655')" href="javascript:;" class="text-muted">
+                                            <ion-icon name="videocam-outline"></ion-icon>
+                                          </a>
+                                        </div>
+                                        <div class="audio-wrapper">
+                                          <a @click="fetchAudios('170655')" href="javascript:;" class="text-muted">
+                                            <ion-icon name="mic-outline"></ion-icon>
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>
                                 </div>
-                            </a>
+                           
                         </div>
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-5-cols">
