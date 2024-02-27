@@ -253,15 +253,6 @@
         font-size: 24px;
         line-height: normal;
     }
-    
-     .latestCastingSection .title {
-        font-size: 30px;
-    }
-    
-    .hightlight-banner .title {
-        font-size: 30px;
-    }
-     
     .latestCastingSection .badge {
         margin-top: 5px;
     }
@@ -291,9 +282,6 @@
         padding: 40px 0 50px;
         position: relative;
     }
-     .latestProfileSection .title {
-        font-size: 30px;
-    }
     .latestProfileSection h3 {
         font-size: 28px;
         line-height: normal;
@@ -310,9 +298,6 @@
     /**/
     .successExperience {
         padding: 40px 0 50px;
-    }
-     .successExperience .title {
-        font-size: 30px;
     }
     .successExperience h2 {
         font-size: 28px;
@@ -361,14 +346,6 @@
         letter-spacing: -0.03em;
         color: #19191C;
     }
-     .hightlight-banner title {
-        font-style: normal;
-        font-weight: 800;
-        font-size: 30px;
-        line-height: normal;
-        letter-spacing: -0.03em;
-        color: #19191C;
-    }
     .hightlight-banner p {
         font-style: normal;
         font-weight: 400;
@@ -390,9 +367,6 @@
     /**/
     .studycase-section .item {
         padding: 40px 0 50px;
-    }
-     .studycase-section .title {
-        font-size: 30px;
     }
     .job-leaves-left {
         right: 0;
@@ -858,7 +832,6 @@
         letter-spacing: -0.03em;
         color: #19191C;
     }
-      
     .hightlight-banner p {
         font-style: normal;
         font-weight: 400;

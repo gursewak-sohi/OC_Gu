@@ -603,7 +603,7 @@ document.addEventListener("alpine:init", () => {
         
 
         unBlockConversation(conversation) {  
-            const apiUrl = `hhttp://84.247.163.91/api/chat/unblock_user.asp?ConversationID=${conversation.conversationid}&CasterID=${conversation.casterid}&ProfileID=${conversation.profileid}&BlockedCasterID=${conversation.casterid}&BlockedProfileID=${conversation.profileid}`;
+            const apiUrl = `http://84.247.163.91/api/chat/unblock_user.asp?ConversationID=${conversation.conversationid}&CasterID=${conversation.casterid}&ProfileID=${conversation.profileid}&BlockedCasterID=${conversation.casterid}&BlockedProfileID=${conversation.profileid}`;
             fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
