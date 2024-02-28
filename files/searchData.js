@@ -2,6 +2,36 @@
 
 document.addEventListener("alpine:init", () => {
   Alpine.data('searchComponent', () => ({
+
+    isLoadingImages: false,
+    images: [],
+    fetchImages(profileId) {
+        this.isLoadingImages = true;
+        fetch(`https://www.onlinecasting.dk/api/profile_images.asp?profileid=${profileId}`)
+            .then(response => response.json())
+            .then(data => {
+                this.images = data.images;
+                this.$nextTick(() => {
+                  const fancyBoxItems = this.images.map(image => ({
+                    src: image.imageurl,
+                    type: 'image',  
+                    opts: {
+                      caption: `${image.datecreated}`,
+                    }
+                 }));
+                  $.fancybox.open(fancyBoxItems, {
+                      loop: true,
+                  });
+              });
+            })
+            .catch(error => {
+                console.error("Error fetching video data:", error);
+            })
+            .finally(() => {
+                this.isLoadingImages = false;
+            });
+      },
+
       isLoadingVideos: false,
       videos: [],
       fetchVideos(profileId) {
@@ -45,7 +75,7 @@ document.addEventListener("alpine:init", () => {
         fetch(`https://www.onlinecasting.dk/api/profile_audio.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.audio)
+                // console.log(data.audio)
                 this.audios = data.audio;
                 this.$nextTick(() => {
                   const fancyBoxItems = this.audios.map(audio => ({

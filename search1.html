@@ -845,7 +845,7 @@
                                 
 
                                   <div class="d-flex align-items-center gap-2 fs-3">
-                                    <a @click="messageProfile('170690')" class="text-muted" href="javascript:;">
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="messageProfile('170690')" class="text-muted" href="javascript:;">
                                       <div class="icon-wrapper">
                                         <span class="icon-outline">
                                           <ion-icon name="mail-outline" ></ion-icon>
@@ -855,7 +855,19 @@
                                         </span>
                                       </div>
                                     </a>
-                                    <a class="text-muted" href="javascript:;">
+                                    <div class="image-wrapper">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchImages('170747')" href="javascript:;" class="text-muted">
+                                          <div class="icon-wrapper">
+                                            <span class="icon-outline">
+                                                <ion-icon name="camera-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                                <ion-icon name="camera"></ion-icon>
+                                            </span>
+                                          </div>
+                                        </a>
+                                      </div>
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" class="text-muted" href="javascript:;">
                                       <div class="icon-wrapper">
                                         <span class="icon-outline">
                                           <ion-icon name="ellipsis-vertical-outline"></ion-icon>
@@ -866,7 +878,7 @@
                                       </div>
                                     </a>
                                     <div class="video-wrapper">
-                                      <a @click="fetchVideos('60407')" href="javascript:;" class="text-muted">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('60407')" href="javascript:;" class="text-muted">
                                         <div class="icon-wrapper">
                                           <span class="icon-outline">
                                             <ion-icon name="videocam-outline"></ion-icon>
@@ -878,7 +890,7 @@
                                       </a>
                                     </div>
                                     <div class="audio-wrapper">
-                                      <a @click="fetchAudios('170591')" href="javascript:;" class="text-muted">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('170591')" href="javascript:;" class="text-muted">
                                         <div class="icon-wrapper">
                                           <span class="icon-outline">
                                             <ion-icon name="mic-outline"></ion-icon>
