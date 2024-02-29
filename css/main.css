@@ -3947,6 +3947,10 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     display: flex; 
   }
 
+  .fs-3 {
+    font-size: 1.75rem !important;
+  }
+
 @media (max-width: 767px) {
      
       .modal-header-image {
