@@ -21,6 +21,20 @@
 
 <body x-data="searchComponent()" x-init="init">
 
+    <!-- Toast Message -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong x-text="statusMessageHeadline" class="me-auto">Bootstrap</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div x-text="statusMessage" class="toast-body">
+            Hello, world! This is a toast message.
+          </div>
+        </div>
+    </div>
+      
+
      <!-- Modal -->
        <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
          <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
@@ -58,8 +72,8 @@
                   <p x-html="messageTextHtml" class="font-size-16px"></p>
 
                   <div class="form-group mt-4 mb-4">
-                    <label x-text="messageHeadlineMessageBox" class="form-label font-size-16px"></label>
-                    <textarea x-model="newMessage" class="form-control" rows="8"></textarea>
+                        <label x-text="messageHeadlineMessageBox" class="form-label font-size-16px"></label>
+                        <textarea x-model="newMessage" class="form-control" rows="8"></textarea>
                     </div>
 
                 </div>
@@ -842,8 +856,9 @@
                                     <h4>Anna</h4>
                                     <p class="mb-2">26 aR</p>
                                   </div>
+                                  
                                   <div class="d-flex align-items-center gap-2 fs-3">
-                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="messageProfile('170690')" class="text-muted" href="javascript:;">
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="messageProfile('170806')" class="text-muted" href="javascript:;">
                                       <div class="icon-wrapper">
                                         <span class="icon-outline">
                                           <ion-icon name="mail-outline" ></ion-icon>
@@ -853,28 +868,70 @@
                                         </span>
                                       </div>
                                     </a>
-                                    <div class="image-wrapper">
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchImages('170747')" href="javascript:;" class="text-muted">
-                                          <div class="icon-wrapper">
+                                     <div class="image-wrapper">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchImages('171402')" href="javascript:;" class="text-muted">
+                                            <div class="icon-wrapper">
                                             <span class="icon-outline">
                                                 <ion-icon name="camera-outline"></ion-icon>
                                             </span>
                                             <span class="icon-solid">
                                                 <ion-icon name="camera"></ion-icon>
                                             </span>
-                                          </div>
+                                            </div>
                                         </a>
-                                      </div>
-                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" class="text-muted" href="javascript:;">
-                                      <div class="icon-wrapper">
-                                        <span class="icon-outline">
-                                          <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-                                        </span>
-                                        <span class="icon-solid">
-                                          <ion-icon name="ellipsis-vertical"></ion-icon>
-                                        </span>
-                                      </div>
-                                    </a>
+                                    </div>
+                                    <div @click="fetchOptions('171338')" class="dropdown-container dropdown-solid filter-downBtn">
+                                        <div class="dropdown-toggle click-dropdown px-0 fs-3 text-muted">
+                                            <div class="icon-wrapper">
+                                                <span class="icon-outline">
+                                                  <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                                                </span>
+                                                <span class="icon-solid">
+                                                  <ion-icon name="ellipsis-vertical"></ion-icon>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                            <template x-if="isLoadingOptions">
+                                                <div class="more-loader">Loading..</div>
+                                             </template>
+                                             <template x-if="isAskingSelfie">
+                                                <div class="more-loader">Loading..</div>
+                                             </template>
+                                             <template x-if="isInvitingCasting">
+                                                <div class="more-loader">Loading..</div>
+                                             </template>
+                                            <ul>
+                                                <li>
+                                                    <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
+                                                    <div class="more-option-submenu-wrapper">
+                                                        <div class="more-option-submenu">
+                                                            <ul class="">
+                                                                <template x-for="casting in castings" :key="casting.auditionid">
+                                                                    <li>
+                                                                        <div class="font-size-12px text-muted ps-3 fw-semibold mb-1">
+                                                                            <span x-text="casting.date" class="text-capitalize">Nov 9, 2023</span> 
+                                                                            <span x-show="casting.invitedstatus !== ''" class="text-orange">(<span x-text="casting.invitedstatus">Closed</span>)</span>
+                                                                        </div>
+                                                                        <a @click.stop="inviteCasting('171338', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
+                                                                            <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
+                                                                            <div x-text="casting.title">Chinese Talents for Upcoming Supermarket Festival Comercial</div>
+                                                                        </a>
+                                                                    </li>
+                                                                 </template>
+                                                            </ul> 
+                                                            <div class="py-2 ps-4 pe-2">
+                                                                <button class="btn btn-orange-sm">Add a new post</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <button type="button" @click.stop="sendSelfie('171338')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>   
                                     <div class="video-wrapper">
                                       <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('60407')" href="javascript:;" class="text-muted">
                                         <div class="icon-wrapper">
@@ -940,16 +997,58 @@
                                               </div>
                                             </a>
                                           </div>
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" class="text-muted" href="javascript:;">
-                                          <div class="icon-wrapper">
-                                            <span class="icon-outline">
-                                              <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-                                            </span>
-                                            <span class="icon-solid">
-                                              <ion-icon name="ellipsis-vertical"></ion-icon>
-                                            </span>
-                                          </div>
-                                        </a>
+                                          <div @click="fetchOptions('17133')" class="dropdown-container dropdown-solid filter-downBtn">
+                                            <div class="dropdown-toggle click-dropdown px-0 fs-3 text-muted">
+                                                <div class="icon-wrapper">
+                                                    <span class="icon-outline">
+                                                      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                                                    </span>
+                                                    <span class="icon-solid">
+                                                      <ion-icon name="ellipsis-vertical"></ion-icon>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                                <template x-if="isLoadingOptions">
+                                                    <div class="more-loader">Loading..</div>
+                                                 </template>
+                                                 <template x-if="isAskingSelfie">
+                                                    <div class="more-loader">Loading..</div>
+                                                 </template>
+                                                 <template x-if="isInvitingCasting">
+                                                    <div class="more-loader">Loading..</div>
+                                                 </template>
+                                                <ul>
+                                                    <li>
+                                                        <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
+                                                        <div class="more-option-submenu-wrapper">
+                                                            <div class="more-option-submenu">
+                                                                <ul class="">
+                                                                    <template x-for="casting in castings" :key="casting.auditionid">
+                                                                        <li>
+                                                                            <div class="font-size-12px text-muted ps-3 fw-semibold mb-1">
+                                                                                <span x-text="casting.date" class="text-capitalize">Nov 9, 2023</span> 
+                                                                                <span x-show="casting.invitedstatus !== ''" class="text-orange">(<span x-text="casting.invitedstatus">Closed</span>)</span>
+                                                                            </div>
+                                                                            <a @click.stop="inviteCasting('', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
+                                                                                <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
+                                                                                <div x-text="casting.title">Chinese Talents for Upcoming Supermarket Festival Comercial</div>
+                                                                            </a>
+                                                                        </li>
+                                                                     </template>
+                                                                </ul> 
+                                                                <div class="py-2 ps-4 pe-2">
+                                                                    <button class="btn btn-orange-sm">Add a new post</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" @click.stop="sendSelfie('')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                          </div>    
                                         <div class="video-wrapper">
                                           <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('27448')" href="javascript:;" class="text-muted">
                                             <div class="icon-wrapper">
@@ -1016,16 +1115,58 @@
                                                 </div>
                                                 </a>
                                             </div>
-                                            <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" class="text-muted" href="javascript:;">
-                                            <div class="icon-wrapper">
-                                                <span class="icon-outline">
-                                                <ion-icon name="ellipsis-vertical-outline"></ion-icon>
-                                                </span>
-                                                <span class="icon-solid">
-                                                <ion-icon name="ellipsis-vertical"></ion-icon>
-                                                </span>
-                                            </div>
-                                            </a>
+                                            <div @click="fetchOptions('')" class="dropdown-container dropdown-solid filter-downBtn">
+                                                <div class="dropdown-toggle click-dropdown px-0 fs-3 text-muted">
+                                                    <div class="icon-wrapper">
+                                                        <span class="icon-outline">
+                                                          <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                                                        </span>
+                                                        <span class="icon-solid">
+                                                          <ion-icon name="ellipsis-vertical"></ion-icon>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                                    <template x-if="isLoadingOptions">
+                                                        <div class="more-loader">Loading..</div>
+                                                     </template>
+                                                     <template x-if="isAskingSelfie">
+                                                        <div class="more-loader">Loading..</div>
+                                                     </template>
+                                                     <template x-if="isInvitingCasting">
+                                                        <div class="more-loader">Loading..</div>
+                                                     </template>
+                                                    <ul>
+                                                        <li>
+                                                            <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
+                                                            <div class="more-option-submenu-wrapper">
+                                                                <div class="more-option-submenu">
+                                                                    <ul class="">
+                                                                        <template x-for="casting in castings" :key="casting.auditionid">
+                                                                            <li>
+                                                                                <div class="font-size-12px text-muted ps-3 fw-semibold mb-1">
+                                                                                    <span x-text="casting.date" class="text-capitalize">Nov 9, 2023</span> 
+                                                                                    <span x-show="casting.invitedstatus !== ''" class="text-orange">(<span x-text="casting.invitedstatus">Closed</span>)</span>
+                                                                                </div>
+                                                                                <a @click.stop="inviteCasting('', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
+                                                                                    <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
+                                                                                    <div x-text="casting.title">Chinese Talents for Upcoming Supermarket Festival Comercial</div>
+                                                                                </a>
+                                                                            </li>
+                                                                         </template>
+                                                                    </ul> 
+                                                                    <div class="py-2 ps-4 pe-2">
+                                                                        <button class="btn btn-orange-sm">Add a new post</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <button type="button" @click.stop="sendSelfie('')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                              </div> 
                                             <div class="video-wrapper">
                                             <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('274482')" href="javascript:;" class="text-muted">
                                                 <div class="icon-wrapper">

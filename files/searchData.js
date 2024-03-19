@@ -1,13 +1,15 @@
  
 
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance(document.getElementById('liveToast'));
+
 document.addEventListener("alpine:init", () => {
   Alpine.data('searchComponent', () => ({
 
-    isLoadingImages: false,
-    images: [],
-    fetchImages(profileId) {
+      isLoadingImages: false,
+      images: [],
+      fetchImages(profileId) {
         this.isLoadingImages = true;
-        fetch(`https://www.onlinecasting.dk/api/profile_images.asp?profileid=${profileId}`)
+        fetch(`https://proxy.cors.sh/https://www.onlinecasting.dk/api/profile_images.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
                 this.images = data.images;
@@ -36,7 +38,7 @@ document.addEventListener("alpine:init", () => {
       videos: [],
       fetchVideos(profileId) {
           this.isLoadingVideos = true;
-          fetch(`https://www.onlinecasting.dk/api/profile_videos.asp?profileid=${profileId}`)
+          fetch(`https://proxy.cors.sh/https://www.onlinecasting.dk/api/profile_videos.asp?profileid=${profileId}`)
               .then(response => response.json())
               .then(data => {
                   this.videos = data.videos;
@@ -72,7 +74,7 @@ document.addEventListener("alpine:init", () => {
       audios: [],
       fetchAudios(profileId) {
         this.isLoadingAudios = true;
-        fetch(`https://www.onlinecasting.dk/api/profile_audio.asp?profileid=${profileId}`)
+        fetch(`https://proxy.cors.sh/https://www.onlinecasting.dk/api/profile_audio.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
                 // console.log(data.audio)
@@ -112,6 +114,107 @@ document.addEventListener("alpine:init", () => {
             });
       },
 
+      isLoadingOptions: false,
+      castings: [],
+      options: {},
+      fetchOptions(profileId) {
+          this.isLoadingOptions = true;
+          fetch(`https://www.onlinecasting.dk/api/caster_profile_options.asp?profileid=${profileId}`)
+              .then(response => response.json())
+              .then(data => {
+                  if (data.status == 'OK') {
+                     this.castings = data.castings;
+                     this.options = data;
+                  }
+                  else if (data.status == 'ERROR') {
+                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    this.statusMessage = data.StatusMessage
+                    this.messageTextClose = data.text_close
+    
+                    let statusModal = document.getElementById('statusModal');
+                    let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                    if (!statusModalInstance) {
+                      statusModalInstance = new bootstrap.Modal(statusModal);
+                    }
+                    statusModalInstance.show();  
+                  }  
+              })
+              .catch(error => {
+                  console.error("Error fetching video data:", error);
+              })
+              .finally(() => {
+                  this.isLoadingOptions = false;
+              });
+      },
+
+      isAskingSelfie: false,
+      sendSelfie(profileId) {
+          this.isAskingSelfie = true;
+          fetch(`https://www.onlinecasting.dk/api/message_profile_send_selfie.asp?profileid=${profileId}`)
+              .then(response => response.json())
+              .then(data => {
+                  if (data.Status == 'OK') {
+                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    this.statusMessage = data.StatusMessage
+                    this.messageTextClose = data.text_close
+                    toastBootstrap.show();
+                    this.fetchOptions(profileId);
+                  }
+                  else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    this.statusMessage = data.StatusMessage
+                    this.messageTextClose = data.text_close
+
+                    let statusModal = document.getElementById('statusModal');
+                    let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                    if (!statusModalInstance) {
+                      statusModalInstance = new bootstrap.Modal(statusModal);
+                    }
+                    statusModalInstance.show();  
+                  }  
+              })
+              .catch(error => {
+                  console.error("Error fetching video data:", error);
+              })
+              .finally(() => {
+                  this.isAskingSelfie = false;
+              });
+      },
+
+      isInvitingCasting: false,
+      inviteCasting(profileId, auditionId) {
+          this.isInvitingCasting = true;
+          fetch(`https://www.onlinecasting.dk/api/caster_profile_options_invite.asp?profileid=${profileId}&auditionid=${auditionId}`)
+              .then(response => response.json())
+              .then(data => {
+                  if (data.Status == 'OK') {
+                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    this.statusMessage = data.StatusMessage
+                    this.messageTextClose = data.text_close
+                    toastBootstrap.show();
+                    this.fetchOptions(profileId);
+                  }
+                  else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    this.statusMessage = data.StatusMessage
+                    this.messageTextClose = data.text_close
+
+                    let statusModal = document.getElementById('statusModal');
+                    let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                    if (!statusModalInstance) {
+                      statusModalInstance = new bootstrap.Modal(statusModal);
+                    }
+                    statusModalInstance.show();  
+                  }  
+              })
+              .catch(error => {
+                  console.error("Error fetching video data:", error);
+              })
+              .finally(() => {
+                  this.isInvitingCasting = false;
+              });
+      },
+
       currentProfileId: '',
       isLoadingMessage: false,
       messageHeadline: '',
@@ -119,13 +222,13 @@ document.addEventListener("alpine:init", () => {
       messageTextHtml: '',
       messageHeadlineMessageBox: '',
       messageTextSubmit: '',
-      messageTextClose: '',
-      statusMessageHeadline: '',
-      statusMessage: '',
+      messageTextClose: 'Close',
+      statusMessageHeadline: 'Headline',
+      statusMessage: 'Message',
       messageProfile(profileId) {
         this.currentProfileId = profileId;
         this.isLoadingMessage = true;
-        fetch(`https://www.onlinecasting.dk/api/message_profile.asp?profileid=${profileId}`)
+        fetch(`https://proxy.cors.sh/https://www.onlinecasting.dk/api/message_profile.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
               if (data.Status == 'OK') {
@@ -166,50 +269,50 @@ document.addEventListener("alpine:init", () => {
             });
       },
 
-       //  Post Messages
-       newMessage: '',
-       postProfileMessage() {  
-           const url = "https://proxy.cors.sh/https://www.onlinecasting.dk/api/message_profile_send.asp";
+      //  Post Messages
+      newMessage: '',
+      postProfileMessage() {  
+          const url = "https://proxy.cors.sh/https://www.onlinecasting.dk/api/message_profile_send.asp";
 
-           const data = {
-               profileid: this.currentProfileId,
-               message: this.newMessage,
-           };
-           
-           fetch(url, {
-               method: 'POST',
-               headers: {
-                   'x-cors-api-key': 'temp_eef745625cb54bc7665a1785f4bee6a9',
-                   'Content-Type': 'application/x-www-form-urlencoded'
-               },
-               body: new URLSearchParams(data).toString()
-           })
-           .then(response => response.json())
-           .then(data => {
-                let reportModal = document.getElementById('reportModal');
-                let reportModalInstance = bootstrap.Modal.getInstance(reportModal);
-                if (!reportModalInstance) {
-                  reportModalInstance = new bootstrap.Modal(reportModal);
-                }
-                reportModalInstance.hide();
+          const data = {
+              profileid: this.currentProfileId,
+              message: this.newMessage,
+          };
+          
+          fetch(url, {
+              method: 'POST',
+              headers: {
+                  'x-cors-api-key': 'temp_eef745625cb54bc7665a1785f4bee6a9',
+                  'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              body: new URLSearchParams(data).toString()
+          })
+          .then(response => response.json())
+          .then(data => {
+              let reportModal = document.getElementById('reportModal');
+              let reportModalInstance = bootstrap.Modal.getInstance(reportModal);
+              if (!reportModalInstance) {
+                reportModalInstance = new bootstrap.Modal(reportModal);
+              }
+              reportModalInstance.hide();
 
 
-                this.newMessage = '';
-                this.statusMessageHeadline = data.StatusMessageHeadline
-                this.statusMessage = data.StatusMessage
-                this.messageTextClose = data.text_close
+              this.newMessage = '';
+              this.statusMessageHeadline = data.StatusMessageHeadline
+              this.statusMessage = data.StatusMessage
+              this.messageTextClose = data.text_close
 
-                let statusModal = document.getElementById('statusModal');
-                let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-                if (!statusModalInstance) {
-                  statusModalInstance = new bootstrap.Modal(statusModal);
-                }
-                statusModalInstance.show();  
-           })
-           .catch((error) => {
-               console.error('Error:', error);
-           });
-       },
+              let statusModal = document.getElementById('statusModal');
+              let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+              if (!statusModalInstance) {
+                statusModalInstance = new bootstrap.Modal(statusModal);
+              }
+              statusModalInstance.show();  
+          })
+          .catch((error) => {
+              console.error('Error:', error);
+          });
+      },
       init() {
           // Optional
       }
