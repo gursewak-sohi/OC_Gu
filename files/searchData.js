@@ -2,6 +2,13 @@
 
 const toastBootstrap = bootstrap.Toast.getOrCreateInstance(document.getElementById('liveToast'));
 
+const dropdownElement = document.querySelector('.dropdown-container');
+
+dropdownElement.addEventListener('hidden.bs.dropdown', function () {
+    // Reset isAskingSelfie when dropdown is hidden
+    Alpine.store('isAskingSelfie', false);
+});
+
 document.addEventListener("alpine:init", () => {
   Alpine.data('searchComponent', () => ({
 
@@ -154,11 +161,12 @@ document.addEventListener("alpine:init", () => {
               .then(response => response.json())
               .then(data => {
                   if (data.Status == 'OK') {
-                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    // this.statusMessageHeadline = data.StatusMessageHeadline
                     this.statusMessage = data.StatusMessage
-                    this.messageTextClose = data.text_close
+                    this.statusImage = data.image
+                    // this.messageTextClose = data.text_close
                     toastBootstrap.show();
-                    this.fetchOptions(profileId);
+                    // this.fetchOptions(profileId);
                   }
                   else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
                     this.statusMessageHeadline = data.StatusMessageHeadline
@@ -188,11 +196,12 @@ document.addEventListener("alpine:init", () => {
               .then(response => response.json())
               .then(data => {
                   if (data.Status == 'OK') {
-                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    // this.statusMessageHeadline = data.StatusMessageHeadline
                     this.statusMessage = data.StatusMessage
-                    this.messageTextClose = data.text_close
+                    this.statusImage = data.image
+                    // this.messageTextClose = data.text_close
                     toastBootstrap.show();
-                    this.fetchOptions(profileId);
+                    // this.fetchOptions(profileId);
                   }
                   else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
                     this.statusMessageHeadline = data.StatusMessageHeadline
@@ -222,9 +231,10 @@ document.addEventListener("alpine:init", () => {
       messageTextHtml: '',
       messageHeadlineMessageBox: '',
       messageTextSubmit: '',
-      messageTextClose: 'Close',
-      statusMessageHeadline: 'Headline',
-      statusMessage: 'Message',
+      messageTextClose: '',
+      statusMessageHeadline: '',
+      statusMessage: '',
+      statusImage: '',
       messageProfile(profileId) {
         this.currentProfileId = profileId;
         this.isLoadingMessage = true;

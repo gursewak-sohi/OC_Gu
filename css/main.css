@@ -2962,12 +2962,22 @@ a.hover:hover:before {
 }
 
 .more-options {
-    bottom: 37px !important;
+    bottom: 64px !important;
     top: auto !important;
     width: 195px !important;
     min-width: 195px;
     right: auto !important;
 }
+
+@media (max-width: 767px) {
+    .dropdown-menu.more-options {
+        bottom: 64px !important;
+        top: auto !important;
+        width: 195px !important;
+        min-width: 195px;
+        left: -80px !important;
+    }
+  }
 
 .more-loader {
     position: absolute;
@@ -2985,7 +2995,6 @@ a.hover:hover:before {
 }
 
 .more-option-submenu-wrapper {
-    padding-left: 10px;
     left: 100%;
     width: 100%;
     margin-top: 0;
@@ -2998,6 +3007,13 @@ a.hover:hover:before {
     margin-bottom: 30px;
     transition: 0.2s all ease;
 }
+@media (max-width: 767px) {
+    .more-option-submenu-wrapper {
+        left: 50%;
+        margin-bottom: 63px;
+    }
+  }
+
 .more-option-submenu {
     background-color: #fff;
     width: 100%;
@@ -3009,6 +3025,11 @@ a.hover:hover:before {
     width: 250px;
     border: solid 1px #DFDFE8 !important;
 }
+.more-option-submenu ul {
+    max-height: 360px;
+    overflow: auto !important;
+  }
+
 .more-options li:hover .more-option-submenu-wrapper { 
     opacity: 1;
     visibility: visible;
@@ -3035,13 +3056,39 @@ a.hover:hover:before {
 
 .more-option-submenu li  a:hover { 
     color: #eb783e !important;
-} 
+}
+
+.toast {
+    background-color: white;
+    border: solid 1px #DFDFE8;
+    box-shadow: 3px 3px 8px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+}
+
+.toast-header .btn-close {
+    top: 24px !important;
+}
+.toast-body {
+    padding-right: 30px !important;
+}
+.toast-header { 
+    padding: 0;
+    border: none;
+}
+
+.toast-header .btn-close {
+    margin-right: calc(var(--bs-toast-padding-x) * -.5);
+    margin-left: var(--bs-toast-padding-x);
+    position: absolute;
+    top: 30px;
+    right: 30px;
+  }
 
 
 .btn-orange-sm {
-    color: #fff;
+    color: #fff  !important;
     border: none;
-    background: #eb783e;
+    background: #eb783e !important;
     padding: 8px 16px;
     text-align: center;
     text-decoration: none;
@@ -3058,8 +3105,8 @@ a.hover:hover:before {
 }
 
 .btn-orange-sm:hover { 
-    background: #eb783e;
-    color: #fff;
+    background: #eb783e !important;
+    color: #fff  !important;
 }
 .filter-dropdown > ul {
     text-align: left

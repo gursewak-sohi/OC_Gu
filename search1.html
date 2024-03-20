@@ -22,14 +22,16 @@
 <body x-data="searchComponent()" x-init="init">
 
     <!-- Toast Message -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-header">
-            <strong x-text="statusMessageHeadline" class="me-auto">Bootstrap</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
           </div>
-          <div x-text="statusMessage" class="toast-body">
-            Hello, world! This is a toast message.
+          <div  class="toast-body">
+            <div class="d-flex gap-3 align-items-center">
+                <img class="rounded" x-bind:src="statusImage" alt="image" width="50" height="50">
+                <span class="font-size-16px fw-semibold" x-text="statusMessage">Hello, world! This is a toast message.</span>
+            </div>
           </div>
         </div>
     </div>
@@ -881,7 +883,7 @@
                                         </a>
                                     </div>
                                     <div @click="fetchOptions('171338')" class="dropdown-container dropdown-solid filter-downBtn">
-                                        <div class="dropdown-toggle click-dropdown px-0 fs-3 text-muted">
+                                        <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
                                             <div class="icon-wrapper">
                                                 <span class="icon-outline">
                                                   <ion-icon name="ellipsis-vertical-outline"></ion-icon>
@@ -891,16 +893,10 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
-                                            <template x-if="isLoadingOptions">
+                                        <div x-on:click="isAskingSelfie = false" x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                            <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
                                                 <div class="more-loader">Loading..</div>
-                                             </template>
-                                             <template x-if="isAskingSelfie">
-                                                <div class="more-loader">Loading..</div>
-                                             </template>
-                                             <template x-if="isInvitingCasting">
-                                                <div class="more-loader">Loading..</div>
-                                             </template>
+                                            </template>
                                             <ul>
                                                 <li>
                                                     <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
@@ -913,21 +909,21 @@
                                                                             <span x-text="casting.date" class="text-capitalize">Nov 9, 2023</span> 
                                                                             <span x-show="casting.invitedstatus !== ''" class="text-orange">(<span x-text="casting.invitedstatus">Closed</span>)</span>
                                                                         </div>
-                                                                        <a @click.stop="inviteCasting('171338', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
+                                                                        <a @click="inviteCasting('171338', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
                                                                             <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
-                                                                            <div x-text="casting.title">Chinese Talents for Upcoming Supermarket Festival Comercial</div>
+                                                                            <div x-text="casting.title"></div>
                                                                         </a>
                                                                     </li>
                                                                  </template>
                                                             </ul> 
-                                                            <div class="py-2 ps-4 pe-2">
-                                                                <button class="btn btn-orange-sm">Add a new post</button>
+                                                            <div class="py-2 ps-4 pe-2 d-flex">
+                                                                <a x-bind:href="options.addposturl" class="btn btn-orange-sm">Add a new post</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <button type="button" @click.stop="sendSelfie('171338')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
+                                                    <button type="button" @click="sendSelfie('171338')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
                                                 </li>
                                             </ul>
                                         </div>
@@ -998,7 +994,7 @@
                                             </a>
                                           </div>
                                           <div @click="fetchOptions('17133')" class="dropdown-container dropdown-solid filter-downBtn">
-                                            <div class="dropdown-toggle click-dropdown px-0 fs-3 text-muted">
+                                            <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
                                                 <div class="icon-wrapper">
                                                     <span class="icon-outline">
                                                       <ion-icon name="ellipsis-vertical-outline"></ion-icon>
@@ -1009,15 +1005,9 @@
                                                 </div>
                                             </div>
                                             <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
-                                                <template x-if="isLoadingOptions">
+                                                <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
                                                     <div class="more-loader">Loading..</div>
-                                                 </template>
-                                                 <template x-if="isAskingSelfie">
-                                                    <div class="more-loader">Loading..</div>
-                                                 </template>
-                                                 <template x-if="isInvitingCasting">
-                                                    <div class="more-loader">Loading..</div>
-                                                 </template>
+                                                </template>
                                                 <ul>
                                                     <li>
                                                         <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
@@ -1030,21 +1020,21 @@
                                                                                 <span x-text="casting.date" class="text-capitalize">Nov 9, 2023</span> 
                                                                                 <span x-show="casting.invitedstatus !== ''" class="text-orange">(<span x-text="casting.invitedstatus">Closed</span>)</span>
                                                                             </div>
-                                                                            <a @click.stop="inviteCasting('', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
+                                                                            <a @click="inviteCasting('', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
                                                                                 <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
-                                                                                <div x-text="casting.title">Chinese Talents for Upcoming Supermarket Festival Comercial</div>
+                                                                                <div x-text="casting.title"></div>
                                                                             </a>
                                                                         </li>
                                                                      </template>
                                                                 </ul> 
-                                                                <div class="py-2 ps-4 pe-2">
-                                                                    <button class="btn btn-orange-sm">Add a new post</button>
+                                                                <div class="py-2 ps-4 pe-2 d-flex">
+                                                                    <a x-bind:href="options.addposturl" class="btn btn-orange-sm">Add a new post</a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <button type="button" @click.stop="sendSelfie('')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
+                                                        <button type="button" @click="sendSelfie('')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -1116,7 +1106,7 @@
                                                 </a>
                                             </div>
                                             <div @click="fetchOptions('')" class="dropdown-container dropdown-solid filter-downBtn">
-                                                <div class="dropdown-toggle click-dropdown px-0 fs-3 text-muted">
+                                                <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
                                                     <div class="icon-wrapper">
                                                         <span class="icon-outline">
                                                           <ion-icon name="ellipsis-vertical-outline"></ion-icon>
@@ -1127,15 +1117,9 @@
                                                     </div>
                                                 </div>
                                                 <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
-                                                    <template x-if="isLoadingOptions">
+                                                    <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
                                                         <div class="more-loader">Loading..</div>
-                                                     </template>
-                                                     <template x-if="isAskingSelfie">
-                                                        <div class="more-loader">Loading..</div>
-                                                     </template>
-                                                     <template x-if="isInvitingCasting">
-                                                        <div class="more-loader">Loading..</div>
-                                                     </template>
+                                                    </template>
                                                     <ul>
                                                         <li>
                                                             <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
@@ -1148,21 +1132,21 @@
                                                                                     <span x-text="casting.date" class="text-capitalize">Nov 9, 2023</span> 
                                                                                     <span x-show="casting.invitedstatus !== ''" class="text-orange">(<span x-text="casting.invitedstatus">Closed</span>)</span>
                                                                                 </div>
-                                                                                <a @click.stop="inviteCasting('', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
+                                                                                <a @click="inviteCasting('', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
                                                                                     <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
-                                                                                    <div x-text="casting.title">Chinese Talents for Upcoming Supermarket Festival Comercial</div>
+                                                                                    <div x-text="casting.title"></div>
                                                                                 </a>
                                                                             </li>
                                                                          </template>
                                                                     </ul> 
-                                                                    <div class="py-2 ps-4 pe-2">
-                                                                        <button class="btn btn-orange-sm">Add a new post</button>
+                                                                    <div class="py-2 ps-4 pe-2 d-flex">
+                                                                        <a x-bind:href="options.addposturl" class="btn btn-orange-sm">Add a new post</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <button type="button" @click.stop="sendSelfie('')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
+                                                            <button type="button" @click="sendSelfie('')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -1236,7 +1220,7 @@
                                             </a>
                                         </div>
                                         <div @click="fetchOptions('171338')" class="dropdown-container dropdown-solid filter-downBtn">
-                                            <div class="dropdown-toggle click-dropdown px-0 fs-3 text-muted">
+                                            <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
                                                 <div class="icon-wrapper">
                                                     <span class="icon-outline">
                                                       <ion-icon name="ellipsis-vertical-outline"></ion-icon>
@@ -1247,15 +1231,9 @@
                                                 </div>
                                             </div>
                                             <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
-                                                <template x-if="isLoadingOptions">
+                                                <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
                                                     <div class="more-loader">Loading..</div>
-                                                 </template>
-                                                 <template x-if="isAskingSelfie">
-                                                    <div class="more-loader">Loading..</div>
-                                                 </template>
-                                                 <template x-if="isInvitingCasting">
-                                                    <div class="more-loader">Loading..</div>
-                                                 </template>
+                                                </template>
                                                 <ul>
                                                     <li>
                                                         <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
@@ -1268,21 +1246,21 @@
                                                                                 <span x-text="casting.date" class="text-capitalize">Nov 9, 2023</span> 
                                                                                 <span x-show="casting.invitedstatus !== ''" class="text-orange">(<span x-text="casting.invitedstatus">Closed</span>)</span>
                                                                             </div>
-                                                                            <a @click.stop="inviteCasting('', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
+                                                                            <a @click="inviteCasting('', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
                                                                                 <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
-                                                                                <div x-text="casting.title">Chinese Talents for Upcoming Supermarket Festival Comercial</div>
+                                                                                <div x-text="casting.title"></div>
                                                                             </a>
                                                                         </li>
                                                                      </template>
                                                                 </ul> 
-                                                                <div class="py-2 ps-4 pe-2">
-                                                                    <button class="btn btn-orange-sm">Add a new post</button>
+                                                                <div class="py-2 ps-4 pe-2 d-flex">
+                                                                    <a x-bind:href="options.addposturl" class="btn btn-orange-sm">Add a new post</a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li>
-                                                        <button type="button" @click.stop="sendSelfie('')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
+                                                        <button type="button" @click="sendSelfie('')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
                                                     </li>
                                                 </ul>
                                             </div>
