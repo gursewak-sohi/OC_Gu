@@ -882,7 +882,34 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div @click="fetchOptions('171338')" class="dropdown-container dropdown-solid filter-downBtn">
+                                   
+                                     
+                                   
+                                    <div class="video-wrapper">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('60407')" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper">
+                                          <span class="icon-outline">
+                                            <ion-icon name="videocam-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="videocam"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                    </div>
+                                    <div class="audio-wrapper">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('170591')" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper">
+                                          <span class="icon-outline">
+                                            <ion-icon name="mic-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="mic"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                    </div>
+                                    <div @resize.window="enableClick = window.innerWidth < 768" @click.away="submenuOpen = false;" @click="fetchOptions('171338', $event.target);" class="dropdown-container dropdown-solid filter-downBtn">
                                         <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
                                             <div class="icon-wrapper">
                                                 <span class="icon-outline">
@@ -893,14 +920,14 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div x-on:click="isAskingSelfie = false" x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                        <div  x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
                                             <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
                                                 <div class="more-loader">Loading..</div>
                                             </template>
                                             <ul>
-                                                <li>
+                                                <li @click.stop="if(enableClick) { $event.stopPropagation(); submenuOpen = !submenuOpen; }">
                                                     <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
-                                                    <div class="more-option-submenu-wrapper">
+                                                    <div x-show="submenuOpen || !enableClick" :class="{'left-submenu': positionLeft, 'right-submenu': !positionLeft}" class="more-option-submenu-wrapper">
                                                         <div class="more-option-submenu">
                                                             <ul class="">
                                                                 <template x-for="casting in castings" :key="casting.auditionid">
@@ -927,31 +954,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div>   
-                                    <div class="video-wrapper">
-                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('60407')" href="javascript:;" class="text-muted">
-                                        <div class="icon-wrapper">
-                                          <span class="icon-outline">
-                                            <ion-icon name="videocam-outline"></ion-icon>
-                                          </span>
-                                          <span class="icon-solid">
-                                            <ion-icon name="videocam"></ion-icon>
-                                          </span>
-                                        </div>
-                                      </a>
-                                    </div>
-                                    <div class="audio-wrapper">
-                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('170591')" href="javascript:;" class="text-muted">
-                                        <div class="icon-wrapper">
-                                          <span class="icon-outline">
-                                            <ion-icon name="mic-outline"></ion-icon>
-                                          </span>
-                                          <span class="icon-solid">
-                                            <ion-icon name="mic"></ion-icon>
-                                          </span>
-                                        </div>
-                                      </a>
-                                    </div>
+                                     </div>
                                   </div>
                                 </div>
                             </div>
@@ -993,7 +996,33 @@
                                               </div>
                                             </a>
                                           </div>
-                                          <div @click="fetchOptions('17133')" class="dropdown-container dropdown-solid filter-downBtn">
+                                        
+                                           
+                                        <div class="video-wrapper">
+                                          <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('27448')" href="javascript:;" class="text-muted">
+                                            <div class="icon-wrapper">
+                                              <span class="icon-outline">
+                                                <ion-icon name="videocam-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="videocam"></ion-icon>
+                                              </span>
+                                            </div>
+                                          </a>
+                                        </div>
+                                        <div class="audio-wrapper">
+                                          <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('170591')" href="javascript:;" class="text-muted">
+                                            <div class="icon-wrapper">
+                                              <span class="icon-outline">
+                                                <ion-icon name="mic-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="mic"></ion-icon>
+                                              </span>
+                                            </div>
+                                          </a>
+                                        </div>
+                                        <div @resize.window="enableClick = window.innerWidth < 768" @click.away="submenuOpen = false;" @click="fetchOptions('17133', $event.target);" class="dropdown-container dropdown-solid filter-downBtn">
                                             <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
                                                 <div class="icon-wrapper">
                                                     <span class="icon-outline">
@@ -1004,14 +1033,14 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                            <div  x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
                                                 <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
                                                     <div class="more-loader">Loading..</div>
                                                 </template>
                                                 <ul>
-                                                    <li>
+                                                    <li @click.stop="if(enableClick) { $event.stopPropagation(); submenuOpen = !submenuOpen; }">
                                                         <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
-                                                        <div class="more-option-submenu-wrapper">
+                                                        <div x-show="submenuOpen || !enableClick" :class="{'left-submenu': positionLeft, 'right-submenu': !positionLeft}" class="more-option-submenu-wrapper">
                                                             <div class="more-option-submenu">
                                                                 <ul class="">
                                                                     <template x-for="casting in castings" :key="casting.auditionid">
@@ -1038,31 +1067,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                          </div>    
-                                        <div class="video-wrapper">
-                                          <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('27448')" href="javascript:;" class="text-muted">
-                                            <div class="icon-wrapper">
-                                              <span class="icon-outline">
-                                                <ion-icon name="videocam-outline"></ion-icon>
-                                              </span>
-                                              <span class="icon-solid">
-                                                <ion-icon name="videocam"></ion-icon>
-                                              </span>
-                                            </div>
-                                          </a>
-                                        </div>
-                                        <div class="audio-wrapper">
-                                          <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('170591')" href="javascript:;" class="text-muted">
-                                            <div class="icon-wrapper">
-                                              <span class="icon-outline">
-                                                <ion-icon name="mic-outline"></ion-icon>
-                                              </span>
-                                              <span class="icon-solid">
-                                                <ion-icon name="mic"></ion-icon>
-                                              </span>
-                                            </div>
-                                          </a>
-                                        </div>
+                                         </div>
                                       </div>
                                     </div>
                                 </div>
@@ -1105,7 +1110,33 @@
                                                 </div>
                                                 </a>
                                             </div>
-                                            <div @click="fetchOptions('')" class="dropdown-container dropdown-solid filter-downBtn">
+                                            
+                                             
+                                            <div class="video-wrapper">
+                                            <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('274482')" href="javascript:;" class="text-muted">
+                                                <div class="icon-wrapper">
+                                                <span class="icon-outline">
+                                                    <ion-icon name="videocam-outline"></ion-icon>
+                                                </span>
+                                                <span class="icon-solid">
+                                                    <ion-icon name="videocam"></ion-icon>
+                                                </span>
+                                                </div>
+                                            </a>
+                                            </div>
+                                            <div class="audio-wrapper">
+                                            <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('60407')" href="javascript:;" class="text-muted">
+                                                <div class="icon-wrapper">
+                                                <span class="icon-outline">
+                                                    <ion-icon name="mic-outline"></ion-icon>
+                                                </span>
+                                                <span class="icon-solid">
+                                                    <ion-icon name="mic"></ion-icon>
+                                                </span>
+                                                </div>
+                                            </a>
+                                            </div>
+                                            <div @resize.window="enableClick = window.innerWidth < 768" @click.away="submenuOpen = false;" @click="fetchOptions('', $event.target);" class="dropdown-container dropdown-solid filter-downBtn">
                                                 <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
                                                     <div class="icon-wrapper">
                                                         <span class="icon-outline">
@@ -1116,14 +1147,14 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                                <div  x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
                                                     <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
                                                         <div class="more-loader">Loading..</div>
                                                     </template>
                                                     <ul>
-                                                        <li>
+                                                        <li @click.stop="if(enableClick) { $event.stopPropagation(); submenuOpen = !submenuOpen; };">
                                                             <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
-                                                            <div class="more-option-submenu-wrapper">
+                                                            <div x-show="submenuOpen || !enableClick" :class="{'left-submenu': positionLeft, 'right-submenu': !positionLeft}" class="more-option-submenu-wrapper">
                                                                 <div class="more-option-submenu">
                                                                     <ul class="">
                                                                         <template x-for="casting in castings" :key="casting.auditionid">
@@ -1150,31 +1181,7 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                              </div> 
-                                            <div class="video-wrapper">
-                                            <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('274482')" href="javascript:;" class="text-muted">
-                                                <div class="icon-wrapper">
-                                                <span class="icon-outline">
-                                                    <ion-icon name="videocam-outline"></ion-icon>
-                                                </span>
-                                                <span class="icon-solid">
-                                                    <ion-icon name="videocam"></ion-icon>
-                                                </span>
-                                                </div>
-                                            </a>
-                                            </div>
-                                            <div class="audio-wrapper">
-                                            <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('60407')" href="javascript:;" class="text-muted">
-                                                <div class="icon-wrapper">
-                                                <span class="icon-outline">
-                                                    <ion-icon name="mic-outline"></ion-icon>
-                                                </span>
-                                                <span class="icon-solid">
-                                                    <ion-icon name="mic"></ion-icon>
-                                                </span>
-                                                </div>
-                                            </a>
-                                            </div>
+                                             </div>
                                         </div>
                                        
                                     </div>
@@ -1219,7 +1226,35 @@
                                             </div>
                                             </a>
                                         </div>
-                                        <div @click="fetchOptions('171338')" class="dropdown-container dropdown-solid filter-downBtn">
+                                      
+                                        
+                                       
+
+                                        <div class="video-wrapper">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('170655')" href="javascript:;" class="text-muted">
+                                            <div class="icon-wrapper">
+                                            <span class="icon-outline">
+                                                <ion-icon name="videocam-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                                <ion-icon name="videocam"></ion-icon>
+                                            </span>
+                                            </div>
+                                        </a>
+                                        </div>
+                                        <div class="audio-wrapper">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('170655')" href="javascript:;" class="text-muted">
+                                            <div class="icon-wrapper">
+                                            <span class="icon-outline">
+                                                <ion-icon name="mic-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                                <ion-icon name="mic"></ion-icon>
+                                            </span>
+                                            </div>
+                                        </a>
+                                        </div>
+                                        <div @resize.window="enableClick = window.innerWidth < 768" @click.away="submenuOpen = false;" @click="fetchOptions('171338', $event.target);" class="dropdown-container dropdown-solid filter-downBtn">
                                             <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
                                                 <div class="icon-wrapper">
                                                     <span class="icon-outline">
@@ -1230,14 +1265,14 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                            <div  x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
                                                 <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
                                                     <div class="more-loader">Loading..</div>
                                                 </template>
                                                 <ul>
-                                                    <li>
+                                                    <li @click.stop="if(enableClick) { $event.stopPropagation(); submenuOpen = !submenuOpen; }">
                                                         <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
-                                                        <div class="more-option-submenu-wrapper">
+                                                        <div x-show="submenuOpen || !enableClick" :class="{'left-submenu': positionLeft, 'right-submenu': !positionLeft}" class="more-option-submenu-wrapper">
                                                             <div class="more-option-submenu">
                                                                 <ul class="">
                                                                     <template x-for="casting in castings" :key="casting.auditionid">
@@ -1264,31 +1299,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </div>   
-                                        <div class="video-wrapper">
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('170655')" href="javascript:;" class="text-muted">
-                                            <div class="icon-wrapper">
-                                            <span class="icon-outline">
-                                                <ion-icon name="videocam-outline"></ion-icon>
-                                            </span>
-                                            <span class="icon-solid">
-                                                <ion-icon name="videocam"></ion-icon>
-                                            </span>
-                                            </div>
-                                        </a>
-                                        </div>
-                                        <div class="audio-wrapper">
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('170655')" href="javascript:;" class="text-muted">
-                                            <div class="icon-wrapper">
-                                            <span class="icon-outline">
-                                                <ion-icon name="mic-outline"></ion-icon>
-                                            </span>
-                                            <span class="icon-solid">
-                                                <ion-icon name="mic"></ion-icon>
-                                            </span>
-                                            </div>
-                                        </a>
-                                        </div>
+                                         </div>
                                     </div>  
 
                                     </div>
@@ -1297,17 +1308,149 @@
                         </div>
 
                         <div class="col-12 col-sm-4 col-md-3 col-lg-5-cols">
-                            <a href="#">
-                                <div class="profileItem">
-                                    <div class="profileCard" style="background-image: url(img/profile-5.png);">
-                                        <div class="bookmark">
-                                            <ion-icon name="star-outline" class="stariconoutline"></ion-icon>
+                            <div class="profileItem">
+                                <div class="latestProfile owl-carousel owl-theme">
+                                    <a href="#">
+                                        <div class="item">
+                                            <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                                <div class="bookmark">
+                                                    <ion-icon name="star" class="stariconFill"></ion-icon>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <h4>Oleg</h4>
-                                    <p>26 aR</p>
+                                    </a>
+                                    <a href="#">
+                                        <div class="item">
+                                            <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                                <div class="bookmark">
+                                                    <ion-icon name="star" class="stariconFill"></ion-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="#">
+                                        <div class="item">
+                                            <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                                <div class="bookmark">
+                                                    <ion-icon name="star" class="stariconFill"></ion-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="#">
+                                        <div class="item">
+                                            <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                                <div class="bookmark">
+                                                    <ion-icon name="star" class="stariconFill"></ion-icon>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-                            </a>
+                                <div class="d-block">
+                                  <div>
+                                    <h4>Anna</h4>
+                                    <p class="mb-2">26 aR</p>
+                                  </div>
+                                  
+                                  <div class="d-flex align-items-center gap-2 fs-3">
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="messageProfile('170806')" class="text-muted" href="javascript:;">
+                                      <div class="icon-wrapper">
+                                        <span class="icon-outline">
+                                          <ion-icon name="mail-outline" ></ion-icon>
+                                        </span>
+                                        <span class="icon-solid">
+                                          <ion-icon name="mail"></ion-icon>
+                                        </span>
+                                      </div>
+                                    </a>
+                                     <div class="image-wrapper">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchImages('171402')" href="javascript:;" class="text-muted">
+                                            <div class="icon-wrapper">
+                                            <span class="icon-outline">
+                                                <ion-icon name="camera-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                                <ion-icon name="camera"></ion-icon>
+                                            </span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                  
+                                   
+                                    <div class="video-wrapper">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('60407')" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper">
+                                          <span class="icon-outline">
+                                            <ion-icon name="videocam-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="videocam"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                    </div>
+                                    <div class="audio-wrapper">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchAudios('170591')" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper">
+                                          <span class="icon-outline">
+                                            <ion-icon name="mic-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="mic"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                    </div>
+                                    <div @resize.window="enableClick = window.innerWidth < 768" @click.away="submenuOpen = false;" @click="fetchOptions('171338', $event.target);" class="dropdown-container dropdown-solid filter-downBtn">
+                                        <div data-bs-auto-close="true"  data-bs-toggle="dropdown" class="dropdown-toggle px-0 fs-3 text-muted">
+                                            <div class="icon-wrapper">
+                                                <span class="icon-outline">
+                                                  <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                                                </span>
+                                                <span class="icon-solid">
+                                                  <ion-icon name="ellipsis-vertical"></ion-icon>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div  x-show="options.status !== 'ERROR'"  class="dropdown-menu filter-dropdown font-size-13px more-options">
+                                            <template x-if="isLoadingOptions || isAskingSelfie || isInvitingCasting">
+                                                <div class="more-loader">Loading..</div>
+                                            </template>
+                                            <ul>
+                                                <li @click.stop="if(enableClick) { $event.stopPropagation(); submenuOpen = !submenuOpen; }">
+                                                    <button type="button"><ion-icon name="receipt"></ion-icon> Invite to job <ion-icon class="flex-shrink-0 ms-auto" name="chevron-forward-outline"></ion-icon></button>
+                                                    <div x-show="submenuOpen || !enableClick" :class="{'left-submenu': positionLeft, 'right-submenu': !positionLeft}" class="more-option-submenu-wrapper">
+                                                        <div class="more-option-submenu">
+                                                            <ul class="">
+                                                                <template x-for="casting in castings" :key="casting.auditionid">
+                                                                    <li>
+                                                                        <div class="font-size-12px text-muted ps-3 fw-semibold mb-1">
+                                                                            <span x-text="casting.date" class="text-capitalize">Nov 9, 2023</span> 
+                                                                            <span x-show="casting.invitedstatus !== ''" class="text-orange">(<span x-text="casting.invitedstatus">Closed</span>)</span>
+                                                                        </div>
+                                                                        <a @click="inviteCasting('171338', casting.auditionid)" x-bind:class="casting.invitetoapplyAPIurl == '' && 'link-disabled'" class="fw-bold d-flex gap-1" href="javascript:;">
+                                                                            <ion-icon class="text-orange flex-shrink-0 mt-1" name="chevron-forward-outline"></ion-icon>
+                                                                            <div x-text="casting.title"></div>
+                                                                        </a>
+                                                                    </li>
+                                                                 </template>
+                                                            </ul> 
+                                                            <div class="py-2 ps-4 pe-2 d-flex">
+                                                                <a x-bind:href="options.addposturl" class="btn btn-orange-sm">Add a new post</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <button type="button" @click="sendSelfie('171338')" x-bind:class="options.selfieAPIurl == '' && 'link-disabled'"  x-bind:disabled="options.selfieAPIurl == ''"><ion-icon name="lock-closed"></ion-icon> <span x-text="options.selfietext">Ask for new selfie</span> </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                     </div>
+                                  </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-5-cols">
                             <a href="#">

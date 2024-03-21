@@ -2,16 +2,22 @@
 
 const toastBootstrap = bootstrap.Toast.getOrCreateInstance(document.getElementById('liveToast'));
 
-const dropdownElement = document.querySelector('.dropdown-container');
-
-dropdownElement.addEventListener('hidden.bs.dropdown', function () {
-    // Reset isAskingSelfie when dropdown is hidden
-    Alpine.store('isAskingSelfie', false);
-});
 
 document.addEventListener("alpine:init", () => {
   Alpine.data('searchComponent', () => ({
 
+      enableClick: window.innerWidth < 576,
+      positionLeft: false,
+      updatePosition(submenuRef) {
+        if (!submenuRef) return;
+        let submenuRect = submenuRef.getBoundingClientRect();
+        let rightSpace = window.innerWidth - submenuRect.right;
+        const submenuWidth = 260;
+        this.positionLeft = rightSpace < submenuWidth;
+    },
+
+  
+      submenuOpen:false,
       isLoadingImages: false,
       images: [],
       fetchImages(profileId) {
@@ -124,8 +130,10 @@ document.addEventListener("alpine:init", () => {
       isLoadingOptions: false,
       castings: [],
       options: {},
-      fetchOptions(profileId) {
+      fetchOptions(profileId, submenuRef) {
+       
           this.isLoadingOptions = true;
+          this.updatePosition(submenuRef);
           fetch(`https://www.onlinecasting.dk/api/caster_profile_options.asp?profileid=${profileId}`)
               .then(response => response.json())
               .then(data => {
