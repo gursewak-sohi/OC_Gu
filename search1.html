@@ -37,7 +37,7 @@
     </div>
       
 
-     <!-- Modal -->
+        <!-- Modal -->
        <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
          <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
              <div class="modal-content">
@@ -56,6 +56,70 @@
              </div>
          </div>
         </div>
+
+        <!-- Saved Profile Modal -->
+       <div class="modal fade filterModal saved-profile-modal" id="savedProfileModal" tabindex="-1" aria-labelledby="savedProfileModal" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                        <img src="img/close-icon.svg" alt="">
+                    </div>
+                    <h5 x-text="statusMessageHeadline" class="modal-title text-center">Headline (API)</h5>
+                </div>
+                <div class="modal-body chat-modal-body latestProfileSection">
+                    <div class="row">
+                        <template x-if="savedProfilesFolders.length === 0">
+                            <div class="d-flex justify-content-center py-4">
+                                <button @click="createList()" x-text="createNewListHeadline" type="button" class="btn mainBtn btnfillblack">Create new list headline</button>
+                            </div>
+                        </template>
+                        <template x-for="savedProfile in savedProfilesFolders" :key="`${savedProfile.profileid}-${savedProfile.casterid}-${savedProfile.casterlistid}`">
+                            <div class="col-6">
+                                <div class="profileItem mb-4">
+                                    <a @click="addRemoveBookmarkProfile(savedProfile.profileid, savedProfile.casterlistid)" href="javascript:;" :class="{ 'profileCardAdded': savedProfile.selected_profile_added === 'YES' }" class="profileCard" :style="`background-image: url(${savedProfile.image});`"></a>
+                                    <div class="position-relative">
+                                        <span x-show="isTextClickedVisible" x-transition class="text-clicked" x-text="savedProfile.text_when_clicked"></span>
+                                        <h4 x-text="savedProfile.foldername" class="pt-3 text-truncate"></h4>
+                                        <p class="mb-1 text-capitalize d-flex align-items-center gap-2 fw-semibold text-black"><ion-icon name="calendar-outline"></ion-icon> <span x-text="savedProfile.date"></span></p>
+                                        <p x-text="savedProfile.number_of_profiles_in_folder" class="mb-0 fw-semibold">3</p>
+                                    </div>
+                                </div>
+                            </div>
+                         </template>
+                      </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                    <button @click="createList()" x-text="createNewListHeadline" type="button" class="btn mainBtn">Create new list headline</button>
+                </div>
+            </div>
+        </div>
+       </div>
+
+         <!-- Create List Modal -->
+         <div class="modal fade filterModal " id="createListModal" tabindex="-1" aria-labelledby="createListModal" aria-hidden="true">
+            <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                            <img src="img/close-icon.svg" alt="">
+                        </div>
+                        <h5 x-text="createListTextHeadline" class="modal-title text-center">Create List</h5>
+                    </div>
+                    <div class="modal-body chat-modal-body latestProfileSection">
+                        <div class="form-group mb-3">
+                            <label x-text="createListTextName" class="form-label font-size-16px"></label>
+                            <input x-model="newListName" min="1" max="50" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button x-text="createListTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                        <button @click="createListSumbit()" x-bind:disabled="newListName.length < 1 || newListName.length > 50" x-text="createListTextSumbit" type="button" class="btn mainBtn">Create new list headline</button>
+                    </div>
+                </div>
+            </div>
+           </div>
 
 
     
@@ -819,7 +883,7 @@
                                     <a href="#">
                                         <div class="item">
                                             <div class="profileCard" style="background-image: url(img/profile-7.png);">
-                                                <div class="bookmark">
+                                                <div @click="bookmarkProfile('139528')" class="bookmark">
                                                     <ion-icon name="star" class="stariconFill"></ion-icon>
                                                 </div>
                                             </div>
@@ -828,7 +892,7 @@
                                     <a href="#">
                                         <div class="item">
                                             <div class="profileCard" style="background-image: url(img/profile-7.png);">
-                                                <div class="bookmark">
+                                                <div @click="bookmarkProfile('139528')" class="bookmark">
                                                     <ion-icon name="star" class="stariconFill"></ion-icon>
                                                 </div>
                                             </div>
@@ -837,7 +901,7 @@
                                     <a href="#">
                                         <div class="item">
                                             <div class="profileCard" style="background-image: url(img/profile-7.png);">
-                                                <div class="bookmark">
+                                                <div @click="bookmarkProfile('139528')" class="bookmark">
                                                     <ion-icon name="star" class="stariconFill"></ion-icon>
                                                 </div>
                                             </div>
@@ -846,7 +910,7 @@
                                     <a href="#">
                                         <div class="item">
                                             <div class="profileCard" style="background-image: url(img/profile-7.png);">
-                                                <div class="bookmark">
+                                                <div @click="bookmarkProfile('139528')" class="bookmark">
                                                     <ion-icon name="star" class="stariconFill"></ion-icon>
                                                 </div>
                                             </div>
@@ -882,8 +946,6 @@
                                             </div>
                                         </a>
                                     </div>
-                                   
-                                     
                                    
                                     <div class="video-wrapper">
                                       <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Images" @click="fetchVideos('60407')" href="javascript:;" class="text-muted">
@@ -963,8 +1025,8 @@
                                 <div class="profileItem">
                                     <a href="javascript:;">
                                       <div class="profileCard" style="background-image: url(img/profile-2.png);">
-                                        <div class="bookmark">
-                                            <ion-icon name="star-outline" class="stariconoutline"></ion-icon>
+                                        <div @click="bookmarkProfile('13952811')" class="bookmark">
+                                            <ion-icon name="star" class="stariconFill"></ion-icon>
                                         </div>
                                     </div>
                                     </a>
@@ -1077,8 +1139,8 @@
                                 <div class="profileItem">
                                   <a href="#">
                                     <div class="profileCard" style="background-image: url(img/profile-3.png);">
-                                        <div class="bookmark">
-                                            <ion-icon name="star" class="stariconFill"></ion-icon>
+                                        <div @click="bookmarkProfile('171495')" class="bookmark">
+                                            <ion-icon name="star" class="stariconoutline"></ion-icon>
                                         </div>
                                     </div>
                                   </a>
@@ -1530,7 +1592,7 @@
                                 <div class="profileItem">
                                     <div class="profileCard" style="background-image: url(img/profile-12.jpg);">
                                         <div class="bookmark">
-                                            <ion-icon name="star-outline" class="stariconoutline"></ion-icon>
+                                            <ion-icon name="star" class="stariconFill"></ion-icon>
                                         </div>
                                     </div>
                                     <h4>Oleg</h4>
@@ -1542,8 +1604,9 @@
                             <a href="#">
                                 <div class="profileItem">
                                     <div class="profileCard" style="background-image: url(img/profile-9.jpg);">
+                                        
                                         <div class="bookmark">
-                                            <ion-icon name="star" class="stariconFill"></ion-icon>
+                                            <ion-icon name="star" class="stariconoutline"></ion-icon>
                                         </div>
                                     </div>
                                     <h4>Alex</h4>
@@ -1634,7 +1697,7 @@
                                 <div class="profileItem">
                                     <div class="profileCard" style="background-image: url(img/profile-12.jpg);">
                                         <div class="bookmark">
-                                            <ion-icon name="star-outline" class="stariconoutline"></ion-icon>
+                                            <ion-icon name="star" class="stariconoutline"></ion-icon>
                                         </div>
                                     </div>
                                     <h4>Oleg</h4>

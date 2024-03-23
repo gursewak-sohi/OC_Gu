@@ -149,6 +149,10 @@ a:active {
     color: #6b6b6b !important;
 }
 
+.text-black {
+    color: #19191C !important;
+}
+
 .text-danger-alt {
     color: var(--bs-alert-color);
 }
@@ -2168,6 +2172,11 @@ a.hover:hover:before {
     position: absolute;
     top: 15px;
     right: 15px;
+    transition: 0.2s all ease;
+}
+
+.latestProfileSection .bookmark:hover { 
+    transform: scale(1.2);
 }
 
 .latestProfileSection .bookmark .stariconFill {
@@ -2176,7 +2185,7 @@ a.hover:hover:before {
 }
 
 .latestProfileSection .bookmark .stariconoutline {
-    color: #19191C;
+    color: gray;
     font-size: 23px;
 }
 
@@ -3102,6 +3111,32 @@ a.hover:hover:before {
     right: 30px;
   }
 
+  .saved-profile-modal .profileCard {
+    outline: 3px solid transparent;
+    outline-offset: 2px;
+    display: block;
+  }
+
+  .saved-profile-modal .profileCard:hover {
+    outline: 3px solid #6b6b6b;
+  }
+
+  .saved-profile-modal .profileCardAdded {
+    outline: 3px solid #eb783e !important;
+  }
+
+  .text-clicked {
+	right: 0;
+	color: #eb783e;
+	font-weight: 500;
+	top: 21px;
+	background-color: rgba(255,255,255,1);
+	padding: 2px 3px;
+	border-radius: 2px;
+	position: absolute;
+	top: 17px;
+}
+  
 
 .btn-orange-sm {
     color: #fff  !important;
