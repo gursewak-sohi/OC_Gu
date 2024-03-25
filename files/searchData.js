@@ -172,8 +172,8 @@ document.addEventListener("alpine:init", () => {
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/saved_profiles_folders.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data, 'bookmarkProfile')
                 if (data.Status == 'OK') {
+
                   this.statusMessageHeadline = data.headline
                   this.messageTextClose = data.text_close
                   this.savedProfilesFolders = data.saved_profiles_folders;
@@ -261,13 +261,12 @@ document.addEventListener("alpine:init", () => {
             });
       },
 
-      changeProfileStarred: '',
+      changeProfileStarred: 'ON',
       createListSumbit() {
         this.isCreatingList = true;
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/create_list_submit.asp?profileid=${this.currentProfileId}&list_name=${this.newListName}`)
             .then(response => response.json())
             .then(data => {
-              console.log(data, 'createListSumbit')
                 if (data.Status == 'OK' && data.ShowMessage == 'YES') {
                   this.changeProfileStarred = data.change_profile_starred;
 
@@ -318,8 +317,8 @@ document.addEventListener("alpine:init", () => {
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/saved_profiles_folders.asp?profileid=${profileId}&casterlistid=${casterListId}`)
             .then(response => response.json())
             .then(data => {
-              console.log(data, 'data')
                 if (data.Status == 'OK') {
+                  this.changeProfileStarred = data.change_profile_starred;
                   this.savedProfilesFolders = data.saved_profiles_folders;
                   this.isTextClickedVisible =  true;
                   this.$nextTick(() => {
