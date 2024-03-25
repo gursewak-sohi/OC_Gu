@@ -172,6 +172,7 @@ document.addEventListener("alpine:init", () => {
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/saved_profiles_folders.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
+                console.log(data, 'bookmarkProfile')
                 if (data.Status == 'OK') {
                   this.statusMessageHeadline = data.headline
                   this.messageTextClose = data.text_close
@@ -260,12 +261,16 @@ document.addEventListener("alpine:init", () => {
             });
       },
 
+      changeProfileStarred: '',
       createListSumbit() {
         this.isCreatingList = true;
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/create_list_submit.asp?profileid=${this.currentProfileId}&list_name=${this.newListName}`)
             .then(response => response.json())
             .then(data => {
+              console.log(data, 'createListSumbit')
                 if (data.Status == 'OK' && data.ShowMessage == 'YES') {
+                  this.changeProfileStarred = data.change_profile_starred;
+
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
                   this.messageTextClose = data.text_close
