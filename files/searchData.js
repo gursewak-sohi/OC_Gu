@@ -261,14 +261,16 @@ document.addEventListener("alpine:init", () => {
             });
       },
 
-      changeProfileStarred: 'ON',
+      
       createListSumbit() {
         this.isCreatingList = true;
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/create_list_submit.asp?profileid=${this.currentProfileId}&list_name=${this.newListName}`)
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK' && data.ShowMessage == 'YES') {
-                  this.changeProfileStarred = data.change_profile_starred;
+
+                  let starIconClass = data.change_profile_starred === 'ON' ? 'stariconFill' : 'stariconoutline';
+                  $(`[data-profile="${this.currentProfileId}"] ion-icon`).removeClass('stariconFill stariconoutline').addClass(starIconClass);
 
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
@@ -326,7 +328,10 @@ document.addEventListener("alpine:init", () => {
                         this.isTextClickedVisible =  false;
                     }, 500);
                   });
+                  let starIconClass = data.change_profile_starred === 'ON' ? 'stariconFill' : 'stariconoutline';
+                  $(`[data-profile="${profileId}"] ion-icon`).removeClass('stariconFill stariconoutline').addClass(starIconClass);
                 }
+                
                 else if (data.Status == 'ERROR') {
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
