@@ -3115,15 +3115,28 @@ a.hover:hover:before {
     outline: 3px solid transparent;
     outline-offset: 2px;
     display: block;
+    position: relative;
   }
 
+  
   .saved-profile-modal .profileCard:hover {
     outline: 3px solid #6b6b6b;
   }
+  
 
   .saved-profile-modal .profileCardAdded {
     outline: 3px solid #eb783e !important;
   }
+
+  .checkmark-icon {
+	font-size: 40px;
+	position: absolute;
+	right: 10px;
+	bottom: 15px;
+	color: #eb783e;
+	height: 40px;
+	width: 40px;
+}
 
   .text-clicked {
 	right: 0;

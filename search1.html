@@ -77,7 +77,11 @@
                         <template x-for="savedProfile in savedProfilesFolders" :key="`${savedProfile.profileid}-${savedProfile.casterid}-${savedProfile.casterlistid}`">
                             <div class="col-6">
                                 <div class="profileItem mb-4">
-                                    <a @click="addRemoveBookmarkProfile(savedProfile.profileid, savedProfile.casterlistid)" href="javascript:;" :class="{ 'profileCardAdded': savedProfile.selected_profile_added === 'YES' }" class="profileCard" :style="`background-image: url(${savedProfile.image});`"></a>
+                                    <a @click="addRemoveBookmarkProfile(savedProfile.profileid, savedProfile.casterlistid)" href="javascript:;" :class="{ 'profileCardAdded': savedProfile.selected_profile_added === 'YES' }" class="profileCard" :style="`background-image: url(${savedProfile.image});`">
+                                        <div x-show="savedProfile.selected_profile_added === 'YES'" class="checkmark-icon">
+                                            <ion-icon name="checkmark-sharp"></ion-icon>
+                                        </div>
+                                    </a>
                                     <div class="position-relative">
                                         <span x-show="isTextClickedVisible" x-transition class="text-clicked" x-text="savedProfile.text_when_clicked"></span>
                                         <h4 x-text="savedProfile.foldername" class="pt-3 text-truncate"></h4>
