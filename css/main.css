@@ -2168,23 +2168,45 @@ a.hover:hover:before {
     content: '';
 }
 
-.latestProfileSection .bookmark {
+.gem-btn ion-icon {
+     position: relative;
+     top: 4px;
+     transition: 0.4s all ease-in-out;
+}
+
+
+
+
+.gem-btn ion-icon.stariconoutline {
+    color: gray;
+}
+
+.gem-btn ion-icon.stariconFill {
+    color: #eb783e;
+}
+
+.gem-btn:hover ion-icon {
+    color: white;
+}
+
+.bookmark {
     position: absolute;
     top: 15px;
     right: 15px;
     transition: 0.2s all ease;
+    cursor: pointer;
 }
 
-.latestProfileSection .bookmark:hover { 
+.bookmark:hover { 
     transform: scale(1.2);
 }
 
-.latestProfileSection .bookmark .stariconFill {
+.bookmark .stariconFill {
     color: #eb783e;
     font-size: 23px;
 }
 
-.latestProfileSection .bookmark .stariconoutline {
+.bookmark .stariconoutline {
     color: gray;
     font-size: 23px;
 }

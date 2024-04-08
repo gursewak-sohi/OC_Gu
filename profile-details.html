@@ -20,8 +20,98 @@
 
 </head>
 
-<body>
+<body x-data="profileDetailsComponent()" x-init="init">
 
+
+        <!-- Modal -->
+        <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
+            <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                            <img src="img/close-icon.svg" alt="">
+                        </div>
+                        <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+                    </div>
+                    <div class="modal-body chat-modal-body">
+                       <p x-text="statusMessage" class="font-size-16px"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
+                    </div>
+                </div>
+            </div>
+           </div>
+   
+           <!-- Saved Profile Modal -->
+          <div class="modal fade filterModal saved-profile-modal" id="savedProfileModal" tabindex="-1" aria-labelledby="savedProfileModal" aria-hidden="true">
+           <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                           <img src="img/close-icon.svg" alt="">
+                       </div>
+                       <h5 x-text="statusMessageHeadline" class="modal-title text-center">Headline (API)</h5>
+                   </div>
+                   <div class="modal-body chat-modal-body latestProfileSection">
+                       <div class="row">
+                           <template x-if="savedProfilesFolders.length === 0">
+                               <div class="d-flex justify-content-center py-4">
+                                   <button @click="createList()" x-text="createNewListHeadline" type="button" class="btn mainBtn btnfillblack">Create new list headline</button>
+                               </div>
+                           </template>
+                           <template x-for="savedProfile in savedProfilesFolders" :key="`${savedProfile.profileid}-${savedProfile.casterid}-${savedProfile.casterlistid}`">
+                               <div class="col-6">
+                                   <div class="profileItem mb-4">
+                                       <a @click="addRemoveBookmarkProfile(savedProfile.profileid, savedProfile.casterlistid)" href="javascript:;" :class="{ 'profileCardAdded': savedProfile.selected_profile_added === 'YES' }" class="profileCard" :style="`background-image: url(${savedProfile.image});`">
+                                           <div x-show="savedProfile.selected_profile_added === 'YES'" class="checkmark-icon">
+                                               <ion-icon name="checkmark-sharp"></ion-icon>
+                                           </div>
+                                       </a>
+                                       <div class="position-relative">
+                                           <span x-show="isTextClickedVisible" x-transition class="text-clicked" x-text="savedProfile.text_when_clicked"></span>
+                                           <h4 x-text="savedProfile.foldername" class="pt-3 text-truncate"></h4>
+                                           <p class="mb-1 text-capitalize d-flex align-items-center gap-2 fw-semibold text-black"><ion-icon name="calendar-outline"></ion-icon> <span x-text="savedProfile.date"></span></p>
+                                           <p x-text="savedProfile.number_of_profiles_in_folder" class="mb-0 fw-semibold">3</p>
+                                       </div>
+                                   </div>
+                               </div>
+                            </template>
+                         </div>
+                   </div>
+                   <div class="modal-footer d-flex justify-content-between">
+                       <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                       <button @click="createList()" x-text="createNewListHeadline" type="button" class="btn mainBtn">Create new list headline</button>
+                   </div>
+               </div>
+           </div>
+          </div>
+   
+            <!-- Create List Modal -->
+            <div class="modal fade filterModal " id="createListModal" tabindex="-1" aria-labelledby="createListModal" aria-hidden="true">
+               <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+                   <div class="modal-content">
+                       <div class="modal-header">
+                           <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                               <img src="img/close-icon.svg" alt="">
+                           </div>
+                           <h5 x-text="createListTextHeadline" class="modal-title text-center">Create List</h5>
+                       </div>
+                       <div class="modal-body chat-modal-body latestProfileSection">
+                           <div class="form-group mb-3">
+                               <label x-text="createListTextName" class="form-label font-size-16px"></label>
+                               <input x-model="newListName" min="1" max="50" class="form-control mb-2">
+                               <span x-show="isListNameExist" class="text-danger font-size-16px" x-text="statusMessage"></span>
+                           </div>
+                       </div>
+                       <div class="modal-footer d-flex justify-content-between">
+                           <button x-text="createListTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                           <button @click="createListSumbit()" x-bind:disabled="newListName.length < 1 || newListName.length > 50" x-text="createListTextSumbit" type="button" class="btn mainBtn">Create new list headline</button>
+                       </div>
+                   </div>
+               </div>
+              </div>
+              
     <!-- Modal -->
     <div class="modal fade filterModal" id="phoneModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
@@ -269,8 +359,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="cursor-pointer" id="triggerGallery">
-                            <img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_503819.jpeg" alt="" class="img-fluid rounded mb-20">
+                        <div class="position-relative">
+                            <div data-profile="139528" @click="bookmarkProfile('139528')" class="bookmark">
+                                <ion-icon name="star" class="stariconoutline"></ion-icon>
+                            </div>
+                            <div class="cursor-pointer" id="triggerGallery">
+                                <img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_499566.jpeg" alt="" class="img-fluid rounded mb-20">
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -286,7 +381,7 @@
                     </div>
                     <div class="col-md-3">
                         <a href="#" class="btn mainBtn w-100 mb-10">Send besked</a>
-                        <a href="#" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Gem</a>
+                        <a href="javascript:;" data-profile="139528" @click="bookmarkProfile('139528')" class="btn mainBtn btnoutlinePrimary w-100 mb-10 gem-btn"><ion-icon name="star" class="stariconoutline"></ion-icon> <span>Gem</span> </a>
                         <a href="#folderModal" data-bs-toggle="modal" data-bs-target="#folderModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Bedøm</a>
                         <a href="#phoneModal" data-bs-toggle="modal" data-bs-target="#phoneModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Phone numbers</a>
                     </div>
@@ -313,36 +408,18 @@
                                 <div class="contentBox Billeder">
                                     <h2 class="pt-40">Billeder</h2>
                                     <div class="grid">
-                                        <div class="grid-item">
-                                            <a href="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_503819.jpeg" data-fancybox="gallery" data-caption="Caption Images 2"><img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_503819.jpeg" alt="" class="rounded" /></a>
-                                        </div>
+                                        
 
                                         <div class="grid-item">
                                             <a href="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_503763.jpeg" data-fancybox="gallery" data-caption="Caption Images 3"><img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_503763.jpeg" alt="" class="rounded" /></a>
                                         </div>
 
-                                        <div class="grid-item">
-                                            <a href="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_499574.jpeg" data-fancybox="gallery" data-caption="Caption Images 4"><img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_499574.jpeg" alt="" class="rounded" /></a>
-                                        </div>
+                                         
                                         <div class="grid-item">
                                             <a href="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_499566.jpeg" data-fancybox="gallery" data-caption="Caption Images 5"><img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_499566.jpeg" alt="" class="rounded" /></a>
                                         </div>
 
-                                        <div class="grid-item">
-                                            <a href="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_500086.jpeg" data-fancybox="gallery" data-caption="Caption Images 6"><img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_500086.jpeg" alt="" class="rounded" /></a>
-                                        </div>
-
-                                        <div class="grid-item">
-                                            <a href="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_500930.jpeg" data-fancybox="gallery" data-caption="Caption Images 7"><img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_500930.jpeg" alt="" class="rounded" /></a>
-                                        </div>
-
-                                        <div class="grid-item">
-                                            <a href="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_499562.jpeg" data-fancybox="gallery" data-caption="Caption Images 8"><img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_499562.jpeg" alt="" class="rounded" /></a>
-                                        </div>
-
-                                        <div class="grid-item">
-                                            <a href="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_508340.jpeg" data-fancybox="gallery" data-caption="Caption Images 9"><img src="https://www.onlinecasting.dk/medier/155902/Model_skuespiller_danser_sanger_155902_Billede_508340.jpeg" alt="" class="rounded" /></a>
-                                        </div>
+                                       
 
                                     </div>
                                 </div>
@@ -693,6 +770,11 @@
     <script src="js/jquery.fancybox.min.js"></script>
     <!-- main-->
     <script src="js/main.js"></script>
+
+     <!-- Apline JS -->
+     <script  src="./files/profileDetailsData.js"></script>
+     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <script type="text/javascript">
         $(".grid").imagesLoaded(function() {
             $(".grid").masonry({
