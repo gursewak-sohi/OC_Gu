@@ -166,14 +166,17 @@ document.addEventListener("alpine:init", () => {
       isBookmarkingProfile: false,
       createNewListHeadline: '',
 
-      bookmarkProfile(profileId) {
+      bookmarkProfile(profileId, event) {
+        event.stopPropagation(); 
+        event.preventDefault();
         this.currentProfileId = profileId;
         this.isBookmarkingProfile = true;
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/saved_profiles_folders.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
+              // console.log(data, 'data')
                 if (data.Status == 'OK') {
-
+                  this.messageImage = data.profile_image
                   this.statusMessageHeadline = data.headline
                   this.messageTextClose = data.text_close
                   this.savedProfilesFolders = data.saved_profiles_folders;

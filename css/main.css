@@ -2175,14 +2175,16 @@ a.hover:hover:before {
 }
 
 
-
-
-.gem-btn ion-icon.stariconoutline {
-    color: gray;
+.gem-btn ion-icon {
+    display: none;
 }
 
-.gem-btn ion-icon.stariconFill {
-    color: #eb783e;
+.gem-btn ion-icon[name="star-outline"].stariconoutline {
+    display: inline-block;
+}
+
+.gem-btn ion-icon[name="star"].stariconFill {
+    display: inline-block;
 }
 
 .gem-btn:hover ion-icon {

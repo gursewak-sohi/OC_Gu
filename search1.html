@@ -66,6 +66,7 @@
                         <img src="img/close-icon.svg" alt="">
                     </div>
                     <h5 x-text="statusMessageHeadline" class="modal-title text-center">Headline (API)</h5>
+                    <img class="modal-header-image" x-bind:src="messageImage" alt="image"/>
                 </div>
                 <div class="modal-body chat-modal-body latestProfileSection">
                     <div class="row">
@@ -888,7 +889,7 @@
                                     <a href="javascript:;">
                                         <div class="item">
                                             <div class="profileCard" style="background-image: url(img/profile-7.png);">
-                                                <div data-profile="139528" @click="bookmarkProfile('139528')" class="bookmark">
+                                                <div data-profile="139528" @click="bookmarkProfile('139528', $event)" class="bookmark">
                                                     <ion-icon name="star" class="stariconFill"></ion-icon>
                                                 </div>
                                             </div>
@@ -897,7 +898,7 @@
                                     <a href="javascript:;">
                                         <div class="item">
                                             <div class="profileCard" style="background-image: url(img/profile-7.png);">
-                                                <div data-profile="139528" @click="bookmarkProfile('139528')" class="bookmark">
+                                                <div data-profile="139528" @click="bookmarkProfile('139528', $event)" class="bookmark">
                                                     <ion-icon name="star" class="stariconFill"></ion-icon>
                                                 </div>
                                             </div>
@@ -906,7 +907,7 @@
                                     <a href="javascript:;">
                                         <div class="item">
                                             <div class="profileCard" style="background-image: url(img/profile-7.png);">
-                                                <div data-profile="139528" @click="bookmarkProfile('139528')" class="bookmark">
+                                                <div data-profile="139528" @click="bookmarkProfile('139528', $event)" class="bookmark">
                                                     <ion-icon name="star" class="stariconFill"></ion-icon>
                                                 </div>
                                             </div>
@@ -915,7 +916,7 @@
                                     <a href="javascript:;">
                                         <div class="item">
                                             <div class="profileCard" style="background-image: url(img/profile-7.png);">
-                                                <div data-profile="139528" @click="bookmarkProfile('139528')" class="bookmark">
+                                                <div data-profile="139528" @click="bookmarkProfile('139528', $event)" class="bookmark">
                                                     <ion-icon name="star" class="stariconFill"></ion-icon>
                                                 </div>
                                             </div>
@@ -1028,12 +1029,12 @@
                         </div>
                         <div class="col-12 col-sm-4 col-md-3 col-lg-5-cols">
                                 <div class="profileItem">
-                                    <a href="javascript:;">
+                                    <a href="profile.asp?id=55">
                                       <div class="profileCard" style="background-image: url(img/profile-2.png);">
-                                        <div data-profile="13952811" @click="bookmarkProfile('13952811')" class="bookmark">
+                                        <div data-profile="13952811" @click="bookmarkProfile('13952811', $event)" class="bookmark">
                                             <ion-icon name="star" class="stariconoutline"></ion-icon>
                                         </div>
-                                    </div>
+                                        </div>
                                     </a>
                                     <div class="d-block">
                                       <div>
@@ -1144,7 +1145,7 @@
                                 <div class="profileItem">
                                   <a href="javascript:;">
                                     <div class="profileCard" style="background-image: url(img/profile-3.png);">
-                                        <div data-profile="171495" @click="bookmarkProfile('171495')" class="bookmark">
+                                        <div data-profile="171495" @click="bookmarkProfile('171495', $event)" class="bookmark">
                                             <ion-icon name="star" class="stariconoutline"></ion-icon>
                                         </div>
                                     </div>
