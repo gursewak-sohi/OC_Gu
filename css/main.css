@@ -4107,6 +4107,10 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     font-size: 21px;
 }
 
+.top-18px {
+    top: 18px
+}
+
 @media (min-width: 992px) {
     .col-md-1-5 {
         width: 20%;
