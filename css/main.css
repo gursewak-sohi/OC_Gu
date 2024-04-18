@@ -2885,12 +2885,16 @@ a.hover:hover:before {
     margin-top: 0;
     background-color: rgba(0, 0, 0, 0);
     transition: all ease-in-out 0.2s;
-    background-image: url(../img2023/filter-arrow.svg);
+    background-image: url(../img/filter-arrow.svg);
     background-repeat: no-repeat;
     height: 6px;
     width: 10px;
     background-size: cover;
     margin-top: -2px;
+}
+
+.dropdown-arrow-none::before {
+    display: none !important;
 }
 
 .dropdown-menu {

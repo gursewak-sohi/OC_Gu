@@ -1,7 +1,32 @@
  $(document).ready(function() {
 
-   
-  
+     //  Create Folder
+     if ($('#folderBlock').length > 0) {
+         $('#createFolder').click(function() {
+             $(this).hide()
+             $('#createFolderBlock').fadeIn()
+         });
+         $('#cancelFolderBtn').click(function() {
+             $("#folderName").val('');
+             $('#createFolderBlock').hide()
+             $('#createFolder').fadeIn()
+         });
+         $('#createFolderBtn').click(function() {
+             let folderName = $('#folderName').val();
+             let listCount = $('#folderList .form-check').length;
+             if (folderName.length > 0) {
+                 let list = `<div class="form-check d-flex align-items-center gap-2">
+                                 <input type="checkbox" class="form-check-input cursor-pointer" id="folder${listCount+1}">
+                                 <label class="form-check-label cursor-pointer font-size-16px" for="folder${listCount+1}">${folderName}</label>
+                             </div>`;
+                 $('#folderList').append(list)
+                 $("#folderName").val('');
+                 $('#createFolder').fadeIn()
+                 $('#createFolderBlock').hide()
+             }
+         });
+     }
+
      $('#slider-range-4-4').keypress(function(e) {
          var key = e.which;
          if (key == 13) // the enter key code
@@ -181,11 +206,6 @@
      }
 
 
-
-
-
-
-
      //  Show All 
      let all = document.getElementById("all");
      if (all) {
@@ -200,15 +220,15 @@
              $(this).addClass('active');
          })
      }
-     
-     
-      //  Show All /Tilføjet for billedevisning på profil - 
+
+     //  Show All 
      let triggerGallery = document.getElementById("triggerGallery");
      if (triggerGallery) {
          $("#triggerGallery").on("click", function() {
              $("#parent").find('.grid-item:first-child a').click()
          });
      }
+
 
      // Viewport Height
      let vh = window.innerHeight * 0.01;
@@ -378,8 +398,8 @@
      if (more) {
          var showChar = 230; // How many characters are shown by default
          var ellipsestext = "...";
-         var moretext = "Vis mere";
-         var lesstext = "Vis mindre";
+         var moretext = "Show more";
+         var lesstext = "Show less";
 
 
          $('.more').each(function() {
@@ -527,21 +547,13 @@
 
 
  // Listen to the doc click
-window.addEventListener('click', function(e) {
+ window.addEventListener('click', function(e) {
      // Close the menu if click happen outside menu
      if (e.target.closest('.dropdown-container') === null) {
          // Close the opend dropdown
          closeDropdown();
-		var obj = $("#myform .modal-content").first();
-		if (!obj.is(event.target) && !obj.has(event.target).length) {
-			//alert("Outside click detected!");
-			//search();
-		}else{
-			$("#myform .modal-content").first().data("clicktime", Date.now());
-			$("#myform .modal-content").first().data("isclicked", true);
-		}
      }
-});
+ });
 
 
 
@@ -569,12 +581,14 @@ window.addEventListener('click', function(e) {
 
 
  /*******************************************************************************************/
- 
-   /*******************************************************************************************/
 
 
  $("[data-fancybox]").fancybox({
      clickContent: "next",
  });
+
+ 
+
+
 
  /*******************************************************************************************/
