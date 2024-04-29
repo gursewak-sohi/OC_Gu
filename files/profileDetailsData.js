@@ -731,11 +731,11 @@ document.addEventListener("alpine:init", () => {
             doc.setTextColor(0, 0, 0);
             
            // Add light font
-            doc.addFont('../fonts/mulish/Mulish-Light.ttf', 'Mulish', 'light');
-            doc.addFont('../fonts/mulish/Mulish-Regular.ttf', 'Mulish', 'normal');
-            doc.addFont('../fonts/mulish/Mulish-SemiBold.ttf', 'Mulish', 'semibold');
-            doc.addFont('../fonts/mulish/Mulish-Bold.ttf', 'Mulish', 'bold');
-            doc.addFont('../fonts/mulish/Mulish-Black.ttf', 'Mulish', 'black');
+            doc.addFont('./fonts/mulish/Mulish-Light.ttf', 'Mulish', 'light');
+            doc.addFont('./fonts/mulish/Mulish-Regular.ttf', 'Mulish', 'normal');
+            doc.addFont('./fonts/mulish/Mulish-SemiBold.ttf', 'Mulish', 'semibold');
+            doc.addFont('./fonts/mulish/Mulish-Bold.ttf', 'Mulish', 'bold');
+            doc.addFont('./fonts/mulish/Mulish-Black.ttf', 'Mulish', 'black');
             
 
            // Set 'CPH' in light font
