@@ -228,492 +228,49 @@ document.addEventListener("alpine:init", () => {
             });
       },
 
-      profiles: [
+      isDownloadingPDF : false,
+      downloadPDF(profileId, folderid, pageId) {
+          this.isDownloadingPDF = true;
+          
+          let url = "https://www.onlinecasting.dk/api/profile_folders_pdf.asp";
+          let params = [];
+          if (profileId) params.push(`profileid=${profileId}`);
+          if (folderid) params.push(`folderid=${folderid}`);
+          if (pageId) params.push(`page=${pageId}`);
+
+          if (params.length > 0) url += `?${params.join('&')}`;
+
+          
+          fetch(url)
+              .then(response => response.json())
+              .then(data => {
+                  if (data.Status == 'OK') {
+                    this.generatePDF(data.profiles, data.filename);
+                  }
+                  else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    this.statusMessage = data.StatusMessage
+                    this.messageTextClose = data.text_close
+
+                    let statusModal = document.getElementById('statusModal');
+                    let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+                    if (!statusModalInstance) {
+                      statusModalInstance = new bootstrap.Modal(statusModal);
+                    }
+                    statusModalInstance.show();  
+                  }  
+              })
+              .catch(error => {
+                  console.error("Error downloading pdf:", error);
+              })
+              .finally(() => {
+                  this.isDownloadingPDF = false;
+              });
+      },
 
-        {
-
-            "name": "Teresa",
-
-            "area": "København",
-
-            "age": 37,
-
-            "profileurl_text": "Link til profil:",
-
-            "profileurl": "https://www.onlinecasting.dk/vistype1profil.asp?Profil_Id=171903",
-
-            "logo": "img/logo.png",
-
-            "attributes": [
-
-                {
-
-                    "Name": "Højde",
-
-                    "Value": "170 cm"
-
-                },
-
-                {
-
-                    "Name": "Vægt",
-
-                    "Value": "65 kg"
-
-                },
-
-                {
-
-                    "Name": "Øjenfarve",
-
-                    "Value": "Grøn"
-
-                },
-
-                {
-
-                    "Name": "Hårfarve",
-
-                    "Value": "Brun"
-
-                },
-
-                {
-
-                    "Name": "Hårlængde",
-
-                    "Value": "Langt"
-
-                },
-
-                {
-
-                    "Name": "Skostørrelse",
-
-                    "Value": "37"
-
-                },
-
-                {
-
-                    "Name": "Bluse str.",
-
-                    "Value": "M"
-
-                },
-
-                {
-
-                    "Name": "Bukse str.",
-
-                    "Value": ""
-
-                },
-
-                {
-
-                    "Name": "Etnicitet",
-
-                    "Value": "Latino"
-
-                }
-
-            ],
-
-            "images": [
-
-              "img/modal.jpeg",    
-
-            ],
-
-            "profileid": "171903",
-
-            "imagepath": ""
-
-        },
-
-        {
-
-            "name": "Hooman",
-
-            "area": "Rødovre",
-
-            "age": 16,
-
-            "profileurl_text": "Link til profil:",
-
-            "profileurl": "https://www.onlinecasting.dk/vistype1profil.asp?Profil_Id=171939",
-
-            "logo": "img/logo.png",
-
-            "attributes": [
-
-                {
-
-                    "Name": "Højde",
-
-                    "Value": "180 cm"
-
-                },
-
-                {
-
-                    "Name": "Vægt",
-
-                    "Value": "64 kg"
-
-                },
-
-                {
-
-                    "Name": "Øjenfarve",
-
-                    "Value": "Brun"
-
-                },
-
-                {
-
-                    "Name": "Hårfarve",
-
-                    "Value": "Sort"
-
-                },
-
-                {
-
-                    "Name": "Hårlængde",
-
-                    "Value": "Langt"
-
-                },
-
-                {
-
-                    "Name": "Skostørrelse",
-
-                    "Value": "43"
-
-                },
-
-                {
-
-                    "Name": "Bluse str.",
-
-                    "Value": "S"
-
-                },
-
-                {
-
-                    "Name": "Bukse str.",
-
-                    "Value": "M"
-
-                },
-
-                {
-
-                    "Name": "Etnicitet",
-
-                    "Value": "Mellemøstligt"
-
-                }
-
-            ],
-
-            "images": [
-
-                "img/modal.jpeg",    
-                "img/profile-2.png",
-                "img/profile-2.png",
-                "img/profile-2.png",
-                "img/profile-2.png",
-
-            ],
-
-            "profileid": "171939",
-
-            "imagepath": ""
-
-        },
-
-        {
-
-            "name": "Laura",
-
-            "area": "Sjælland",
-
-            "age": 10,
-
-            "profileurl_text": "Link til profil:",
-
-            "profileurl": "https://www.onlinecasting.dk/vistype1profil.asp?Profil_Id=171952",
-
-            "logo": "img/logo.png",
-
-            "attributes": [
-
-                {
-
-                    "Name": "Højde",
-
-                    "Value": "156 cm"
-
-                },
-
-                {
-
-                    "Name": "Vægt",
-
-                    "Value": "45 kg"
-
-                },
-
-                {
-
-                    "Name": "Øjenfarve",
-
-                    "Value": "Blå"
-
-                },
-
-                {
-
-                    "Name": "Hårfarve",
-
-                    "Value": "Mørk blond"
-
-                },
-
-                {
-
-                    "Name": "Hårlængde",
-
-                    "Value": "Langt"
-
-                },
-
-                {
-
-                    "Name": "Skostørrelse",
-
-                    "Value": "43"
-
-                },
-
-                {
-
-                    "Name": "Bluse str.",
-
-                    "Value": "158"
-
-                },
-
-                {
-
-                    "Name": "Bukse str.",
-
-                    "Value": "164"
-
-                },
-
-                {
-
-                    "Name": "Etnicitet",
-
-                    "Value": "Skandinavisk / Europæisk"
-
-                }
-
-            ],
-
-            "images": [
-              "img/modal.jpeg",    
-              "img/profile-2.png",
-              "img/profile-2.png",
-               
-            ],
-
-            "profileid": "171952",
-
-            "imagepath": ""
-
-        },
-
-        {
-
-            "name": "Sascha",
-
-            "area": "Randers",
-
-            "age": 29,
-
-            "profileurl_text": "Link til profil:",
-
-            "profileurl": "https://www.onlinecasting.dk/vistype1profil.asp?Profil_Id=172068",
-
-            "logo": "img/logo.png",
-
-            "attributes": [
-
-                {
-
-                    "Name": "Højde",
-
-                    "Value": "168 cm"
-
-                },
-
-                {
-
-                    "Name": "Vægt",
-
-                    "Value": "83 kg"
-
-                },
-
-                {
-
-                    "Name": "Øjenfarve",
-
-                    "Value": "Brun"
-
-                },
-
-                {
-
-                    "Name": "Hårfarve",
-
-                    "Value": "Brun"
-
-                },
-
-                {
-
-                    "Name": "Hårlængde",
-
-                    "Value": "Langt"
-
-                },
-
-                {
-
-                    "Name": "Skostørrelse",
-
-                    "Value": "41"
-
-                },
-
-                {
-
-                    "Name": "Bluse str.",
-
-                    "Value": "M"
-
-                },
-
-                {
-
-                    "Name": "Bukse str.",
-
-                    "Value": "M"
-
-                },
-
-                {
-
-                    "Name": "Etnicitet",
-
-                    "Value": "Skandinavisk / Europæisk"
-
-                }
-
-            ],
-
-            "images": [
-
-              "img/modal.jpeg",    
-              "img/profile-2.png",
-              "img/profile-2.png",
-              "img/profile-2.png",
-              "img/profile-2.png",
-            ],
-
-            "profileid": "172068",
-
-            "imagepath": ""
-
-        }
-
-    ],
-
-    filename: "172068.pdf",
-
-
-      
-    // profiles : [
-    //         {
-    //             "name": "Sascha",
-    //             "area": "Randers",
-    //             "age": 29,
-    //             "profileurl_text": "Link til profil:",
-    //             "profileurl": "https://www.onlinecasting.dk/vistype1profil.asp?Profil_Id=172068",
-    //             "logo": "img/logo.png",
-    //             "attributes": [
-    //                 {
-    //                     "Name": "Højde",
-    //                     "Value": "168 cm"
-    //                 },
-    //                 {
-    //                     "Name": "Vægt",
-    //                     "Value": "83 kg"
-    //                 },
-    //                 {
-    //                     "Name": "Øjenfarve",
-    //                     "Value": "Brun"
-    //                 },
-    //                 {
-    //                     "Name": "Hårfarve",
-    //                     "Value": "Brun"
-    //                 },
-    //                 {
-    //                     "Name": "Hårlængde",
-    //                     "Value": "Langt"
-    //                 },
-    //                 {
-    //                     "Name": "Skostørrelse",
-    //                     "Value": "41"
-    //                 },
-    //                 {
-    //                     "Name": "Bluse str.",
-    //                     "Value": "M"
-    //                 },
-    //                 {
-    //                     "Name": "Bukse str.",
-    //                     "Value": "M"
-    //                 },
-    //                 {
-    //                     "Name": "Etnicitet",
-    //                     "Value": "Skandinavisk / Europæisk"
-    //                 }
-    //             ],
-    //             "images": [
-    //               "img/modal.jpeg",    
-    //               "img/profile-2.png",    
-    //               "img/profile-3.png",    
-    //               "img/profile-4.png",    
-    //               "img/profile-5.png",    
-    //               "img/profile-5.png",    
-    //             ],
-    
-    //             "profileid": "172068",
-    //             "imagepath": ""
-    //         }
-    //     ],
     
 
-    async generatePDF() {
+    async generatePDF(profiles, filename) {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({
             orientation: 'portrait',
@@ -721,7 +278,7 @@ document.addEventListener("alpine:init", () => {
             format: 'a4'
         });
     
-        for (const [index, profile] of this.profiles.entries()) {
+        for (const [index, profile] of profiles.entries()) {
             if (index !== 0) doc.addPage();
 
             // Draw a border around the page
@@ -738,33 +295,25 @@ document.addEventListener("alpine:init", () => {
             doc.addFont('./fonts/mulish/Mulish-Black.ttf', 'Mulish', 'black');
             
 
-           // Set 'CPH' in light font
-            doc.setFont('Mulish', 'light');
-            doc.setFontSize(22);
-
-            // Calculate the position of 'CPH' to center it.
-            let cphText = 'CPH';
-            let castingText = 'CASTING';
-            let cphWidth = doc.getTextWidth(cphText);
-            let castingWidth = doc.getTextWidth(castingText);
-            let totalWidth = cphWidth + castingWidth;
-
-            // Center the entire text block
-            let startX = 105 - (totalWidth / 2);
-
-            // Print 'CPH'
-            doc.text(cphText, startX, 20);
-
-            // Set 'CASTING' in bold font
-            doc.setFont('Mulish', 'bold');
-
-            // Adjust startX for the 'CASTING' part
-            startX += cphWidth;
-
-            // Print 'CASTING'
-            doc.text(castingText, startX, 20);
            
 
+            // Calculate the position of 'CPH' to center it.
+            if (profile.logo) {
+                // Set 'CPH' in light font
+                doc.setFont('Mulish', 'light');
+                doc.setFontSize(22);
+                let cphText = 'CPH';
+                let castingText = 'CASTING';
+                let cphWidth = doc.getTextWidth(cphText);
+                let castingWidth = doc.getTextWidth(castingText);
+                let totalWidth = cphWidth + castingWidth;
+                let startX = 105 - (totalWidth / 2);
+                doc.text(cphText, startX, 20);
+                doc.setFont('Mulish', 'bold');
+                startX += cphWidth;
+                doc.text(castingText, startX, 20);
+            }
+           
             // Main Image
             const mainImageInfo = await this.loadImage(profile.images[0], 400, 500);
             doc.addImage(mainImageInfo, 'JPEG', 15, 35, 80, 100);
@@ -778,10 +327,10 @@ document.addEventListener("alpine:init", () => {
             doc.setFont('Mulish', 'bold');
             doc.setFontSize(15);
             doc.text(`${profile.age}, ${profile.area}`, 105, 48, 'left');
-            // Add more text elements for each profile detail (age, location, etc.)
+            
           
 
-             // Attributes List/Table
+            // Attributes List/Table
             // Use doc.text() to place attribute names and values
             let startY = 58;
 
@@ -799,8 +348,7 @@ document.addEventListener("alpine:init", () => {
 
  
 
-            // Smaller Images
-            // Assuming these images are loaded similarly to the main image
+            // Smaller Images         
             const smallerImages = await Promise.all(profile.images.map(imageUrl => this.loadImage(imageUrl, 300, 300)));
             smallerImages.forEach((imageData, index) => {
               // Calculate x and y positions based on your desired grid layout
@@ -809,36 +357,43 @@ document.addEventListener("alpine:init", () => {
               doc.addImage(imageData, 'JPEG', x, y, 50, 50); // Size of each small image
             });
 
-             // Footer background
-            const footerHeight = 20; // for example, 20 mm high footer
-            doc.setFillColor(0); // black color
-            doc.rect(0, 297 - footerHeight, 210, footerHeight, 'F');
+            
 
             // Footer text and URL
-            doc.setTextColor(255); // white color text
-            doc.setFont('Mulish', 'bold');
-            doc.setFontSize(14);
-            const textY = 297 - footerHeight / 2; 
-            doc.text(profile.profileurl_text, 70, textY - 1.5); 
+            if (profile.showbottom == 'TRUE') {
 
-            // Footer clickable URL
-            doc.setFontSize(10);
-            doc.setFont('Mulish', 'normal');
-            doc.textWithLink(profile.profileurl, 70, textY + 4.5, { url: profile.profileurl });
+                 // Footer background
+                const footerHeight = 20; // for example, 20 mm high footer
+                doc.setFillColor(0); // black color
+                doc.rect(0, 297 - footerHeight, 210, footerHeight, 'F');
 
-            // Add logo image in the footer
-            const logoImage = await this.loadImage(profile.logo); 
-            doc.addImage(logoImage, 'JPEG', 11, 297 - footerHeight + 6, 50, 7.5);  
-            // Overlay Link
-            doc.link(10, 297 - footerHeight + 6, 50, 7.5, { url: "https://www.onlinecasting.dk/" });
+                doc.setTextColor(255); // white color text
+                doc.setFont('Mulish', 'bold');
+                doc.setFontSize(14);
+                const textY = 297 - footerHeight / 2; 
+                doc.text(profile.profileurl_text, 70, textY - 1.5); 
+
+                // Footer clickable URL
+                doc.setFontSize(10);
+                doc.setFont('Mulish', 'normal');
+                doc.textWithLink(profile.profileurl, 70, textY + 4.5, { url: profile.profileurl });
+
+                // Add logo image in the footer
+                const logoImage = await this.loadImage(profile.logo); 
+                doc.addImage(logoImage, 'JPEG', 11, 297 - footerHeight + 6, 50, 7.5);  
+                // Overlay Link
+                doc.link(10, 297 - footerHeight + 6, 50, 7.5, { url: "https://www.onlinecasting.dk/" });
+            }
         }
     
-        doc.save(this.filename);
+        doc.save(filename);
     },
 
     async loadImage(url, targetWidth, targetHeight) {
       return new Promise((resolve, reject) => {
           let img = new Image();
+          img.crossOrigin = 'anonymous';
+
           img.onload = () => {
               // If target dimensions are not provided, use image's natural size
               let canvasWidth = targetWidth || img.width;
@@ -878,18 +433,12 @@ document.addEventListener("alpine:init", () => {
           img.src = url;
       });
   },
+
   
     
     
     
-    init() {
-      // fetch('https://www.onlinecasting.dk/api/profile_folders_pdf.asp?profileid=172068&folderid=0')
-      //     .then(response => response.json())
-      //     .then(data => {
-      //       console.log(data.profiles, 'data.profiles')
-      //         this.profiles = data.profiles;
-      //     });
-    },
+    init() {},
   }));
 });
 

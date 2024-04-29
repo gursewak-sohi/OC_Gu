@@ -17,8 +17,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <!-- Fancy Box -->
     <link rel="stylesheet" href="css/jquery.fancybox.min.css">
-     <!-- PDF Styles -->
-     <link rel="stylesheet" href="css/pdf.css">
+    
 
 </head>
 
@@ -393,7 +392,7 @@
                         </a>
                         <a href="#folderModal" data-bs-toggle="modal" data-bs-target="#folderModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Bedøm</a>
                         <a href="#phoneModal" data-bs-toggle="modal" data-bs-target="#phoneModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Phone numbers</a>
-                        <button @click="generatePDF()" type="button" class="btn mainBtn btnoutlinePrimary w-100 mb-10">PDF</button>
+                        <button @click="downloadPDF(null, '1', null)" type="button" class="btn mainBtn btnoutlinePrimary w-100 mb-10" x-text="isDownloadingPDF ? 'Downloading..' : 'Download PDF'"></button>
                     </div>
                 </div>
                 <!-- Filter tabs start-->
