@@ -17,170 +17,175 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <!-- Fancy Box -->
     <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+     <!-- PDF Styles -->
+     <link rel="stylesheet" href="css/pdf.css">
 
 </head>
 
 <body x-data="profileDetailsComponent()" x-init="init">
 
+    
+      
+    
 
-        <!-- Modal -->
-        <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
-            <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
-                            <img src="img/close-icon.svg" alt="">
+    <!-- Modal -->
+    <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                <img src="img/close-icon.svg" alt="">
+            </div>
+            <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+        </div>
+        <div class="modal-body chat-modal-body">
+            <p x-text="statusMessage" class="font-size-16px"></p>
+        </div>
+        <div class="modal-footer">
+            <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Saved Profile Modal -->
+    <div class="modal fade filterModal saved-profile-modal" id="savedProfileModal" tabindex="-1" aria-labelledby="savedProfileModal" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                <img src="img/close-icon.svg" alt="">
+            </div>
+            <h5 x-text="statusMessageHeadline" class="modal-title text-center">Headline (API)</h5>
+        </div>
+        <div class="modal-body chat-modal-body latestProfileSection">
+            <div class="row">
+                <template x-if="savedProfilesFolders.length === 0">
+                    <div class="d-flex justify-content-center py-4">
+                        <button @click="createList()" x-text="createNewListHeadline" type="button" class="btn mainBtn btnfillblack">Create new list headline</button>
+                    </div>
+                </template>
+                <template x-for="savedProfile in savedProfilesFolders" :key="`${savedProfile.profileid}-${savedProfile.casterid}-${savedProfile.casterlistid}`">
+                    <div class="col-6">
+                        <div class="profileItem mb-4">
+                            <a @click="addRemoveBookmarkProfile(savedProfile.profileid, savedProfile.casterlistid)" href="javascript:;" :class="{ 'profileCardAdded': savedProfile.selected_profile_added === 'YES' }" class="profileCard" :style="`background-image: url(${savedProfile.image});`">
+                                <div x-show="savedProfile.selected_profile_added === 'YES'" class="checkmark-icon">
+                                    <ion-icon name="checkmark-sharp"></ion-icon>
+                                </div>
+                            </a>
+                            <div class="position-relative">
+                                <span x-show="isTextClickedVisible" x-transition class="text-clicked" x-text="savedProfile.text_when_clicked"></span>
+                                <h4 x-text="savedProfile.foldername" class="pt-3 text-truncate"></h4>
+                                <p class="mb-1 text-capitalize d-flex align-items-center gap-2 fw-semibold text-black"><ion-icon name="calendar-outline"></ion-icon> <span x-text="savedProfile.date"></span></p>
+                                <p x-text="savedProfile.number_of_profiles_in_folder" class="mb-0 fw-semibold">3</p>
+                            </div>
                         </div>
-                        <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
                     </div>
-                    <div class="modal-body chat-modal-body">
-                       <p x-text="statusMessage" class="font-size-16px"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
-                    </div>
+                </template>
+                </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+            <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+            <button @click="createList()" x-text="createNewListHeadline" type="button" class="btn mainBtn">Create new list headline</button>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Create List Modal -->
+    <div class="modal fade filterModal " id="createListModal" tabindex="-1" aria-labelledby="createListModal" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="img/close-icon.svg" alt="">
+                </div>
+                <h5 x-text="createListTextHeadline" class="modal-title text-center">Create List</h5>
+            </div>
+            <div class="modal-body chat-modal-body latestProfileSection">
+                <div class="form-group mb-3">
+                    <label x-text="createListTextName" class="form-label font-size-16px"></label>
+                    <input x-model="newListName" min="1" max="50" class="form-control mb-2">
+                    <span x-show="isListNameExist" class="text-danger font-size-16px" x-text="statusMessage"></span>
                 </div>
             </div>
-           </div>
-   
-           <!-- Saved Profile Modal -->
-          <div class="modal fade filterModal saved-profile-modal" id="savedProfileModal" tabindex="-1" aria-labelledby="savedProfileModal" aria-hidden="true">
-           <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
-                           <img src="img/close-icon.svg" alt="">
-                       </div>
-                       <h5 x-text="statusMessageHeadline" class="modal-title text-center">Headline (API)</h5>
-                   </div>
-                   <div class="modal-body chat-modal-body latestProfileSection">
-                       <div class="row">
-                           <template x-if="savedProfilesFolders.length === 0">
-                               <div class="d-flex justify-content-center py-4">
-                                   <button @click="createList()" x-text="createNewListHeadline" type="button" class="btn mainBtn btnfillblack">Create new list headline</button>
-                               </div>
-                           </template>
-                           <template x-for="savedProfile in savedProfilesFolders" :key="`${savedProfile.profileid}-${savedProfile.casterid}-${savedProfile.casterlistid}`">
-                               <div class="col-6">
-                                   <div class="profileItem mb-4">
-                                       <a @click="addRemoveBookmarkProfile(savedProfile.profileid, savedProfile.casterlistid)" href="javascript:;" :class="{ 'profileCardAdded': savedProfile.selected_profile_added === 'YES' }" class="profileCard" :style="`background-image: url(${savedProfile.image});`">
-                                           <div x-show="savedProfile.selected_profile_added === 'YES'" class="checkmark-icon">
-                                               <ion-icon name="checkmark-sharp"></ion-icon>
-                                           </div>
-                                       </a>
-                                       <div class="position-relative">
-                                           <span x-show="isTextClickedVisible" x-transition class="text-clicked" x-text="savedProfile.text_when_clicked"></span>
-                                           <h4 x-text="savedProfile.foldername" class="pt-3 text-truncate"></h4>
-                                           <p class="mb-1 text-capitalize d-flex align-items-center gap-2 fw-semibold text-black"><ion-icon name="calendar-outline"></ion-icon> <span x-text="savedProfile.date"></span></p>
-                                           <p x-text="savedProfile.number_of_profiles_in_folder" class="mb-0 fw-semibold">3</p>
-                                       </div>
-                                   </div>
-                               </div>
-                            </template>
-                         </div>
-                   </div>
-                   <div class="modal-footer d-flex justify-content-between">
-                       <button x-text="messageTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
-                       <button @click="createList()" x-text="createNewListHeadline" type="button" class="btn mainBtn">Create new list headline</button>
-                   </div>
-               </div>
-           </div>
-          </div>
-   
-            <!-- Create List Modal -->
-            <div class="modal fade filterModal " id="createListModal" tabindex="-1" aria-labelledby="createListModal" aria-hidden="true">
-               <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
-                   <div class="modal-content">
-                       <div class="modal-header">
-                           <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
-                               <img src="img/close-icon.svg" alt="">
-                           </div>
-                           <h5 x-text="createListTextHeadline" class="modal-title text-center">Create List</h5>
-                       </div>
-                       <div class="modal-body chat-modal-body latestProfileSection">
-                           <div class="form-group mb-3">
-                               <label x-text="createListTextName" class="form-label font-size-16px"></label>
-                               <input x-model="newListName" min="1" max="50" class="form-control mb-2">
-                               <span x-show="isListNameExist" class="text-danger font-size-16px" x-text="statusMessage"></span>
-                           </div>
-                       </div>
-                       <div class="modal-footer d-flex justify-content-between">
-                           <button x-text="createListTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
-                           <button @click="createListSumbit()" x-bind:disabled="newListName.length < 1 || newListName.length > 50" x-text="createListTextSumbit" type="button" class="btn mainBtn">Create new list headline</button>
-                       </div>
-                   </div>
-               </div>
-              </div>
-              
-    <!-- Modal -->
-    <div class="modal fade filterModal" id="phoneModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
-                        <img src="img/close-icon.svg" alt="">
-                    </div>
-                    <h5 class="modal-title text-center">Phone Numbers</h5>
-                </div>
-                <div class="modal-body">
-                    <p class="font-size-18px"><b>Phone:</b> 023423049009</p>
-                    <p class="font-size-18px"><b>Phone:</b> 023423049009</p>
-                    <p class="font-size-18px"><b>Lorem:</b> <br> Jeg taler flydende svensk, dansk og engelsk samt kan skifte til flere dialekter på disse 3 sprog</p>
-                </div>
-                <div class="modal-footer">
-                    <button data-bs-dismiss="modal" type="button" class="btn mainBtn">Close</button>
-                </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button x-text="createListTextClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                <button @click="createListSumbit()" x-bind:disabled="newListName.length < 1 || newListName.length > 50" x-text="createListTextSumbit" type="button" class="btn mainBtn">Create new list headline</button>
             </div>
         </div>
+    </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade filterModal" id="phoneModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="img/close-icon.svg" alt="">
+                </div>
+                <h5 class="modal-title text-center">Phone Numbers</h5>
+            </div>
+            <div class="modal-body">
+                <p class="font-size-18px"><b>Phone:</b> 023423049009</p>
+                <p class="font-size-18px"><b>Phone:</b> 023423049009</p>
+                <p class="font-size-18px"><b>Lorem:</b> <br> Jeg taler flydende svensk, dansk og engelsk samt kan skifte til flere dialekter på disse 3 sprog</p>
+            </div>
+            <div class="modal-footer">
+                <button data-bs-dismiss="modal" type="button" class="btn mainBtn">Close</button>
+            </div>
+        </div>
+    </div>
     </div>
 
     <!-- Choose Folder Modal -->
     <div class="modal fade filterModal" id="folderModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
-            <div class="modal-content">
-                <div class="modal-header py-3">
-                    <div class="close ms-4 cursor-pointer" data-bs-dismiss="modal" aria-label="Close">
-                        <img src="img/close-icon.svg" alt="">
-                    </div>
-                    <div class="d-flex gap-2 text-end ms-auto me-3">
-                        <div>
-                            <p class="mb-1"><b>William C</b></p>
-                            <p class="text-muted mb-0">26 ar</p>
-                        </div>
-                        <div>
-                            <img class="rounded" src="img/profile-1.png" width="50" height="50" alt="profile" />
-                        </div>
-                    </div>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md">
+        <div class="modal-content">
+            <div class="modal-header py-3">
+                <div class="close ms-4 cursor-pointer" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="img/close-icon.svg" alt="">
                 </div>
-                <div id="folderBlock" class="modal-body py-4 d-flex flex-column">
-                    <button id="createFolder" type="button" class="uplaodBtn mb-4">Create Folder</button>
-                    <div id="createFolderBlock" style="display:none">
-                        <div class="d-flex gap-3 mb-4">
-                            <input id="folderName" class="form-control" placeholder="Name" type="text" />
-                            <button id="createFolderBtn" type="button" class="mainBtn py-1 h-auto line-height-20 w-auto px-4">Create</button>
-                            <button id="cancelFolderBtn" type="button" class="uplaodBtn py-1">Cancel</button>
-                        </div>
+                <div class="d-flex gap-2 text-end ms-auto me-3">
+                    <div>
+                        <p class="mb-1"><b>William C</b></p>
+                        <p class="text-muted mb-0">26 ar</p>
                     </div>
-                    <p class="mb-2 font-size-18px">Choose folder to save profile in</p>
-                    <div id="folderList" class="d-flex flex-column gap-1">
-                        <div class="form-check d-flex align-items-center gap-2">
-                            <input type="checkbox" class="form-check-input cursor-pointer" id="folder1">
-                            <label class="form-check-label cursor-pointer font-size-16px" for="folder1">Folder 1</label>
-                        </div>
-                        <div class="form-check d-flex align-items-center gap-2">
-                            <input type="checkbox" class="form-check-input cursor-pointer" id="folder2">
-                            <label class="form-check-label cursor-pointer font-size-16px" for="folder2">Folder 2</label>
-                        </div>
+                    <div>
+                        <img class="rounded" src="img/profile-1.png" width="50" height="50" alt="profile" />
                     </div>
-                    <div class="mt-4">
-                        <button type="button" class="btn mainBtn">Save</button>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button data-bs-dismiss="modal" type="button" class="btn mainBtn">Close</button>
                 </div>
             </div>
+            <div id="folderBlock" class="modal-body py-4 d-flex flex-column">
+                <button id="createFolder" type="button" class="uplaodBtn mb-4">Create Folder</button>
+                <div id="createFolderBlock" style="display:none">
+                    <div class="d-flex gap-3 mb-4">
+                        <input id="folderName" class="form-control" placeholder="Name" type="text" />
+                        <button id="createFolderBtn" type="button" class="mainBtn py-1 h-auto line-height-20 w-auto px-4">Create</button>
+                        <button id="cancelFolderBtn" type="button" class="uplaodBtn py-1">Cancel</button>
+                    </div>
+                </div>
+                <p class="mb-2 font-size-18px">Choose folder to save profile in</p>
+                <div id="folderList" class="d-flex flex-column gap-1">
+                    <div class="form-check d-flex align-items-center gap-2">
+                        <input type="checkbox" class="form-check-input cursor-pointer" id="folder1">
+                        <label class="form-check-label cursor-pointer font-size-16px" for="folder1">Folder 1</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center gap-2">
+                        <input type="checkbox" class="form-check-input cursor-pointer" id="folder2">
+                        <label class="form-check-label cursor-pointer font-size-16px" for="folder2">Folder 2</label>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button type="button" class="btn mainBtn">Save</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bs-dismiss="modal" type="button" class="btn mainBtn">Close</button>
+            </div>
         </div>
+    </div>
     </div>
 
     <div class="wrapper">
@@ -381,13 +386,14 @@
                     </div>
                     <div class="col-md-3">
                         <a href="#" class="btn mainBtn w-100 mb-10">Send besked</a>
-                        <a href="javascript:;" data-profile="139528" @click="bookmarkProfile('139528')" class="btn mainBtn btnoutlinePrimary w-100 mb-10 gem-btn">
+                        <a href="javascript:;" data-profile="172150" @click="bookmarkProfile('172150')" class="btn mainBtn btnoutlinePrimary w-100 mb-10 gem-btn">
                             <ion-icon class="stariconoutline" name="star-outline"></ion-icon>
                             <ion-icon class="stariconoutline" name="star"></ion-icon> 
                             <span>Gem</span> 
                         </a>
                         <a href="#folderModal" data-bs-toggle="modal" data-bs-target="#folderModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Bedøm</a>
                         <a href="#phoneModal" data-bs-toggle="modal" data-bs-target="#phoneModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Phone numbers</a>
+                        <button @click="generatePDF()" type="button" class="btn mainBtn btnoutlinePrimary w-100 mb-10">PDF</button>
                     </div>
                 </div>
                 <!-- Filter tabs start-->
@@ -430,7 +436,7 @@
                                 <div class="contentBox Fysisk">
                                     <h2 class="pt-40">Fysiske Informationer</h2>
                                     <div class="row">
-                                        <div class="col-12 col-sm-12 col-md-12 col-lg-9">
+                                        <div class="col-12">
                                             <div class="row pb-0">
                                                 <div class="col-6 font-size-18px font-weight-700">Alder:</div>
                                                 <div class="col-6 text-end font-size-18px">29 år</div>
@@ -775,6 +781,9 @@
     <!-- main-->
     <script src="js/main.js"></script>
 
+    <!-- JS PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.3/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
      <!-- Apline JS -->
      <script  src="./files/profileDetailsData.js"></script>
      <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
