@@ -214,12 +214,78 @@
                                         <input type="email" class="form-control" />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Sex</label>
+                                        <label class="form-label">Gender(s)</label>
                                         <select class="form-select">
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
                                         </select>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <div x-data="dropdownHandler()" class="mb-3">
+                                                <label class="form-label d-flex align-items-center">Gender(s) 
+                                                    <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Content goes here" class="fs-6 ms-1 mt-1">
+                                                        <ion-icon name="information-circle-outline"></ion-icon>
+                                                    </div>
+                                                </label>
+                                                <div class="dropdown-container dropdown-select">
+                                                    <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle">
+                                                        <div x-text="selectedText">Choose</div>
+                                                    </div>
+                                                    <div class="dropdown-menu font-size-14px">
+                                                       <ul>
+                                                           <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Male" x-model="selectedGenders.Male">
+                                                                    <label class="form-check-label cursor-pointer" for="Male">Male</label>
+                                                                </div> 
+                                                           </li>
+                                                           <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Female" x-model="selectedGenders.Female">
+                                                                    <label class="form-check-label cursor-pointer" for="Female">Female</label>
+                                                                </div> 
+                                                           </li>
+                                                           <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="GenderNonconforming" x-model="selectedGenders.GenderNonconforming">
+                                                                    <label class="form-check-label cursor-pointer" for="GenderNonconforming">Gender-nonconforming</label>
+                                                                </div> 
+                                                            </li>
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="NonBinary" x-model="selectedGenders.NonBinary">
+                                                                    <label class="form-check-label cursor-pointer" for="NonBinary">Non-binary</label>
+                                                                </div> 
+                                                            </li>
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="TransFemale" x-model="selectedGenders.TransFemale">
+                                                                    <label class="form-check-label cursor-pointer" for="TransFemale">Trans Female</label>
+                                                                </div> 
+                                                            </li>
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="TransMale" x-model="selectedGenders.TransMale">
+                                                                    <label class="form-check-label cursor-pointer" for="TransMale">Trans Male</label>
+                                                                </div> 
+                                                            </li>
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Unspecified" x-model="selectedGenders.Unspecified">
+                                                                    <label class="form-check-label cursor-pointer" for="Unspecified">Unspecified</label>
+                                                                </div> 
+                                                            </li>
+                                                          
+                                                       </ul>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+
+                                    
                                     <div class="mb-3 mb-lg-4">
                                         <label class="form-label">Birthday</label>
                                         <div class="row">
@@ -370,7 +436,7 @@
 
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.js"></script>
-
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Icon Fonts -->
     <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
@@ -378,6 +444,30 @@
     <script src="js/owl.carousel.min.js"></script>
     <!-- main-->
     <script src="js/main.js"></script>
+
+     
+    <script>
+        function dropdownHandler() {
+            return {
+                selectedGenders: {
+                    Male: false,
+                    Female: false,
+                    GenderNonconforming: false,
+                    NonBinary: false,
+                    TransFemale: false,
+                    TransMale: false,
+                    Unspecified: false
+                },
+                get selectedText() {
+                    const selected = Object.keys(this.selectedGenders).filter(gender => this.selectedGenders[gender]);
+                    const count = selected.length;
+                    if (count === 0) return 'Choose';
+                    if (count === 1) return selected[0].replace(/([A-Z])/g, ' $1').trim(); // Adds space before capital letters for better readability
+                    return `${count} selected`;
+                }
+            };
+        }
+        </script>
 </body>
 
 </html>
