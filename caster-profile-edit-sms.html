@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Page Title -->
+    <title>OnlineCasting</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Responsive Styles -->
+    <link rel="stylesheet" href="css/theme-responsive.css">
+    <!-- Owl Stylesheets -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+</head>
+
+<body x-data="smsComponent()" x-init="init">
+
+  <!-- Modal -->
+  <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+    <div class="modal-content">
+          <div class="modal-header">
+              <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                  <img src="img/close-icon.svg" alt="">
+              </div>
+              <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+          </div>
+          <div class="modal-body chat-modal-body">
+              <p x-text="statusMessage" class="font-size-16px"></p>
+          </div>
+          <div class="modal-footer">
+              <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
+          </div>
+      </div>
+      </div>
+    </div>
+
+  <!-- Change Phone Number Modal -->
+  <div class="modal fade filterModal" id="changePhoneNumberModal" tabindex="-1" aria-labelledby="changePhoneNumberModal" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered  modal-fullscreen-md-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                    <img src="img/close-icon.svg" alt="">
+                </div>
+                <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+            </div>
+            <div class="modal-body chat-modal-body latestProfileSection">
+                <div class="form-group mb-3">
+                  <div x-show="!showOTPBlock">
+                    <label x-text="textLabelInputNumber" class="form-label font-size-16px"></label>
+                    <div class="d-flex gap-3 align-items-center mb-5">
+                      <div class="dropdown-container dropdown-phone">
+                        <div data-bs-toggle="dropdown" data-bs-auto-close="auto" class="dropdown-toggle">
+                            <div class="d-flex">
+                              <img width="20" :src="countryFlagUrl" alt="Selected Country"/>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu">
+                          <ul>
+                            <template x-for="country in countries" :key="country.code">
+                              <li @click="updateCountry(country)" class="d-flex cursor-pointer gap-2 align-items-center">
+                                  <img :width="20" :height="15" :src="country.flagUrl" :alt="country.name"/>
+                                  <span x-text="country.name + ' (+' + country.code + ')'"></span>
+                              </li>
+                            </template>
+                        </ul>
+                        </div>
+                     </div>
+                     <input type="text" x-model="currentPhoneNumber" min="1" max="50" :placeholder="textInputPlaceholder" class="form-control" />
+                    </div>
+                  </div>
+                  <div x-show="showOTPBlock">
+                    <h6 class="mb-3" x-text="textHtml"></h6>
+                    <label x-text="textHeaderInputCode" class="form-label font-size-16px"></label>
+                    <input type="text" x-model="currentCode" min="1" max="5" :placeholder="textInputPlaceholderCode" class="form-control" />
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary"></button>
+                <div x-show="!showOTPBlock">
+                    <button @click="sendConfirmNumber()" x-bind:disabled="currentPhoneNumber.length < 6 || currentPhoneNumber.length > 50" x-text="textSubmitButton" type="button" class="btn mainBtn"></button>
+                </div>
+                <div x-show="showOTPBlock">
+                    <button @click="smsConfirmNumber(currentPhoneNumber)"  type="button" class="btn mainBtn btnoutlineSecondary px-4 me-2">New Code</button>
+                    <button @click="activateConfirmNumber()" x-bind:disabled="currentCode.length !== 5" x-text="textSubmitButton" type="button" class="btn mainBtn"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Promo Section -->
+        <div id="promoSection" class="promo-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="promo-block">
+                            <h5>Just launched new design</h5>
+                            <a class="btn mainBtn btnfillwhite" href="#">Post a Job</a>
+                        </div>
+                        <button id="promoBtn" type="button" class="promo-close">
+                            <ion-icon name="close-circle-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- header start here -->
+        <header class="header" id="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-3 col-md-3">
+                        <div class="logo">
+                            <a href="index.html"><img src="img/onlineCasting.svg" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-none d-md-block">
+                        <ul class="headerNav">
+                            <li><a href="#">CASTINGS &amp; JOBS</a></li>
+                            <li><a href="#">Search talents</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-9 col-md-3">
+                        <div class="rightNav">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <ion-icon style="font-size:25px" name="mail-outline"></ion-icon>
+                                        <div class="value">2</div>
+                                        <span>beskedar</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i>
+                                            <div class="profileavtar" style="background-image: url(img/profile-2.png);"></div>
+                                        </i>
+                                        <div class="value">!</div>
+                                        <span>Kasper</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <button class="top-bar__nav-toggle hamburger" id="top-nav-toggle">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </button>
+                                        <span>MENU</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="top-bar">
+                            <div class="top-bar__nav__wrapper" id="top-bar__nav">
+                                <nav class="top-bar__nav">
+                                    <div class="bordertp">
+                                        <div class="inner-col">
+
+                                            <h3>
+                                                <div class="avtar" style="background-image: url(img/exp-2.png);"></div>
+                                                My Profile</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="create-outline"></ion-icon>
+                                                        Edit profile</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="image-outline"></ion-icon>
+                                                        Upload image</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="log-out-outline"></ion-icon>
+                                                        Log out</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Casters &amp; Producers</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">See profiles</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Saved profiles</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Join us</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <figure id="figure" class="nav-reavel nav-down">
+            <ul class="headerNav brdrTp d-md-none">
+                <li><a href="#">CASTINGS &amp; JOBS</a></li>
+                <li><a href="#">Search talents</a></li>
+            </ul>
+        </figure>
+        <!-- header end here -->
+        <div class="clearfix"></div>
+
+        <section class="entry-content pt-40 pb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb-area">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Create profile</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="mb-3 mb-sm-4">Create Profile</h1>
+                        <p>Fill in this application to be registered to our directory, <a class="text-decoration-underline" href="javascript:;">Casters & agents click here</a></p>
+                        <h3 class="mb-3 text-muted">Personal Information</h3>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form action="">
+                                    <div class="mb-3">
+                                      <label class="form-label fw-bold">Phone</label>
+                                      <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
+                                        <div class="flex-shrink-0 d-flex gap-3 align-items-center flex-1">
+                                          <div class="dropdown-container dropdown-phone">
+                                            <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle disabled">
+                                                <div class="d-flex">
+                                                  <img width="20" src="https://www.onlinecasting.dk/graphics/flags/danmark.png" alt="denmark"/>
+                                                </div>
+                                            </div>
+                                         </div>
+                                          <div class="form-control disabled">26897854</div>
+                                        </div>
+                                        <div class="flex-shrink-0 d-flex gap-3 align-items-center">
+                                          <div class="flex-shrink-0">
+                                            <a href="javascript:;" @click="smsConfirmNumber('26897854')" class="text-decoration-underline fw-bold">Change Number</a>
+                                          </div>
+                                          <div class="flex-shrink-0">
+                                            <button @click="smsConfirmNumber('26897854')"  type="button" class="btn mainBtn btnfillblack btn-xs">Gem</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      
+                                  </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">First Name</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Last Name</label>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Email</label>
+                                        <input type="email" class="form-control" />
+                                    </div>
+                                    <!-- <div class="mb-3">
+                                        <label class="form-label">Gender(s)</label>
+                                        <select class="form-select">
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div> -->
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <div x-data="dropdownHandler()" class="mb-3">
+                                                <label class="form-label d-flex align-items-center fw-bold">Gender(s) 
+                                                    <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Content goes here" class="fs-6 ms-1 mt-1">
+                                                        <ion-icon name="information-circle-outline"></ion-icon>
+                                                    </div>
+                                                </label>
+                                                <div class="dropdown-container dropdown-select">
+                                                    <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle">
+                                                        <div x-text="selectedText">Choose</div>
+                                                    </div>
+                                                    <div class="dropdown-menu font-size-15px">
+                                                       <ul>
+                                                           <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Male" x-model="selectedGenders.Male">
+                                                                    <label class="form-check-label cursor-pointer" for="Male">Male</label>
+                                                                </div> 
+                                                           </li>
+                                                           <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Female" x-model="selectedGenders.Female">
+                                                                    <label class="form-check-label cursor-pointer" for="Female">Female</label>
+                                                                </div> 
+                                                           </li>
+                                                           <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="GenderNonconforming" x-model="selectedGenders.GenderNonconforming">
+                                                                    <label class="form-check-label cursor-pointer" for="GenderNonconforming">Gender-nonconforming</label>
+                                                                </div> 
+                                                            </li>
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="NonBinary" x-model="selectedGenders.NonBinary">
+                                                                    <label class="form-check-label cursor-pointer" for="NonBinary">Non-binary</label>
+                                                                </div> 
+                                                            </li>
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="TransFemale" x-model="selectedGenders.TransFemale">
+                                                                    <label class="form-check-label cursor-pointer" for="TransFemale">Trans Female</label>
+                                                                </div> 
+                                                            </li>
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="TransMale" x-model="selectedGenders.TransMale">
+                                                                    <label class="form-check-label cursor-pointer" for="TransMale">Trans Male</label>
+                                                                </div> 
+                                                            </li>
+                                                            <li>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Unspecified" x-model="selectedGenders.Unspecified">
+                                                                    <label class="form-check-label cursor-pointer" for="Unspecified">Unspecified</label>
+                                                                </div> 
+                                                            </li>
+                                                          
+                                                       </ul>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+
+                                    
+                                    <div class="mb-3 mb-lg-4">
+                                        <label class="form-label">Birthday</label>
+                                        <div class="row">
+                                            <div class="col-12 col-lg-2 mb-3 mb-lg-0">
+                                                <select class="form-select">
+                                                    <option value="1">01</option>
+                                                    <option value="2">02</option>
+                                                    <option value="3">03</option>
+                                                    <option value="4">04</option>
+                                                    <option value="5">05</option>
+                                                    <option value="6">06</option>
+                                                    <option value="7">07</option>
+                                                    <option value="8">08</option>
+                                                    <option value="9">09</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+                                                <select class="form-select">
+                                                    <option value="1">January</option>
+                                                    <option value="2">February</option>
+                                                    <option value="3">March</option>
+                                                    <option value="4">April</option>
+                                                    <option value="5">May</option>
+                                                    <option value="6">June</option>
+                                                    <option value="7">July</option>
+                                                    <option value="8">August</option>
+                                                    <option value="9">September</option>
+                                                    <option value="10">October</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">December</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-lg-3 mb-3 mb-lg-0">
+                                                <select class="form-select">
+                                                    <option value="1">2022</option>
+                                                    <option value="2">2021</option>
+                                                    <option value="3">2020</option>
+                                                    <option value="4">2019</option>
+                                                    <option value="5">2018</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3 class="mb-3 text-muted">Password</h3>
+                                    <div class="mb-3">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Repeat</label>
+                                        <input type="password" class="form-control" />
+                                    </div>
+                                    <div class="mb-4 form-check">
+                                        <input type="checkbox" class="form-check-input" id="terms">
+                                        <label class="form-check-label" for="terms">Yes, I have read and understood the <a class="text-decoration-underline" href="javascript:;">Rules</a></label>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn mainBtn">Create Profile</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Footer start here-->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Navigation</h5>
+                        <ul>
+                            <li> <a href="#">Opret profil</a> </li>
+                            <li> <a href="#">Tilføj opslag</a> </li>
+                            <li> <a href="#">Castere &amp; agenter</a> </li>
+                            <li> <a href="#">Opret agentprofil</a> </li>
+                            <li> <a href="#">Casting &amp; auditions</a> </li>
+                            <li> <a href="#">Profiler</a> </li>
+                            <li> <a href="#">Log ind</a> </li>
+                            <li> <a href="#">RSS</a> </li>
+                        </ul>
+
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Artikler</h5>
+                        <ul>
+                            <li> <a href="#">Succesoplevelser</a> </li>
+                            <li> <a href="#">Artikler &amp; tips</a> </li>
+                            <li> <a href="#">Casterprofiler</a> </li>
+                            <li> <a href="#">Interviews</a> </li>
+                            <li> <a href="#">Presse</a> </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Quicklinks</h5>
+                        <ul>
+                            <li> <a href="#">Statister</a> </li>
+                            <li> <a href="#">Hårmodel</a> </li>
+                            <li> <a href="#">Børnemodel</a> </li>
+                            <li> <a href="#">Audition</a> </li>
+                            <li> <a href="#">Statist</a> </li>
+                            <li> <a href="#">Bliv model</a> </li>
+                            <li> <a href="#">TV vært</a> </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Onlinecasting</h5>
+                        <ul>
+                            <li> <a href="#">Om Onlinecasting</a> </li>
+                            <li> <a href="#">Konceptet</a> </li>
+                            <li> <a href="#">F.a.q.</a> </li>
+                            <li> <a href="#">Kontrakter</a> </li>
+                            <li> <a href="#">Handelsbetingelser</a> </li>
+                            <li> <a href="#">Cookies</a> </li>
+                            <li> <a href="#">Sitemap</a> </li>
+                            <li> <a href="#">Kontakt</a> </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img src="img/ftr-logo.svg" alt="" class="mb-10 mt-20">
+                        <p>Onlinekoncept <br>Klostermosevej 140<br>3000 Helsingør </p>
+                        <p class="pb-10 font-size-15px"> <a href="#">onlinecasting@onlinecasting.dk</a> </p>
+                        <p class="pb-10">
+                            <a href="#">
+                                <ion-icon class="footer-icons" name="logo-instagram"></ion-icon>
+                            </a> &nbsp;
+                            <a href="#">
+                                <ion-icon class="footer-icons" name="logo-facebook"></ion-icon>
+                            </a>
+                        </p>
+                        <p class="font-size-15px"><a href="#">Maleribasen.dk</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer end here-->
+
+
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Icon Fonts -->
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Owl Slider -->
+    <script src="js/owl.carousel.min.js"></script>
+    <!-- main-->
+    <script src="js/main.js"></script>
+    
+    <!-- Apline SMS data -->
+    <script src="js/smsData.js"></script>
+
+     
+    <script>
+        function dropdownHandler() {
+            return {
+                selectedGenders: {
+                    Male: false,
+                    Female: false,
+                    GenderNonconforming: false,
+                    NonBinary: false,
+                    TransFemale: false,
+                    TransMale: false,
+                    Unspecified: false
+                },
+                get selectedText() {
+                    const selected = Object.keys(this.selectedGenders).filter(gender => this.selectedGenders[gender]);
+                    const count = selected.length;
+                    if (count === 0) return 'Choose';
+                    if (count === 1) return selected[0].replace(/([A-Z])/g, ' $1').trim(); // Adds space before capital letters for better readability
+                    return `${count} selected`;
+                }
+            };
+        }
+        </script>
+</body>
+
+</html>

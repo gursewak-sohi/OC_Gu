@@ -927,7 +927,11 @@ a:active {
     color: #ffffff;
     white-space: nowrap;
 }
-
+.btn-xs {
+    height: 40px;
+    padding: 0px 24px;
+    line-height: 1
+}
 .btnfillblack:hover {
     border-color: #000;
     color: #ffffff;
@@ -2977,6 +2981,63 @@ a.hover:hover:before {
 
 .dropdown-select .dropdown-menu { 
     text-align: left;
+    
+}
+
+.dropdown-select .dropdown-menu  ul {  
+    border-radius: 0;
+}
+
+.dropdown-phone .dropdown-toggle {
+    width: 70px;
+    border: 1px solid #ced4da;
+    border-radius: .375rem;
+    height: 38px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    padding: .375rem 2.25rem .375rem .75rem;
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e")
+}
+
+.dropdown-phone .dropdown-toggle::before { 
+    display: none;
+}
+
+.dropdown-phone .dropdown-menu { 
+    text-align: left;
+    width: 260px;
+    padding: 5px 0;
+}
+
+.dropdown-phone .dropdown-menu  ul {  
+    border-radius: 0;
+}
+
+.dropdown-phone .dropdown-menu  ul li {  
+    padding: 4px 15px;
+    transition: 0.2s all ease;
+}
+.dropdown-phone .dropdown-menu  ul li:hover {  
+    background-color: #edebeb;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.form-control:disabled, .disabled {
+    background-color: #f7f7f7 !important;
+    opacity: 1;
+    pointer-events: none;
 }
 
 .min-w-140px {
