@@ -17,6 +17,15 @@ if (!statusModalInstance) {
 document.addEventListener("alpine:init", () => {
   Alpine.data('smsComponent', () => ({
 
+
+    
+      shouldRefreshPage: false,
+      refreshPageIfNeeded() {
+        if (this.shouldRefreshPage) {
+          window.location.reload();
+        }
+      },
+      
       selectedCountry: null,
       countries: [
         { code: '45', flagUrl: 'https://www.onlinecasting.dk/graphics/flags/danmark.png', name: 'Denmark' },
@@ -146,9 +155,7 @@ document.addEventListener("alpine:init", () => {
 
                   statusModalInstance.show();  
                   if (data.Refreshpage == 'OK') {
-                    setTimeout(() => {
-                      window.location.reload();
-                    }, 500);
+                    this.shouldRefreshPage = true;
                   }
                 }
                 else if (data.Status == 'ERROR') {

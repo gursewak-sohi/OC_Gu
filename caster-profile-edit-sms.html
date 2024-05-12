@@ -34,7 +34,7 @@
               <p x-text="statusMessage" class="font-size-16px"></p>
           </div>
           <div class="modal-footer">
-              <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
+              <button @click="refreshPageIfNeeded" x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
           </div>
       </div>
       </div>
@@ -78,18 +78,30 @@
                   <div x-show="showOTPBlock">
                     <h6 class="mb-3" x-text="textHtml"></h6>
                     <label x-text="textHeaderInputCode" class="form-label font-size-16px"></label>
-                    <input type="text" x-model="currentCode" min="1" max="5" :placeholder="textInputPlaceholderCode" class="form-control" />
+                    <div class="d-flex align-items-center gap-3">
+                      <input type="text" x-model="currentCode" min="1" max="5" :placeholder="textInputPlaceholderCode" class="form-control" />
+                      <div class="flex-shrink-0">
+                        <button @click="activateConfirmNumber()" x-bind:disabled="currentCode.length !== 5" x-text="textSubmitButton" type="button" class="btn mainBtn btn-xs"></button>
+                      </div>
+                      <div class="flex-shrink-0">
+                        <a href="javascript:;" @click="smsConfirmNumber(currentPhoneNumber)" class="text-decoration-underline fw-bold">New Code</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-between">
-                <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary"></button>
-                <div x-show="!showOTPBlock">
+                
+                <div x-show="!showOTPBlock" class="flex-1">
+                  <div class="flex-1 d-flex justify-content-between">
+                    <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary"></button>
                     <button @click="sendConfirmNumber()" x-bind:disabled="currentPhoneNumber.length < 6 || currentPhoneNumber.length > 50" x-text="textSubmitButton" type="button" class="btn mainBtn"></button>
+                  </div>
                 </div>
-                <div x-show="showOTPBlock">
-                    <button @click="smsConfirmNumber(currentPhoneNumber)"  type="button" class="btn mainBtn btnoutlineSecondary px-4 me-2">New Code</button>
-                    <button @click="activateConfirmNumber()" x-bind:disabled="currentCode.length !== 5" x-text="textSubmitButton" type="button" class="btn mainBtn"></button>
+                <div x-show="showOTPBlock" class="flex-1">
+                  <div class="flex-1 d-flex justify-content-between">
+                    <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary ms-auto"></button>
+                  </div>
                 </div>
             </div>
         </div>
