@@ -2639,18 +2639,45 @@ a.hover:hover:before {
     padding: 0;
     margin: 0;
     position: relative;
+    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.tags-area span.tags {
-    display: inline-block;
+.tags-area .tags {
+    display: inline-flex;
+    align-items: center;
     padding: 2px 10px;
     color: #464646;
     border: solid 1px #19191C;
     border-radius: 6px;
-    margin-right: 8px;
+    
     line-height: normal;
     font-size: 14px;
     font-weight: 700;
+}
+.tags-area .tags span { 
+    position: relative;
+    top: -1px;
+}
+.tags-area .tags ul { 
+    position: relative;
+    top: 1px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0 0 0 7px;
+    padding: 0;
+}
+
+.tags-area .tags ul ion-icon[name="star-outline"] {
+    display: inline-block;
+    
+}
+
+.tags-area .tags ul ion-icon[name="star"] {
+    display: inline-block;
+    color: #eb783e;
 }
 
 .casting-info-details {
