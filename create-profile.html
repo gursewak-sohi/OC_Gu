@@ -461,13 +461,19 @@
                 get selectedText() {
                     const selected = Object.keys(this.selectedGenders).filter(gender => this.selectedGenders[gender]);
                     const count = selected.length;
+    
                     if (count === 0) return 'Choose';
-                    if (count === 1) return selected[0].replace(/([A-Z])/g, ' $1').trim(); // Adds space before capital letters for better readability
-                    return `${count} selected`;
+                    if (count === 1) return selected[0].replace(/([A-Z])/g, ' $1').trim();
+    
+                    const primary = selected.includes('Male') ? 'Male' : selected.includes('Female') ? 'Female' : selected[0];
+                    const othersCount = count - 1;
+    
+                    return `${primary.replace(/([A-Z])/g, ' $1').trim()} + ${othersCount}`;
                 }
             };
         }
-        </script>
+    </script>
+    
 </body>
 
 </html>
