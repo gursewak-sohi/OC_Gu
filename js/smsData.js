@@ -46,10 +46,10 @@ document.addEventListener("alpine:init", () => {
       textInputPlaceholder: '',
       statusMessage: '',
 
-      smsConfirmNumber(profileId) {
+      smsConfirmNumber(currentPageName) {
         this.isConfirmingNumber = true;
         this.showOTPBlock = false
-        fetch(`https://www.onlinecasting.dk/api/sms/sms_confirm_number.asp?page=${profileId}`)
+        fetch(`https://www.onlinecasting.dk/api/sms/sms_confirm_number.asp?page=${currentPageName}`)
             .then(response => response.json())
             .then(data => {
               console.log(data);
