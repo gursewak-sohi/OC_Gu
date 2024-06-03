@@ -790,6 +790,14 @@ a:active {
     padding: 40px 0;
 }
 
+ 
+
+.w-140 {
+    width: 140px;
+}
+.whitespace {
+    white-space: nowrap;
+}
 .table> :not(caption)>*>* {
     padding: 8px 15px;
 }
@@ -1036,6 +1044,114 @@ a:active {
 
 .table-custom {
     table-layout: fixed;
+}
+
+.btn-share {
+    background-color: #fff;
+    border: none;
+    color: #19191C;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+    border: solid 2px transparent;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.btn-share .hydrated {
+    font-size: 20px;
+}
+
+.btn-tab {
+    background-color: #fff;
+    border: none;
+    color: #6b6b6b;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+    border: solid 2px #dee2e6;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn-tab .hydrated {
+    font-size: 20px;
+}
+
+.btn-tab:hover {
+    border-color: #19191C;
+}
+
+.btn-tab.active { 
+    border-color: #19191C;
+    color: #19191C;
+}
+
+.btn-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 22px;
+    background-color: #eef1f3;
+    width: 44px;
+    transition: .4s;
+    height: 44px;
+}
+
+.btn-circle:hover { 
+    background-color: #dee2e6;
+}
+
+.btn-iconed-primary {
+    background-color: #fff;
+    border: none;
+    color: #eb783e;
+    padding: 5px 12px 7px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    border: solid 2px #eb783e;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-iconed-primary .hydrated {
+    font-size: 18px;
+}
+
+.btn-iconed-primary:hover, .btn-iconed-primary:focus {
+    border-color: #eb783e;
+    background-color: #eb783e;
+    color: #fff;
 }
 
 .seeMoreBtn {
@@ -2882,6 +2998,7 @@ a.hover:hover:before {
     padding: 15px;
     text-align: center;
     border: solid 1px #DFDFE8 !important;
+    overflow: hidden;
 }
 
 .dropdown-container .dropdown-menu ul {
@@ -4332,6 +4449,98 @@ input.gender-checkbox[type="checkbox"]:checked+label {
   .fs-3 {
     font-size: 1.75rem !important;
   }
+ 
+
+  .star-rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+  justify-content: flex-end;
+  }
+  
+  .star-rating .hydrated {
+    cursor: pointer;
+    color: #eb783e;
+    transition: 0.2s all ease;
+  }
+
+  .star-rating ion-icon.active {
+    color: #eb783e;
+  }
+
+  .star-rating ion-icon.inactive {
+    opacity: 0.5;
+  }
+  
+  .star-rating label:hover ion-icon,
+  .star-rating label:hover ~ label ion-icon {
+    color: #eb783e; /* Color stars on hover and previous stars in RTL */
+    opacity: 1;
+  }
+ 
+  .btn-group-liked {
+	position: absolute;
+	right: 0;
+	display: flex;
+	gap: 10px;
+	bottom: 167px;
+}
+
+.profile-left {
+    display: block;
+}
+
+.list-view .profileItem {
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-view .profileItem .latestProfile {
+    width: 144px;
+}
+.list-view .profileItem .profileCard {
+    width: 144px;
+}
+  
+.list-view .profileItem .profile-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+}
+
+.list-view .profileItem .btn-group-liked {
+	position: static;
+	right: 0;
+	display: flex;
+	gap: 10px;
+	bottom: 167px;
+}
+
+  
+.list-view .profileItem { 
+    padding: 20px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+    border-radius: 0;
+}  
+
+.grid-view .profileItem .profile-left .form-check {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+
+}
+
+.downdown-w-sm {
+    width: auto !important;
+}
+  
 
 @media (max-width: 767px) {
      

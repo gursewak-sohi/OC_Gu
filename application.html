@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Page Title -->
+    <title>OnlineCasting</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Responsive Styles -->
+    <link rel="stylesheet" href="css/theme-responsive.css">
+    <!-- Owl Stylesheets -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+</head>
+
+<body x-data="applicationComponent()">
+
+    <div class="wrapper">
+        <!-- Promo Section -->
+        <div id="promoSection" class="promo-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="promo-block">
+                            <h5>Just launched new design</h5>
+                            <a class="btn mainBtn btnfillwhite" href="#">Post a Job</a>
+                        </div>
+                        <button id="promoBtn" type="button" class="promo-close">
+                            <ion-icon name="close-circle-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- header start here -->
+        <header class="header" id="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-3 col-md-3">
+                        <div class="logo">
+                            <a href="index.html"><img src="img/onlineCasting.svg" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-none d-md-block">
+                        <ul class="headerNav">
+                            <li><a href="#">CASTINGS &amp; JOBS</a></li>
+                            <li><a href="#">Search talents</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-9 col-md-3">
+                        <div class="rightNav">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <ion-icon style="font-size:25px" name="mail-outline"></ion-icon>
+                                        <div class="value">2</div>
+                                        <span>beskedar</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i>
+                                            <div class="profileavtar" style="background-image: url(img/profile-2.png);"></div>
+                                        </i>
+                                        <div class="value">!</div>
+                                        <span>Kasper</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <button class="top-bar__nav-toggle hamburger" id="top-nav-toggle">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </button>
+                                        <span>MENU</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="top-bar">
+                            <div class="top-bar__nav__wrapper" id="top-bar__nav">
+                                <nav class="top-bar__nav">
+                                    <div class="bordertp">
+                                        <div class="inner-col">
+
+                                            <h3>
+                                                <div class="avtar" style="background-image: url(img/exp-2.png);"></div>
+                                                My Profile</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="create-outline"></ion-icon>
+                                                        Edit profile</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="image-outline"></ion-icon>
+                                                        Upload image</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="log-out-outline"></ion-icon>
+                                                        Log out</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Casters &amp; Producers</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">See profiles</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Saved profiles</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Join us</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <figure id="figure" class="nav-reavel nav-down">
+            <ul class="headerNav brdrTp d-md-none">
+                <li><a href="#">CASTINGS &amp; JOBS</a></li>
+                <li><a href="#">Search talents</a></li>
+            </ul>
+        </figure>
+        <!-- header end here -->
+        <div class="clearfix"></div>
+
+        <section class="entry-content pt-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb-area">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Forside</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Ansogning</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Skuesphillere til film, Kobenhavn</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-8">
+                      <ul class="d-flex align-items-center gap-2 m-0 p-0">
+                        <li>
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input cursor-pointer">
+                        </div>
+                        </li>
+                        <li>
+                          <a class="btn-tab active" href="javascript:;"><ion-icon name="folder-open-outline"></ion-icon>Nye (0)</a>
+                        </li>
+                        <li>
+                          <a class="btn-tab" href="javascript:;"><ion-icon name="thumbs-up-outline"></ion-icon>Yes (0)</a>
+                        </li>
+                        <li>
+                          <a class="btn-tab" href="javascript:;"><ion-icon name="thumbs-down-outline"></ion-icon>No (54)</a>
+                        </li>
+                        <li>
+                          <a class="btn-tab" href="javascript:;"><ion-icon name="medal-outline"></ion-icon>Hired (4)</a>
+                        </li>
+                        <li>
+                          <a class="btn-share" href="javascript:;">Share <ion-icon name="share-outline"></ion-icon></a>
+                        </li>
+                     </ul>
+                    </div>
+                    <div class="col-md-4">
+                      <ul class="d-flex align-items-center gap-2 m-0 p-0 justify-content-md-end">
+                        <li>
+                          <div class="dropdown-container dropdown-select">
+                            <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="btn-circle">
+                              <ion-icon name="options-outline"></ion-icon>
+                            </div>
+                            <div class="dropdown-menu filter-dropdown font-size-14px mt-2 downdown-w-sm">
+                              <ul>
+                                 <li>
+                                    <a href="javascript:;">Option 1</a>
+                                 </li>
+                                 <li>
+                                    <a href="javascript:;">Option 2</a>
+                                 </li>
+                              </ul>
+                           </div>
+                         </div>
+                        </li>
+                        <li>
+                          <div class="dropdown-container dropdown-select">
+                            <div data-bs-toggle="dropdown" class="btn-circle">
+                              <ion-icon :name="currentView === 'list' ? 'list-outline' : 'grid-outline'"></ion>
+                            </div>
+                            <div class="dropdown-menu filter-dropdown font-size-14px mt-2 downdown-w-sm">
+                              <ul>
+                                 <li>
+                                    <a @click="currentView = 'list'; $nextTick(() => reinitializeOwlCarousel())" class="d-flex align-items-center" href="javascript:;"><ion-icon name="list-outline"></ion-icon> List View</a>
+                                 </li>
+                                 <li>
+                                    <a @click="currentView = 'grid'; $nextTick(() => reinitializeOwlCarousel())" class="d-flex align-items-center" href="javascript:;"><ion-icon name="grid-outline"></ion-icon> Grid View</a>
+                                 </li>
+                              </ul>
+                           </div>
+                         </div>
+                        </li>
+                         
+                        <li>
+                          <a class="btn-circle" href="javascript:;"><ion-icon name="filter-outline"></ion-icon></a>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+
+               
+                <section :class="currentView === 'list' ? 'latestProfileSection list-view pt-4 mt-2' : 'latestProfileSection grid-view pt-4 mt-2'">
+                  <div class="">
+                      <div class="row">
+                        
+                          <div :class="currentView === 'list' ? 'col-12' : 'col-12 col-sm-4 col-md-3'">
+                              <div class="profileItem">
+                                  <div class="profile-left">
+                                    <div class="form-check">
+                                      <input type="checkbox" class="form-check-input cursor-pointer">
+                                    </div>
+                                    <div class="latestProfile owl-carousel owl-theme">
+                                        <a href="javascript:;">
+                                            <div class="item">
+                                                <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:;">
+                                            <div class="item">
+                                                <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:;">
+                                            <div class="item">
+                                                <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:;">
+                                            <div class="item">
+                                                <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div>
+                                      <div class="d-flex align-items-center gap-1 text-muted mt-3 mb-0">
+                                        <ion-icon name="time-outline"></ion-icon> <i>23 mins siden</i>
+                                      </div>
+                                      <h4 class="pt-1">Julie, 26 aR</h4>
+                                      <p class="mb-2">Kobenhavn</p>
+                                      <div class="d-flex align-items-center gap-2  mt-2 mb-2">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                          <div class="icon-wrapper fs-4">
+                                            <span class="icon-outline">
+                                              <ion-icon name="id-card-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                              <ion-icon name="id-card"></ion-icon>
+                                            </span>
+                                          </div>
+                                        </a>
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                          <div class="icon-wrapper fs-4">
+                                            <span class="icon-outline">
+                                                <ion-icon name="images-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                                <ion-icon name="images"></ion-icon>
+                                            </span>
+                                              
+                                          </div>
+                                        </a>
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                          <div class="icon-wrapper fs-3">
+                                            <span class="icon-outline">
+                                              <ion-icon name="attach-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                              <ion-icon name="attach-outline"></ion-icon>
+                                            </span>
+                                          </div>
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div x-data="starRating()" class="star-rating">
+                                    <template x-for="star in 5" :key="star">
+                                      <label>
+                                        <input type="radio" x-model="rating" :value="6 - star"  hidden/>
+                                        <ion-icon :class="{'active': rating >= 6 - star, 'inactive': rating < 6 - star}" name="star" @click="setRating(6 - star)"></ion-icon>
+                                      </label>
+                                    </template>
+                                  </div>
+                                  <div class="d-flex align-items-center gap-2 fs-3 mt-2">
+                                    <div class="btn-group-liked fs-3">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                        <div class="icon-wrapper">
+                                          <span class="icon-outline">
+                                            <ion-icon name="thumbs-up-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="thumbs-up"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper">
+                                          <span class="icon-outline">
+                                            <ion-icon name="thumbs-down-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                              <ion-icon name="thumbs-down"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                    </div>
+                                    <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="arrow-redo-outline"></ion-icon>Reply</a>
+                                    <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="phone-portrait-outline"></ion-icon>Send SMS</a>
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                      <div class="icon-wrapper fs-2">
+                                        <span class="icon-outline">
+                                          <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+                                        </span>
+                                        <span class="icon-solid">
+                                          <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
+                                        </span>
+                                      </div>
+                                    </a>
+                                  </div>
+                              </div>
+                          </div>
+                          <div :class="currentView === 'list' ? 'col-12' : 'col-12 col-sm-4 col-md-3'">
+                                <div class="profileItem">
+                                    <div class="profile-left">
+                                      <div class="form-check">
+                                        <input type="checkbox" class="form-check-input cursor-pointer">
+                                      </div>
+                                      <a href="javascript:;">
+                                        <div class="profileCard" style="background-image: url(img/profile-2.png);"></div>
+                                      </a>
+                                      <div>
+                                        <div class="d-flex align-items-center gap-1 text-muted mt-3 mb-0">
+                                          <ion-icon name="time-outline"></ion-icon> <i>23 mins siden</i>
+                                        </div>
+                                        <h4 class="pt-1">Anna, 26 aR</h4>
+                                        <p class="mb-2">Kobenhavn</p>
+                                        <div class="d-flex align-items-center gap-2 mt-2 mb-2">
+                                          <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                            <div class="icon-wrapper fs-4">
+                                              <span class="icon-outline">
+                                                <ion-icon name="id-card-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="id-card"></ion-icon>
+                                              </span>
+                                            </div>
+                                          </a>
+                                          <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                            <div class="icon-wrapper fs-4">
+                                              <span class="icon-outline">
+                                                  <ion-icon name="images-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                  <ion-icon name="images"></ion-icon>
+                                              </span>
+                                                
+                                            </div>
+                                          </a>
+                                          <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                            <div class="icon-wrapper fs-3">
+                                              <span class="icon-outline">
+                                                <ion-icon name="attach-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="attach-outline"></ion-icon>
+                                              </span>
+                                            </div>
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div x-data="starRating()" class="star-rating">
+                                      <template x-for="star in 5" :key="star">
+                                        <label>
+                                          <input type="radio" x-model="rating" :value="6 - star"  hidden/>
+                                          <ion-icon :class="{'active': rating >= 6 - star, 'inactive': rating < 6 - star}" name="star" @click="setRating(6 - star)"></ion-icon>
+                                        </label>
+                                      </template>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 fs-3 mt-2">
+                                      <div class="btn-group-liked fs-3">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                          <div class="icon-wrapper">
+                                            <span class="icon-outline">
+                                              <ion-icon name="thumbs-up-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                              <ion-icon name="thumbs-up"></ion-icon>
+                                            </span>
+                                          </div>
+                                        </a>
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                          <div class="icon-wrapper">
+                                            <span class="icon-outline">
+                                              <ion-icon name="thumbs-down-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                                <ion-icon name="thumbs-down"></ion-icon>
+                                            </span>
+                                          </div>
+                                        </a>
+                                      </div>
+                                      <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="arrow-redo-outline"></ion-icon>Reply</a>
+                                      <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="phone-portrait-outline"></ion-icon>Send SMS</a>
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper fs-2">
+                                          <span class="icon-outline">
+                                            <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                    </div>
+                                </div>
+                          </div> 
+                          <div :class="currentView === 'list' ? 'col-12' : 'col-12 col-sm-4 col-md-3'">
+                            <div class="profileItem">
+                                <div class="profile-left">
+                                  <div class="form-check">
+                                    <input type="checkbox" class="form-check-input cursor-pointer">
+                                  </div>
+                                  <div class="latestProfile owl-carousel owl-theme">
+                                      <a href="javascript:;">
+                                          <div class="item">
+                                              <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                              </div>
+                                          </div>
+                                      </a>
+                                      <a href="javascript:;">
+                                          <div class="item">
+                                              <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                              </div>
+                                          </div>
+                                      </a>
+                                      <a href="javascript:;">
+                                          <div class="item">
+                                              <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                              </div>
+                                          </div>
+                                      </a>
+                                      <a href="javascript:;">
+                                          <div class="item">
+                                              <div class="profileCard" style="background-image: url(img/profile-7.png);">
+                                              </div>
+                                          </div>
+                                      </a>
+                                  </div>
+                                  <div>
+                                    <div class="d-flex align-items-center gap-1 text-muted mt-3 mb-0">
+                                      <ion-icon name="time-outline"></ion-icon> <i>23 mins siden</i>
+                                    </div>
+                                    <h4 class="pt-1">Julie, 26 aR</h4>
+                                    <p class="mb-2">Kobenhavn</p>
+                                    <div class="d-flex align-items-center gap-2  mt-2 mb-2">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                        <div class="icon-wrapper fs-4">
+                                          <span class="icon-outline">
+                                            <ion-icon name="id-card-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="id-card"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper fs-4">
+                                          <span class="icon-outline">
+                                              <ion-icon name="images-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                              <ion-icon name="images"></ion-icon>
+                                          </span>
+                                            
+                                        </div>
+                                      </a>
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper fs-3">
+                                          <span class="icon-outline">
+                                            <ion-icon name="attach-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="attach-outline"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div x-data="starRating()" class="star-rating">
+                                  <template x-for="star in 5" :key="star">
+                                    <label>
+                                      <input type="radio" x-model="rating" :value="6 - star"  hidden/>
+                                      <ion-icon :class="{'active': rating >= 6 - star, 'inactive': rating < 6 - star}" name="star" @click="setRating(6 - star)"></ion-icon>
+                                    </label>
+                                  </template>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 fs-3 mt-2">
+                                  <div class="btn-group-liked fs-3">
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                      <div class="icon-wrapper">
+                                        <span class="icon-outline">
+                                          <ion-icon name="thumbs-up-outline"></ion-icon>
+                                        </span>
+                                        <span class="icon-solid">
+                                          <ion-icon name="thumbs-up"></ion-icon>
+                                        </span>
+                                      </div>
+                                    </a>
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                      <div class="icon-wrapper">
+                                        <span class="icon-outline">
+                                          <ion-icon name="thumbs-down-outline"></ion-icon>
+                                        </span>
+                                        <span class="icon-solid">
+                                            <ion-icon name="thumbs-down"></ion-icon>
+                                        </span>
+                                      </div>
+                                    </a>
+                                  </div>
+                                  <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="arrow-redo-outline"></ion-icon>Reply</a>
+                                  <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="phone-portrait-outline"></ion-icon>Send SMS</a>
+                                  <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                    <div class="icon-wrapper fs-2">
+                                      <span class="icon-outline">
+                                        <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+                                      </span>
+                                      <span class="icon-solid">
+                                        <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
+                                      </span>
+                                    </div>
+                                  </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div :class="currentView === 'list' ? 'col-12' : 'col-12 col-sm-4 col-md-3'">
+                              <div class="profileItem">
+                                  <div class="profile-left">
+                                    <div class="form-check">
+                                      <input type="checkbox" class="form-check-input cursor-pointer">
+                                    </div>
+                                    <a href="javascript:;">
+                                      <div class="profileCard" style="background-image: url(img/profile-2.png);"></div>
+                                    </a>
+                                    <div>
+                                      <div class="d-flex align-items-center gap-1 text-muted mt-3 mb-0">
+                                        <ion-icon name="time-outline"></ion-icon> <i>23 mins siden</i>
+                                      </div>
+                                      <h4 class="pt-1">Anna, 26 aR</h4>
+                                      <p class="mb-2">Kobenhavn</p>
+                                      <div class="d-flex align-items-center gap-2 mt-2 mb-2">
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                          <div class="icon-wrapper fs-4">
+                                            <span class="icon-outline">
+                                              <ion-icon name="id-card-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                              <ion-icon name="id-card"></ion-icon>
+                                            </span>
+                                          </div>
+                                        </a>
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                          <div class="icon-wrapper fs-4">
+                                            <span class="icon-outline">
+                                                <ion-icon name="images-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                                <ion-icon name="images"></ion-icon>
+                                            </span>
+                                              
+                                          </div>
+                                        </a>
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                          <div class="icon-wrapper fs-3">
+                                            <span class="icon-outline">
+                                              <ion-icon name="attach-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                              <ion-icon name="attach-outline"></ion-icon>
+                                            </span>
+                                          </div>
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div x-data="starRating()" class="star-rating">
+                                    <template x-for="star in 5" :key="star">
+                                      <label>
+                                        <input type="radio" x-model="rating" :value="6 - star"  hidden/>
+                                        <ion-icon :class="{'active': rating >= 6 - star, 'inactive': rating < 6 - star}" name="star" @click="setRating(6 - star)"></ion-icon>
+                                      </label>
+                                    </template>
+                                  </div>
+                                  <div class="d-flex align-items-center gap-2 fs-3 mt-2">
+                                    <div class="btn-group-liked fs-3">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                        <div class="icon-wrapper">
+                                          <span class="icon-outline">
+                                            <ion-icon name="thumbs-up-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                            <ion-icon name="thumbs-up"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                        <div class="icon-wrapper">
+                                          <span class="icon-outline">
+                                            <ion-icon name="thumbs-down-outline"></ion-icon>
+                                          </span>
+                                          <span class="icon-solid">
+                                              <ion-icon name="thumbs-down"></ion-icon>
+                                          </span>
+                                        </div>
+                                      </a>
+                                    </div>
+                                    <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="arrow-redo-outline"></ion-icon>Reply</a>
+                                    <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="phone-portrait-outline"></ion-icon>Send SMS</a>
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                      <div class="icon-wrapper fs-2">
+                                        <span class="icon-outline">
+                                          <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+                                        </span>
+                                        <span class="icon-solid">
+                                          <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
+                                        </span>
+                                      </div>
+                                    </a>
+                                  </div>
+                              </div>
+                        </div> 
+                      </div>
+  
+                      <!-- /Pagination start here-->
+                      <div class="pagination-area pt-30">
+                          <nav aria-label="Page navigation example">
+                              <ul class="pagination justify-content-center">
+                                  <li class="page-item active">
+                                      <a class="page-link" href="#">1</a>
+                                  </li>
+                                  <li class="page-item">
+                                      <a class="page-link" href="#">2</a>
+                                  </li>
+                                  <li class="page-item">
+                                      <a class="page-link" href="#">3</a>
+                                  </li>
+                                  <li class="page-item">
+                                      <a class="page-link" href="#">14</a>
+                                  </li>
+                                  <li class="page-item">
+                                      <a class="page-link" href="#">115</a>
+                                  </li>
+                                  <li class="page-item">
+                                      <a class="page-link" href="#">
+                                          <ion-icon name="chevron-forward-outline"></ion-icon>
+                                      </a>
+                                  </li>
+                              </ul>
+                          </nav>
+                      </div>
+                      <!-- /Pagination end here-->
+                  </div>
+              </section>
+
+                <!-- <div class="row mt-3 align-items-center">
+                  <div class="col-md-5">
+                      <div class="d-flex align-items-center">
+                        <div class="form-check me-2">
+                          <input type="checkbox" class="form-check-input cursor-pointer">
+                        </div>
+                        <div class="w-140">
+                          <img width="140" src="img/profile-1.png" alt="" class="shadow rounded">
+                        </div>
+                        <div class="d-flex flex-column ms-4">
+                          <div class="d-flex align-items-center gap-1 text-muted mb-2">
+                            <ion-icon name="time-outline"></ion-icon> <i>23 mins siden</i>
+                          </div>
+                          <div class="d-flex align-items-center gap-1 whitespace gap-2 mb-2">
+                            <div class="fw-bold font-size-18px">Trine Kloster</div>
+                            <div class=" d-flex align-items-center gap-1 font-size-16px"><ion-icon name="location-outline"></ion-icon> Fredensborg</div>
+                          </div>
+                          <ul class="d-flex gap-2 align-items-center m-0 p-0">
+                            <li>
+                              <a class="d-flex font-size-24px" href="javascript:;">
+                                <ion-icon name="id-card-outline"></ion-icon>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="d-flex font-size-24px" href="javascript:;">
+                                <ion-icon name="images-outline"></ion-icon>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="d-flex font-size-28px" href="javascript:;">
+                                <ion-icon name="attach-outline"></ion-icon>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-md-3">
+                    
+                    <div x-data="starRating()" class="star-rating">
+                      <template x-for="star in 5" :key="star">
+                        <label>
+                          <input type="radio" x-model="rating" :value="6 - star"  hidden/>
+                          <ion-icon :class="{'active': rating >= 6 - star, 'inactive': rating < 6 - star}" name="star" @click="setRating(6 - star)"></ion-icon>
+                        </label>
+                      </template>
+                    </div>
+                    
+                  </div>
+                </div> -->
+            </div>
+        </section>
+
+
+        <!-- Footer start here-->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Navigation</h5>
+                        <ul>
+                            <li> <a href="#">Opret profil</a> </li>
+                            <li> <a href="#">Tilføj opslag</a> </li>
+                            <li> <a href="#">Castere &amp; agenter</a> </li>
+                            <li> <a href="#">Opret agentprofil</a> </li>
+                            <li> <a href="#">Casting &amp; auditions</a> </li>
+                            <li> <a href="#">Profiler</a> </li>
+                            <li> <a href="#">Log ind</a> </li>
+                            <li> <a href="#">RSS</a> </li>
+                        </ul>
+
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Artikler</h5>
+                        <ul>
+                            <li> <a href="#">Succesoplevelser</a> </li>
+                            <li> <a href="#">Artikler &amp; tips</a> </li>
+                            <li> <a href="#">Casterprofiler</a> </li>
+                            <li> <a href="#">Interviews</a> </li>
+                            <li> <a href="#">Presse</a> </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Quicklinks</h5>
+                        <ul>
+                            <li> <a href="#">Statister</a> </li>
+                            <li> <a href="#">Hårmodel</a> </li>
+                            <li> <a href="#">Børnemodel</a> </li>
+                            <li> <a href="#">Audition</a> </li>
+                            <li> <a href="#">Statist</a> </li>
+                            <li> <a href="#">Bliv model</a> </li>
+                            <li> <a href="#">TV vært</a> </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Onlinecasting</h5>
+                        <ul>
+                            <li> <a href="#">Om Onlinecasting</a> </li>
+                            <li> <a href="#">Konceptet</a> </li>
+                            <li> <a href="#">F.a.q.</a> </li>
+                            <li> <a href="#">Kontrakter</a> </li>
+                            <li> <a href="#">Handelsbetingelser</a> </li>
+                            <li> <a href="#">Cookies</a> </li>
+                            <li> <a href="#">Sitemap</a> </li>
+                            <li> <a href="#">Kontakt</a> </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img src="img/ftr-logo.svg" alt="" class="mb-10 mt-20">
+                        <p>Onlinekoncept <br>Klostermosevej 140<br>3000 Helsingør </p>
+                        <p class="pb-10 font-size-15px"> <a href="#">onlinecasting@onlinecasting.dk</a> </p>
+                        <p class="pb-10">
+                            <a href="#">
+                                <ion-icon class="footer-icons" name="logo-instagram"></ion-icon>
+                            </a> &nbsp;
+                            <a href="#">
+                                <ion-icon class="footer-icons" name="logo-facebook"></ion-icon>
+                            </a>
+                        </p>
+                        <p class="font-size-15px"><a href="#">Maleribasen.dk</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer end here-->
+
+
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.js"></script>
+
+    <!-- Icon Fonts -->
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Owl Slider -->
+    <script src="js/owl.carousel.min.js"></script>
+    <!-- main-->
+    <script src="js/main.js"></script>
+   
+    <script src="js/application-data.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body>
+
+</html>
