@@ -1119,7 +1119,7 @@ a:active {
 }
 
 .btn-circle:hover { 
-    background-color: #dee2e6;
+    background-color: rgba(235, 120, 62, 0.5);
 }
 
 .btn-iconed-primary {
@@ -4430,6 +4430,9 @@ input.gender-checkbox[type="checkbox"]:checked+label {
   opacity: 0.5;
   pointer-events: none;
 }
+.icon-wrapper {
+    position: relative;
+}
 
 .icon-wrapper .icon-solid {
     display: none; 
@@ -4445,6 +4448,31 @@ input.gender-checkbox[type="checkbox"]:checked+label {
   .icon-wrapper:hover .icon-solid {
     display: flex; 
   }
+
+  .icon-wrapper.active .icon-outline {
+    display: none; 
+  }
+
+  .icon-wrapper.active .icon-solid {
+    display: flex; 
+    color: #eb783e;
+  }
+
+  .icon-checkmark {
+	position: absolute;
+	bottom: -4px;
+	right: -5px;
+	display: flex;
+	background-color: #fff;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	border-radius: 50%;
+	z-index: 10;
+    color: #009a3b;
+}
+ 
+
 
   .fs-3 {
     font-size: 1.75rem !important;
@@ -4487,7 +4515,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 	right: 0;
 	display: flex;
 	gap: 10px;
-	bottom: 167px;
+	bottom: 172px;
 }
 
 .profile-left {
@@ -4499,17 +4527,32 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     justify-content: space-between;
 }
 
-.list-view .profileItem .latestProfile {
+.detailed-view .profileItem {
+    display: flex;
+    justify-content: space-between;
+}
+
+ 
+ 
+.list-view .profileItem .profileCard {
     width: 144px;
 }
-.list-view .profileItem .profileCard {
+
+.detailed-view .profileItem .profileCard {
     width: 144px;
 }
   
 .list-view .profileItem .profile-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+
+}
+
+.detailed-view .profileItem .profile-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
 
 }
 
@@ -4518,16 +4561,85 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 	right: 0;
 	display: flex;
 	gap: 10px;
-	bottom: 167px;
+	bottom: 175px;
 }
 
+.detailed-view .profileItem .btn-group-liked {
+	position: static;
+	right: 0;
+	display: flex;
+	gap: 10px;
+	bottom: 175px;
+}
+
+.list-view .profileItem .btn-group-liked .icon-wrapper { 
+    font-size: 26px;
+}
+
+.detailed-view .profileItem .btn-group-liked .icon-wrapper { 
+    font-size: 26px;
+}
+
+
+.grid-view .profileItem .btn-group-liked .icon-wrapper { 
+    font-size: 23px;
+}
+
+.grid-view .star-rating {
+    margin-bottom: 10px;
+}
+
+.list-only {
+    display: none;
+}
+
+.list-view  .list-only {
+    display: flex;
+}
+
+.detailed-only {
+    display: none;
+}
+
+.detailed-view  .detailed-only {
+    display: block;
+}
+
+.list-view  .list-only .icon-wrapper {
+    font-size: 26px;
+}
+
+.grid-only {
+    display: none;
+}
+
+.grid-view  .grid-only {
+    display: flex;
+}
+.list-view .more-icon  {
+    font-size: 26px;
+}
+.detailed-view .more-icon  {
+    font-size: 30px;
+}
+
+.grid-view .more-icon  {
+    font-size: 30px;
+}
   
 .list-view .profileItem { 
     padding: 20px 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     border-radius: 0;
-}  
+} 
+
+.detailed-view .profileItem { 
+    padding: 20px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+    border-radius: 0;
+} 
 
 .grid-view .profileItem .profile-left .form-check {
     position: absolute;
@@ -4537,10 +4649,93 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 
 }
 
+.detailed-view .profileItem .profile-left .form-check {
+    margin-top: 50px;
+    
+}
+
 .downdown-w-sm {
     width: auto !important;
 }
-  
+
+.list-view .profile-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0 3px;
+}
+
+
+.detailed-view .profile-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0 3px;
+}
+
+.grid-view .profile-text {
+    display: block;
+    padding: 2px 0 0;
+}
+
+.profile-location {
+    font-style: normal;
+    font-size: 16px;
+    line-height: 30px;
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .profile-location ion-icon {
+  font-size: 20px;
+    }
+
+  .grid-view .profile-location ion-icon {
+    display: none;
+    }
+
+
+  .profile-name {
+    font-weight: 800;
+  font-size: 20px;
+  color: #19191C;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  display: flex;
+  }
+
+
+  .profile-time {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    color: #969696;
+  }
+
+  .profile-time:hover, .profile-time:focus  {
+    color: #969696;
+  }
+
+  .icon-counter {
+	position: absolute;
+	background-color: #eb783e;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	border-radius: 50%;
+	font-size: 10px;
+	color: #fff;
+	top: -5px;
+	right: -5px;
+	font-weight: 700;
+}
+
 
 @media (max-width: 767px) {
      
