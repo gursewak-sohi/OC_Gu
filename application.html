@@ -246,13 +246,13 @@
                             <div class="dropdown-menu filter-dropdown font-size-14px mt-2 downdown-w-sm">
                               <ul>
                                  <li>
-                                    <a @click="currentView = 'list';" class="d-flex align-items-center" href="javascript:;"><ion-icon name="list-outline"></ion-icon> List View</a>
+                                    <a @click="currentView = 'list';" :class="currentView === 'list' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="list-outline"></ion-icon> List View</a>
                                  </li>
                                  <li>
-                                    <a @click="currentView = 'grid';" class="d-flex align-items-center" href="javascript:;"><ion-icon name="grid-outline"></ion-icon> Grid View</a>
+                                    <a @click="currentView = 'grid';" :class="currentView === 'grid' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="grid-outline"></ion-icon> Grid View</a>
                                  </li>
                                  <li>
-                                  <a @click="currentView = 'detailed';" class="d-flex align-items-center" href="javascript:;"><ion-icon name="document-text-outline"></ion-icon> Detailed View</a>
+                                  <a @click="currentView = 'detailed';" :class="currentView === 'detailed' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="document-text-outline"></ion-icon> Detailed View</a>
                                </li>
                               </ul>
                            </div>
@@ -372,7 +372,7 @@
                                         </div>
                                         
                                         <div class="list-only grid-only">
-                                          <div class="d-flex align-items-center gap-2 mt-2 mb-2">
+                                          <div class="d-flex align-items-center gap-2 my-1">
                                             <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
                                               <div class="icon-wrapper fs-4">
                                                 <span class="icon-outline">
@@ -632,7 +632,7 @@
                                     </div>
                                     
                                     <div class="list-only grid-only">
-                                      <div class="d-flex align-items-center gap-2 mt-2 mb-2">
+                                      <div class="d-flex align-items-center gap-2 my-1">
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
                                           <div class="icon-wrapper fs-4">
                                             <span class="icon-outline">

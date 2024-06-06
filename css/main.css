@@ -1127,6 +1127,9 @@ a:active {
 }
 
 .btn-circle:hover { 
+    background-color: #d5d8da;
+}
+.btn-circle.show { 
     background-color: rgba(235, 120, 62, 0.5);
 }
 
@@ -3479,6 +3482,11 @@ a.hover:hover:before {
     color: #fff !important;
 }
 
+.filter-dropdown > ul > li > a.active, .filter-dropdown > ul > li > button.active {
+    background-color: #eb783e !important;
+    color: #fff !important;
+}
+
 .dropdown-profile {
     top: 25px !important
 }
@@ -4547,11 +4555,11 @@ input.gender-checkbox[type="checkbox"]:checked+label {
  
  
 .list-view .profileItem .profileCard {
-    width: 144px;
+    width: 100px;
 }
 
 .detailed-view .profileItem .profileCard {
-    width: 144px;
+    width: 100px;
 }
   
 .list-view .profileItem .profile-left {
@@ -4599,6 +4607,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 
 .grid-view .star-rating {
     margin-bottom: 10px;
+    margin-top: 5px;
 }
 
 .list-only {
@@ -4640,14 +4649,14 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 }
   
 .list-view .profileItem { 
-    padding: 20px 0;
+    padding: 15px 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     border-radius: 0;
 } 
 
 .detailed-view .profileItem { 
-    padding: 20px 0;
+    padding: 15px 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     border-radius: 0;
@@ -4674,7 +4683,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 5px 0 3px;
+    padding:0;
 }
 
 
@@ -4682,7 +4691,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 5px 0 3px;
+    padding:0;
 }
 
 .grid-view .profile-text {
@@ -4723,9 +4732,11 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     display: flex;
     align-items: center;
     gap: 3px;
-    margin-top: 10px;
     margin-bottom: 0;
     color: #969696;
+  }
+  .grid-view .profile-time {
+    margin-top: 10px;
   }
 
   .profile-time:hover, .profile-time:focus  {
