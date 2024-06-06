@@ -810,6 +810,14 @@ a:active {
     cursor: pointer;
 }
 
+.row-gap-3 {
+    row-gap: 1rem !important;
+}
+
+.row-gap-4 {
+    row-gap: 1.5rem !important;
+}
+
 .mx-w-200 {
     max-width: 200px;
 }
@@ -4425,6 +4433,10 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 	border-radius: 4px;
 }
 
+.object-cover {
+    object-fit: cover;
+}
+
 .btn-disabled
 {
   opacity: 0.5;
@@ -4734,6 +4746,15 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 	top: -5px;
 	right: -5px;
 	font-weight: 700;
+}
+
+.section {
+    padding: 60px 0 80px;
+    position: relative;
+}
+
+.bg-light {
+    background-color: #F9F9FC;
 }
 
 
