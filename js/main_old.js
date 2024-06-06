@@ -252,7 +252,6 @@
              console.log(`${headerTop}px`);
              $('#top-bar__nav').css('top', headerHeight);
          });
-
      }
 
      //  Promo Section

@@ -22,7 +22,7 @@
 
     <div class="wrapper">
         <!-- Promo Section -->
-        <div id="promoSection" class="promo-section">
+        <!-- <div id="promoSection" class="promo-section">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -36,7 +36,21 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+
+         <!-- Profile Selection -->
+         <div class="selection-section">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12">
+                      <div class="selection-block">
+                          <h5><span>2</span> ansogninger valgt</h5>
+                          <a class="btn mainBtn btnfillwhite" href="#">Besvar ansogningerne</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
         <!-- header start here -->
         <header class="header" id="header">
             <div class="container-fluid">
@@ -196,7 +210,7 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-8">
-                      <ul class="d-flex align-items-center gap-2 m-0 p-0">
+                      <ul class="d-flex align-items-center gap-2 m-0 p-0 flex-wrap">
                         <li>
                           <div class="form-check">
                             <input type="checkbox" class="form-check-input cursor-pointer">
@@ -220,7 +234,7 @@
                      </ul>
                     </div>
                     <div class="col-md-4">
-                      <ul class="d-flex align-items-center gap-2 m-0 p-0 justify-content-md-end">
+                      <ul class="d-flex align-items-center gap-2 m-0 p-0 justify-content-end">
                         <li>
                           <div class="dropdown-container dropdown-select">
                             <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="btn-circle">
@@ -272,16 +286,16 @@
                       <div class="row">
                         
                           
-                          <div :class="currentView === 'grid' ? 'col-12 col-sm-4 col-md-3' : 'col-12'">
+                          <div :class="currentView === 'grid' ? 'col-12 col-md-6 col-lg-3' : 'col-12'">
                                 <div class="profileItem">
                                     <div class="profile-left">
                                       <div class="form-check">
                                         <input type="checkbox" class="form-check-input cursor-pointer">
                                       </div>
-                                      <a href="javascript:;">
+                                      <a class="profile-card-wrapper" href="javascript:;">
                                         <div class="profileCard" style="background-image: url(img/profile-3.png);"></div>
                                       </a>
-                                      <div>
+                                      <div class="profile-data">
                                         <a href="javascript:;" class="profile-time">
                                           <ion-icon name="time-outline"></ion-icon> <i>23 mins siden</i>
                                         </a>
@@ -291,13 +305,13 @@
                                         </div>
                                         <div class="detailed-only mt-2">
                                           <div class="d-flex gap-2 mb-3 flex-wrap">
-                                            <div class="ml-0 badge badge-outline-muted d-flex align-items-center gap-1">Move
+                                            <div class="ml-0 badge badge-outline-muted badge-hover d-flex align-items-center gap-1">Move
                                                 <ion-icon name="star-outline"></ion-icon> to all new
                                             </div>
-                                            <div class="ml-0 badge badge-outline-black d-flex align-items-center gap-1 cursor-pointer">Move
+                                            <div class="ml-0 badge badge-outline-black badge-hover d-flex align-items-center gap-1 cursor-pointer">Move
                                                 <ion-icon name="star-outline"></ion-icon> potentielle
                                             </div>
-                                            <div class="ml-0 badge badge-outline-black d-flex align-items-center gap-1 cursor-pointer">Move
+                                            <div class="ml-0 badge badge-outline-black badge-hover d-flex align-items-center gap-1 cursor-pointer">Move
                                                 <ion-icon name="star-outline"></ion-icon> not good
                                             </div>
                                         </div>
@@ -412,6 +426,7 @@
                                       </div>
                                     </div>
                                     <div x-data="starRating()" class="star-rating list-only grid-only">
+                                      <span class="rating-text">mins siden</span>
                                       <template x-for="star in 5" :key="star">
                                         <label>
                                           <input type="radio" x-model="rating" :value="6 - star"  hidden/>
@@ -532,16 +547,16 @@
                                 </div>
                           </div>
                           
-                          <div :class="currentView === 'grid' ? 'col-12 col-sm-4 col-md-3' : 'col-12'">
+                          <div :class="currentView === 'grid' ? 'col-12 col-md-6 col-lg-3' : 'col-12'">
                             <div class="profileItem">
                                 <div class="profile-left">
                                   <div class="form-check">
                                     <input type="checkbox" class="form-check-input cursor-pointer">
                                   </div>
-                                  <a href="javascript:;">
+                                  <a class="profile-card-wrapper" href="javascript:;">
                                     <div class="profileCard" style="background-image: url(img/profile-2.png);"></div>
                                   </a>
-                                  <div>
+                                  <div class="profile-data">
                                     <a href="javascript:;" class="profile-time">
                                       <ion-icon name="time-outline"></ion-icon> <i>23 mins siden</i>
                                     </a>
@@ -551,13 +566,13 @@
                                     </div>
                                     <div class="detailed-only mt-2">
                                       <div class="d-flex gap-2 mb-3 flex-wrap">
-                                        <div class="ml-0 badge badge-outline-muted d-flex align-items-center gap-1">Move
+                                        <div class="ml-0 badge badge-outline-muted badge-hover  d-flex align-items-center gap-1">Move
                                             <ion-icon name="star-outline"></ion-icon> to all new
                                         </div>
-                                        <div class="ml-0 badge badge-outline-black d-flex align-items-center gap-1 cursor-pointer">Move
+                                        <div class="ml-0 badge badge-outline-black badge-hover d-flex align-items-center gap-1 cursor-pointer">Move
                                             <ion-icon name="star-outline"></ion-icon> potentielle
                                         </div>
-                                        <div class="ml-0 badge badge-outline-black d-flex align-items-center gap-1 cursor-pointer">Move
+                                        <div class="ml-0 badge badge-outline-black badge-hover d-flex align-items-center gap-1 cursor-pointer">Move
                                             <ion-icon name="star-outline"></ion-icon> not good
                                         </div>
                                     </div>
@@ -672,6 +687,7 @@
                                   </div>
                                 </div>
                                 <div x-data="starRating()" class="star-rating list-only grid-only">
+                                  <span class="rating-text">mins siden</span>
                                   <template x-for="star in 5" :key="star">
                                     <label>
                                       <input type="radio" x-model="rating" :value="6 - star"  hidden/>
