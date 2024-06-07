@@ -700,27 +700,44 @@
     .detailed-view .profileItem .profile-left {
         flex-direction: column;
     }
-
-    .list-view .profileItem {
-        flex-direction: column;
-    }
-    .list-view .profileItem .profile-left {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+ 
     .list-view .profile-data {
-        top: 0;
+        top: -15px;
+        white-space: nowrap;
     }
     .list-view .profileItem .profile-left .form-check {
         position: absolute;
-        top: 22px;
-        left: 10px;
-        z-index: 20;
+    top: 20px;
+    left: 8px;
+    z-index: 20
     }
     .list-view .star-rating {
-        margin-bottom: 10px;
-        margin-top: 5px;
+        margin-bottom: 0;
+        margin-top: 0;
         align-self: flex-start;
+        position: absolute;
+        left: 112px;
+        bottom: 20px;
+    }
+    .list-view .hidden-list-xs {
+        display: none;
+    }
+    .list-view .profile-name {
+        width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    }
+
+    .selection-block h5 {
+        font-size: 16px;
+    }
+    .list-view .bottom-icons {
+        display: none;
+    }
+    .list-view .profile-location {
+        display: none;
     }
     .detailed-view .profileItem .profile-left .form-check {
         position: absolute;
@@ -728,13 +745,16 @@
         left: 10px;
         z-index: 20;
     }
+    .list-view .profileItem, .detailed-view .profileItem  {
+        padding: 15px 0;
+    }
     .list-view .profileItem .profileCard {
-        width: 100%;
+        width: 100px;
     }
     .detailed-view .profileItem .profileCard {
         width: 100%;
     }
-    .profile-card-wrapper {
+    .grid-view .profile-card-wrapper , .detailed-view .profile-card-wrapper {
         display: block;
         width: 100%;
     }

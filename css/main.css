@@ -1031,8 +1031,13 @@ a:active {
     border-color: #19191C;
     color: #19191C;
 }
+.badge-light-gray {
+    background-color: #e2e2e2;
+    border-color: #19191C;
+    color: #19191C;
+}
 
-.badge-outline-black.badge-hover:hover {
+.badge-light-gray.badge-hover:hover {
     background-color: #6b6b6b;
     border-color: #6b6b6b;
     color: #fff;
@@ -1147,11 +1152,11 @@ a:active {
     background-color: #fff;
     border: none;
     color: #eb783e;
-    padding: 5px 12px 7px 12px;
+    padding: 6px 14px 8px 14px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     border: solid 2px #eb783e;
     border-radius: 25px;
@@ -1166,7 +1171,7 @@ a:active {
 }
 
 .btn-iconed-primary .hydrated {
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .btn-iconed-primary:hover, .btn-iconed-primary:focus {
@@ -4616,11 +4621,25 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 .list-view .profileItem {
     display: flex;
     justify-content: space-between;
+    transition: 0.2s all ease;
+}
+
+.profileItem .dropdown-container .dropdown-toggle {
+    background-color: transparent;
+}
+
+.list-view .profileItem:hover {
+    background-color: #f4f6f7;
 }
 
 .detailed-view .profileItem {
     display: flex;
     justify-content: space-between;
+    transition: 0.2s all ease;
+}
+
+.detailed-view .profileItem:hover {
+    background-color: #f4f6f7;
 }
 
  
@@ -4723,22 +4742,22 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 
 
 .grid-view .more-icon  {
-    font-size: 30px;
+    font-size: 40px;
 }
 
 .detailed-view .more-icon  {
-    font-size: 37px;
+    font-size: 40px;
 }
   
 .list-view .profileItem { 
-    padding: 15px 0;
+    padding: 15px 10px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     border-radius: 0;
 } 
 
 .detailed-view .profileItem { 
-    padding: 15px 0;
+    padding: 15px 10px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 0;
     border-radius: 0;
