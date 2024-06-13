@@ -1103,7 +1103,7 @@ a:active {
     display: inline-block;
     font-size: 16px;
     font-weight: 700;
-    border: solid 2px #dee2e6;
+    border: solid 1px #dee2e6;
     border-radius: 25px;
     display: flex;
     align-items: center;
@@ -4835,6 +4835,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     gap: 3px;
     margin-bottom: 0;
     color: #969696;
+    text-transform: capitalize;
   }
 
   .grid-view .profile-time {
@@ -4868,6 +4869,15 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 
 .bg-light {
     background-color: #F9F9FC;
+}
+
+.application-item {
+    position: relative;
+}
+
+.application-item.moving {
+    pointer-events: none;
+    opacity: 0.2;
 }
 
 
