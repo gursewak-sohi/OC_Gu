@@ -1,4 +1,19 @@
- document.addEventListener("alpine:init", () => {
+
+let notesModal = document.getElementById('notesModal');
+let notesModalInstance = bootstrap.Modal.getInstance(notesModal);
+if (!notesModalInstance) {
+  notesModalInstance = new bootstrap.Modal(notesModal);
+}
+
+
+let statusModal = document.getElementById('statusModal');
+let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+if (!statusModalInstance) {
+  statusModalInstance = new bootstrap.Modal(statusModal);
+}
+
+
+document.addEventListener("alpine:init", () => {
   Alpine.data('applicationComponent', () => ({
 
     currentView: 'list',
@@ -149,6 +164,113 @@
             console.error("Error setting ratings:", error);
           })
     },
+
+      isFetchingNotes: false,
+      notes: [], 
+      statusMessageHeadline: '',
+      textClose : '',
+      textSubmitButton: '',
+      textHeaderInputNote: '',
+      statusMessage: '',
+      currentApplication: '',
+      
+      fetchNotes(application) {
+        this.isFetchingNotes = true;
+        this.currentApplication = application;
+        fetch(`https://www.onlinecasting.dk/api/notes_profile.asp?profileid=${application.profileid}&applicationid=${application.applicationid}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.Status == 'OK') {
+            
+                  this.notes = data.notes;
+                  this.statusMessageHeadline = data.StatusMessageHeadline;
+                  this.textSubmitButton = data.text_submit_button;
+                  this.textHeaderInputNote = data.text_header_input_note;
+                  this.textClose = data.text_close;
+
+                  notesModalInstance.show(); 
+                }
+                else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                  this.statusMessageHeadline = data.StatusMessageHeadline
+                  this.statusMessage = data.StatusMessage
+                  this.textClose = data.text_close
+                  
+                  statusModalInstance.show();  
+                }  
+            })
+            .catch(error => {
+                console.error("Error fetching Notes:", error);
+            })
+            .finally(() => {
+                this.isFetchingNotes = false;
+            });
+      },
+
+      newNote: '',
+      isCreatingNote: false,
+      createNote() {
+        this.isCreatingNote = true;
+
+        fetch(`https://www.onlinecasting.dk/api/notes_profile_submit.asp?profileid=${this.currentApplication.profileid}&applicationid=${this.currentApplication.applicationid}&note=${this.newNote}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.Status == 'OK') {
+                  const newNote = {
+                    note_id: data.note_id, 
+                    title: data.title,  
+                    text: data.text,
+                    delete_link_text: data.delete_link_text  
+                  };
+                  
+                  this.notes.push(newNote); 
+                }
+                 
+                else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                  notesModalInstance.hide(); 
+
+                  this.statusMessageHeadline = data.StatusMessageHeadline
+                  this.statusMessage = data.StatusMessage
+                  this.textClose = data.text_close
+                  
+                  statusModalInstance.show();  
+                }  
+            })
+            .catch(error => {
+                console.error("Error adding note:", error);
+            })
+            .finally(() => {
+                this.newNote = '';
+                this.isCreatingNote = false;
+            });
+      },
+
+      deleteNote(noteId) {
+        this.isDeletingNote = true;
+
+        fetch(`https://www.onlinecasting.dk/api/notes_profile_delete.asp?noteid=${noteId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.Status == 'OK') {
+                  this.notes = this.notes.filter(note => note.note_id !== noteId);
+                }
+                 
+                else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                  notesModalInstance.hide(); 
+
+                  this.statusMessageHeadline = data.StatusMessageHeadline
+                  this.statusMessage = data.StatusMessage
+                  this.textClose = data.text_close
+                  
+                  statusModalInstance.show();  
+                }  
+            })
+            .catch(error => {
+                console.error("Error deleting note:", error);
+            })
+            .finally(() => {
+                this.isDeletingNote = false;
+            });
+      },
 
 
     init() {

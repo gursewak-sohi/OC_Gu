@@ -38,6 +38,59 @@
             </div>
         </div> -->
 
+        <!-- Notes Modal -->
+        <div class="modal fade filterModal" id="notesModal" tabindex="-1" aria-labelledby="notesModal" aria-hidden="true">
+          <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                          <img src="img/close-icon.svg" alt="">
+                      </div>
+                      <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+                  </div>
+                  <div class="modal-body chat-modal-body latestProfileSection">
+                      <ul class="d-flex flex-column p-0 m-0 overflow-auto" style="max-height: 250px;">
+                        <template x-for="note in notes" :key="note.note_id">
+                          <li class="d-flex flex-column align-items-start mb-3">
+                              <div class="text-muted font-size-14px"><i x-text="note.title"></i></div>
+                              <div x-text="note.text" class="font-size-16px"></div>
+                              <a @click="deleteNote(note.note_id)" x-text="note.delete_link_text" href="javascript:;" class="text-orange d-inline-block text-capitalize"></a>
+                           </li>
+                       </template>
+                      </ul>
+                      <div class="form-group mb-3">
+                          <label x-text="textHeaderInputNote" class="form-label font-size-16px"></label>
+                          <textarea x-model="newNote" min="1" rows="6" class="form-control mb-2"></textarea>
+                      </div>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-between">
+                      <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                      <button @click="createNote()" x-bind:disabled="newNote.length < 1" x-text="textSubmitButton" type="button" class="btn mainBtn"></button>
+                  </div>
+              </div>
+          </div>
+          </div>
+
+           <!-- Modal -->
+          <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
+            <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                            <img src="img/close-icon.svg" alt="">
+                        </div>
+                        <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+                    </div>
+                    <div class="modal-body chat-modal-body">
+                      <p x-text="statusMessage" class="font-size-16px"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
+                    </div>
+                </div>
+            </div>
+          </div>
+
          <!-- Profile Selection -->
          <div class="selection-section">
           <div class="container">
@@ -292,7 +345,6 @@
 
                
                 <section :class="currentView === 'list' ? 'latestProfileSection list-view pt-4 mt-2' : currentView === 'grid' ? 'latestProfileSection grid-view pt-4 mt-2' : 'latestProfileSection detailed-view pt-4 mt-2'">
-                  
                       <div class="row">
                           <template x-for="application in applications" :key="application.applicationid">
                             <div class="col-12 application-item" :class="`${currentView === 'grid' ? 'col-md-6 col-lg-3' : ''} ${movingApplicationId === application.applicationid ? 'moving' : ''}`">
@@ -482,7 +534,7 @@
                                         </a>
                                       </div>
                                       <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted list-only hidden-list-xs">
-                                        <div :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
+                                        <div @click="fetchNotes(application)" :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
                                           <span class="icon-outline">
                                             <ion-icon name="create-outline"></ion-icon>
                                           </span>
