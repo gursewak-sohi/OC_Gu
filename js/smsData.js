@@ -16,7 +16,7 @@ if (!statusModalInstance) {
 
  function smsComponent() {
   return {
-    smsMessage: 'This is from the SMS component',
+    
       shouldRefreshPage: false,
       refreshPageIfNeeded() {
         if (this.shouldRefreshPage) {

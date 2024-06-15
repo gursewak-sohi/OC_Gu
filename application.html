@@ -723,7 +723,7 @@
                       </div>
   
                       <!-- /Pagination start here-->
-                      <div x-show="applications.length > 0 && !isApplicationsLoading" class="pagination-area pt-30">
+                      <div x-show="applications.length > 0 && !isApplicationsLoading && showLoadMoreBtn === 'YES'" class="pagination-area pt-30">
                         <button @click="fetchApplications()" type="button" class="btn mainBtn btnoutlineSecondary"><ion-icon name="refresh-outline"></ion-icon> <span x-text="textLoadMore"></span></button>
                       </div>
                       <!-- /Pagination end here-->

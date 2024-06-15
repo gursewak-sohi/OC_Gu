@@ -23,9 +23,9 @@ if (!sendSmsModalInstance) {
 
 function applicationComponent() {
   return {
-    appMessage: 'This is from the application component',
+    
     currentView: 'list',
-  
+    showLoadMoreBtn: '',
     folders : [],
     currentChatFolder: '',
     fetchFolders() {
@@ -151,6 +151,7 @@ function applicationComponent() {
           .then(data => {
               if (data && Array.isArray(data.applications)) {
                   this.textLoadMore = data.text_load_more;
+                  this.showLoadMoreBtn = data.load_more;
                   this.applications = [...this.applications, ...data.applications];
                   this.applicationSkip += this.applicationLimit;
               }
