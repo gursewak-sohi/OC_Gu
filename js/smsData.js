@@ -52,7 +52,7 @@ if (!statusModalInstance) {
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK') {
-                  if (sendSmsModalInstance) {
+                  if (typeof sendSmsModalInstance !== 'undefined' && sendSmsModalInstance) {
                     sendSmsModalInstance.hide(); 
                   }
 
@@ -75,7 +75,7 @@ if (!statusModalInstance) {
                       console.error("No matching country found or invalid code:", data.current_country_code);
                     }
                   } else {
-                    if (sendSmsModalInstance) {
+                    if (typeof sendSmsModalInstance !== 'undefined' && sendSmsModalInstance) {
                       sendSmsModalInstance.hide(); 
                     }
                     // Fallback to the first country if the code is empty
