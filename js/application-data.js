@@ -6,16 +6,24 @@ if (!notesModalInstance) {
 }
 
 
-let statusModal = document.getElementById('statusModal');
-let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-if (!statusModalInstance) {
-  statusModalInstance = new bootstrap.Modal(statusModal);
+// let statusModal = document.getElementById('statusModal');
+// let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+// if (!statusModalInstance) {
+//   statusModalInstance = new bootstrap.Modal(statusModal);
+// }
+
+
+let sendSmsModal = document.getElementById('sendSmsModal');
+let sendSmsModalInstance = bootstrap.Modal.getInstance(sendSmsModal);
+if (!sendSmsModalInstance) {
+  sendSmsModalInstance = new bootstrap.Modal(sendSmsModal);
 }
 
 
-document.addEventListener("alpine:init", () => {
-  Alpine.data('applicationComponent', () => ({
 
+function applicationComponent() {
+  return {
+    appMessage: 'This is from the application component',
     currentView: 'list',
   
     folders : [],
@@ -130,24 +138,29 @@ document.addEventListener("alpine:init", () => {
 
       this.fetchApplications()
     },
-
+    
     applications : [],
+    isApplicationsLoading: false,
     applicationSkip: 0,
     applicationLimit: 5,
+    textLoadMore: '',
     fetchApplications() {
+      this.isApplicationsLoading = true;
       fetch(`https://www.onlinecasting.dk/api/applications/applications.asp?skip=${this.applicationSkip}&limit=${this.applicationLimit}&folder=${this.currentChatFolder}&orderby=${this.currentOrderBy}`)
           .then(response => response.json())
           .then(data => {
               if (data && Array.isArray(data.applications)) {
-                  // this.applications = data.applications;
+                  this.textLoadMore = data.text_load_more;
                   this.applications = [...this.applications, ...data.applications];
                   this.applicationSkip += this.applicationLimit;
               }
           })
           .catch(error => {
+            this.applications = [];
             console.error("Error fetching applications:", error);
           })
           .finally(() => {
+              this.isApplicationsLoading = false;
               console.log('Application fetched')
           });
     },
@@ -168,7 +181,6 @@ document.addEventListener("alpine:init", () => {
       isFetchingNotes: false,
       notes: [], 
       statusMessageHeadline: '',
-      textClose : '',
       textSubmitButton: '',
       textHeaderInputNote: '',
       statusMessage: '',
@@ -272,14 +284,87 @@ document.addEventListener("alpine:init", () => {
             });
       },
 
+      isFetchingSms: false,
+      textHtml: '', 
+      textClose : '',
+      textHeaderInput: '',
+      casterPhoneValidated : '',
 
-    init() {
-       this.fetchFolders();
-       this.fetchOrderBy();
-       this.fetchApplications();
-    },
- 
-  }));
-});
+      fetchSMS(application) {
+        this.isFetchingSms = true;
+        this.currentApplication = application;
+        fetch(`https://www.onlinecasting.dk/api/sms_to_profile_from_caster.asp?profileid=${application.profileid}&applicationid=${application.applicationid}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.Status == 'OK') {
+                  this.casterPhoneValidated = data.caster_phone_validated;
+                  this.textHtml = data.text_html;
+                  this.statusMessageHeadline = data.StatusMessageHeadline;
+                  this.textSubmitButton = data.text_submit_button;
+                  this.textHeaderInput = data.text_header_input;
+                  this.textClose = data.text_close;
 
- 
+                  sendSmsModalInstance.show(); 
+                }
+                else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                  this.statusMessageHeadline = data.StatusMessageHeadline
+                  this.statusMessage = data.StatusMessage
+                  this.textClose = data.text_close
+                  
+                  statusModalInstance.show();  
+                }  
+            })
+            .catch(error => {
+                console.error("Error sending sms to profile:", error);
+            })
+            .finally(() => {
+                this.isFetchingSms = false;
+            });
+      },
+
+      newSMS: '',
+      isSendingSMS: false,
+      sendSMS() {
+        this.isSendingSMS = true;
+
+        fetch(`https://www.onlinecasting.dk/api/sms_to_profile_from_caster.asp?profileid=${this.currentApplication.profileid}&applicationid=${this.currentApplication.applicationid}&text=${this.newSMS}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.Status == 'OK') {
+                  sendSmsModalInstance.hide(); 
+
+                  this.statusMessageHeadline = data.StatusMessageHeadline
+                  this.statusMessage = data.StatusMessage
+                  this.textClose = data.text_close
+                  
+                  if (data.ShowMessage == 'YES') { 
+                    statusModalInstance.show(); 
+                  }
+                }
+                 
+                else if (data.Status == 'ERROR') {
+                  sendSmsModalInstance.hide(); 
+
+                  this.statusMessageHeadline = data.StatusMessageHeadline
+                  this.statusMessage = data.StatusMessage
+                  this.textClose = data.text_close
+                  
+                  if (data.ShowMessage == 'YES') { 
+                    statusModalInstance.show(); 
+                  }
+                }  
+            })
+            .catch(error => {
+                console.error("Error adding note:", error);
+            })
+            .finally(() => {
+                this.newSMS = '';
+                this.isSendingSMS = false;
+            });
+      }
+
+
+    
+
+  }
+}

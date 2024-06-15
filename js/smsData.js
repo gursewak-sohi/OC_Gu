@@ -14,11 +14,9 @@ if (!statusModalInstance) {
   statusModalInstance = new bootstrap.Modal(statusModal);
 }
 
-document.addEventListener("alpine:init", () => {
-  Alpine.data('smsComponent', () => ({
-
-
-    
+ function smsComponent() {
+  return {
+    smsMessage: 'This is from the SMS component',
       shouldRefreshPage: false,
       refreshPageIfNeeded() {
         if (this.shouldRefreshPage) {
@@ -49,11 +47,15 @@ document.addEventListener("alpine:init", () => {
       smsConfirmNumber(currentPageName) {
         this.isConfirmingNumber = true;
         this.showOTPBlock = false
-        fetch(`https://www.onlinecasting.dk/api/sms/sms_confirm_number.asp?page=${currentPageName}`)
+        // fetch(`https://www.onlinecasting.dk/api/sms/sms_confirm_number.asp?page=${currentPageName}`)
+         fetch(`https://www.onlinecasting.dk/api/sms/sms_confirm_number_test.asp?page=${currentPageName}`)
             .then(response => response.json())
             .then(data => {
-              console.log(data);
                 if (data.Status == 'OK') {
+                  if (sendSmsModalInstance) {
+                    sendSmsModalInstance.hide(); 
+                  }
+
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.textClose = data.text_close;
                   this.textSubmitButton = data.text_submit_button
@@ -73,6 +75,9 @@ document.addEventListener("alpine:init", () => {
                       console.error("No matching country found or invalid code:", data.current_country_code);
                     }
                   } else {
+                    if (sendSmsModalInstance) {
+                      sendSmsModalInstance.hide(); 
+                    }
                     // Fallback to the first country if the code is empty
                     this.selectedCountry = this.countries[0];
                     console.warn("Empty country code received, defaulting to first country.");
@@ -177,14 +182,6 @@ document.addEventListener("alpine:init", () => {
             });
       },
  
-      init() {
-        this.selectedCountry = this.countries[0];
-      },
-
-      get countryFlagUrl() {
-        return this.selectedCountry ? this.selectedCountry.flagUrl : '';
-      }
-  }));
-});
-
- 
+   
+    }
+    }

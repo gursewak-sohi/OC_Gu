@@ -41,7 +41,7 @@
     </div>
 
   <!-- Change Phone Number Modal -->
-  <div class="modal fade filterModal" id="changePhoneNumberModal" tabindex="-1" aria-labelledby="changePhoneNumberModal" aria-hidden="true">
+    <div class="modal fade filterModal" id="changePhoneNumberModal" tabindex="-1" aria-labelledby="changePhoneNumberModal" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered  modal-fullscreen-md-down">
         <div class="modal-content">
             <div class="modal-header">
@@ -300,14 +300,14 @@
                                                 </div>
                                             </div>
                                          </div>
-                                          <div class="form-control disabled">26897854</div>
+                                          <div class="form-control disabled">26719007</div>
                                         </div>
                                         <div class="flex-shrink-0 d-flex gap-3 align-items-center">
                                           <div class="flex-shrink-0">
-                                            <a href="javascript:;" @click="smsConfirmNumber('26897854')" class="text-decoration-underline fw-bold">Change Number</a>
+                                            <a href="javascript:;" @click="smsConfirmNumber('26719007')" class="text-decoration-underline fw-bold">Change Number</a>
                                           </div>
                                           <div class="flex-shrink-0">
-                                            <button @click="smsConfirmNumber('26897854')"  type="button" class="btn mainBtn btnfillblack btn-xs">Gem</button>
+                                            <button @click="smsConfirmNumber('26719007')"  type="button" class="btn mainBtn btnfillblack btn-xs">Gem</button>
                                           </div>
                                         </div>
                                       </div>
@@ -560,7 +560,21 @@
     <!-- Apline SMS data -->
     <script src="js/smsData.js"></script>
 
-     
+
+    <script>
+        document.addEventListener("alpine:init", () => {
+            Alpine.data('smsComponent', () => ({
+              ...smsComponent(),
+              get countryFlagUrl() {
+                return this.selectedCountry ? this.selectedCountry.flagUrl : '';
+                },
+              init() {
+                this.selectedCountry = this.countries[0];
+              },
+            }));
+        });
+      </script>
+
     <script>
         function dropdownHandler() {
             return {

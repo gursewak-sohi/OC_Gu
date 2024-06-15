@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html  lang="en">
 
 <head>
     <!-- Required meta tags -->
@@ -16,11 +16,14 @@
     <link rel="stylesheet" href="css/theme-responsive.css">
     <!-- Owl Stylesheets -->
     <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    
+
 </head>
 
-<body x-data="applicationComponent()">
-
+<div x-data="combinedComponent()">
     <div class="wrapper">
+     
         <!-- Promo Section -->
         <!-- <div id="promoSection" class="promo-section">
             <div class="container">
@@ -37,6 +40,104 @@
                 </div>
             </div>
         </div> -->
+
+        <!-- CASTER SMS Modal -->
+        <div class="modal fade filterModal" id="sendSmsModal" tabindex="-1" aria-labelledby="sendSmsModal" aria-hidden="true">
+          <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                          <img src="img/close-icon.svg" alt="">
+                      </div>
+                      <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+                  </div>
+                  <div class="modal-body chat-modal-body latestProfileSection">
+                      <div x-html="textHtml" class="mb-3 font-size-16px overflow-auto" style="max-height: 250px;"></div>
+                      <div x-show="casterPhoneValidated === 'YES'" class="form-group mb-3">
+                          <label x-text="textHeaderInput" class="form-label font-size-16px"></label>
+                          <textarea x-model="newSMS" min="1" rows="6" class="form-control mb-2"></textarea>
+                      </div>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-between">
+                      <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                      <div x-show="casterPhoneValidated === 'YES'">
+                        <button @click="sendSMS()" x-bind:disabled="newSMS.length < 1" x-text="textSubmitButton" type="button" class="btn mainBtn"></button>
+                      </div>
+                      <div x-show="casterPhoneValidated === 'NO'">
+                        <button @click="smsConfirmNumber('26719007')" x-text="textSubmitButton" type="button" class="btn mainBtn"></button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+
+          <!-- Change Phone Number Modal -->
+        <div class="modal fade filterModal" id="changePhoneNumberModal" tabindex="-1" aria-labelledby="changePhoneNumberModal" aria-hidden="true">
+          <div class="modal-dialog modal-md modal-dialog-centered  modal-fullscreen-md-down">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                          <img src="img/close-icon.svg" alt="">
+                      </div>
+                      <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+                  </div>
+                  <div class="modal-body chat-modal-body latestProfileSection">
+                      <div class="form-group mb-3">
+                        <div x-show="!showOTPBlock">
+                          <label x-text="textLabelInputNumber" class="form-label font-size-16px"></label>
+                          <div class="d-flex gap-3 align-items-center mb-5">
+                            <div class="dropdown-container dropdown-phone">
+                              <div data-bs-toggle="dropdown" data-bs-auto-close="auto" class="dropdown-toggle">
+                                  <div class="d-flex">
+                                    <img width="20" :src="countryFlagUrl" alt="Selected Country"/>
+                                  </div>
+                              </div>
+                              <div class="dropdown-menu">
+                                <ul>
+                                  <template x-for="country in countries" :key="country.code">
+                                    <li @click="updateCountry(country)" class="d-flex cursor-pointer gap-2 align-items-center">
+                                        <img :width="20" :height="15" :src="country.flagUrl" :alt="country.name"/>
+                                        <span x-text="country.name + ' (+' + country.code + ')'"></span>
+                                    </li>
+                                  </template>
+                              </ul>
+                              </div>
+                          </div>
+                          <input type="text" x-model="currentPhoneNumber" min="1" max="50" :placeholder="textInputPlaceholder" class="form-control" />
+                          </div>
+                        </div>
+                        <div x-show="showOTPBlock">
+                          <h6 class="mb-3" x-text="textHtml"></h6>
+                          <label x-text="textHeaderInputCode" class="form-label font-size-16px"></label>
+                          <div class="d-flex align-items-center gap-3">
+                            <input type="text" x-model="currentCode" min="1" max="5" :placeholder="textInputPlaceholderCode" class="form-control" />
+                            <div class="flex-shrink-0">
+                              <button @click="activateConfirmNumber()" x-bind:disabled="currentCode.length !== 5" x-text="textSubmitButton" type="button" class="btn mainBtn btn-xs"></button>
+                            </div>
+                            <div class="flex-shrink-0">
+                              <a href="javascript:;" @click="smsConfirmNumber(currentPhoneNumber)" class="text-decoration-underline fw-bold">New Code</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-between">
+                      
+                      <div x-show="!showOTPBlock" class="flex-1">
+                        <div class="flex-1 d-flex justify-content-between">
+                          <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary"></button>
+                          <button @click="sendConfirmNumber()" x-bind:disabled="currentPhoneNumber.length < 6 || currentPhoneNumber.length > 50" x-text="textSubmitButton" type="button" class="btn mainBtn"></button>
+                        </div>
+                      </div>
+                      <div x-show="showOTPBlock" class="flex-1">
+                        <div class="flex-1 d-flex justify-content-between">
+                          <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary ms-auto"></button>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
 
         <!-- Notes Modal -->
         <div class="modal fade filterModal" id="notesModal" tabindex="-1" aria-labelledby="notesModal" aria-hidden="true">
@@ -262,7 +363,7 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                       <ul class="d-flex flex-column flex-md-row align-items-md-center gap-2 m-0 p-0 flex-wrap">
                         <li class="d-none d-md-block">
                           <div class="form-check">
@@ -283,8 +384,8 @@
                         </li>
                      </ul>
                     </div>
-                    <div class="col-md-4">
-                      <ul class="d-flex align-items-center gap-2 m-0 p-0 justify-content-center justify-content-md-end mt-2 md-md-0">
+                    <div class="col-md-3">
+                      <ul class="d-flex align-items-center gap-2 m-0 p-0 justify-content-center justify-content-md-end mt-2 mt-md-0">
                         <li>
                           <div class="dropdown-container dropdown-select">
                             <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="btn-circle">
@@ -346,6 +447,12 @@
                
                 <section :class="currentView === 'list' ? 'latestProfileSection list-view pt-4 mt-2' : currentView === 'grid' ? 'latestProfileSection grid-view pt-4 mt-2' : 'latestProfileSection detailed-view pt-4 mt-2'">
                       <div class="row">
+                        <div class="application-loader" x-show="isApplicationsLoading">
+                           Loading Application..
+                        </div>
+                        <div class="application-loader" x-show="applications.length === 0 && !isApplicationsLoading">
+                          No Application found
+                        </div>
                           <template x-for="application in applications" :key="application.applicationid">
                             <div class="col-12 application-item" :class="`${currentView === 'grid' ? 'col-md-6 col-lg-3' : ''} ${movingApplicationId === application.applicationid ? 'moving' : ''}`">
                               <div class="profileItem">
@@ -393,7 +500,7 @@
                                       <div class="d-flex align-items-center gap-2 mt-3 fs-3">
                                         
                                         <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="arrow-redo-outline"></ion-icon>Reply</a>
-                                        <a class="btn-iconed-primary" href="javascript:;"><ion-icon name="phone-portrait-outline"></ion-icon>Send SMS</a>
+                                        <a @click="fetchSMS(application)" class="btn-iconed-primary" href="javascript:;"><ion-icon name="phone-portrait-outline"></ion-icon>Send SMS</a>
                                       
                                         <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="dropdown-container">
                                           <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle dropdown-arrow-none px-0">
@@ -491,15 +598,6 @@
                                      
                                     </div>
                                   </div>
-                                  <!-- <div x-data="starRating()" class="star-rating list-only grid-only">
-                                    <span class="rating-text">mins siden</span>
-                                    <template x-for="star in 5" :key="star">
-                                      <label>
-                                        <input type="radio" x-model="rating" :value="6 - star" hidden/>
-                                        <ion-icon :class="{'active': rating >= 6 - star, 'inactive': rating < 6 - star}" name="star" @click="setRating(6 - star)"></ion-icon>
-                                      </label>
-                                    </template>
-                                  </div> -->
                                   <div  class="star-rating list-only grid-only">
                                     <span class="rating-text">mins siden</span>
                                     <template x-for="star in 5" :key="star">
@@ -509,7 +607,7 @@
                                       </label>
                                     </template>
                                   </div>
-                                  <div class="list-only grid-only">
+                                  <div class="right-side list-only grid-only">
                                     <div class="d-flex align-items-center gap-2 fs-3">
                                       <div class="btn-group-liked">
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
@@ -558,7 +656,7 @@
                                       </a>
                                       
                                       <a class="btn-iconed-primary grid-only" href="javascript:;"><ion-icon name="arrow-redo-outline"></ion-icon>Reply</a>
-                                      <a class="btn-iconed-primary grid-only" href="javascript:;"><ion-icon name="phone-portrait-outline"></ion-icon>Send SMS</a>
+                                      <a @click="fetchSMS(application)"  class="btn-iconed-primary grid-only" href="javascript:;"><ion-icon name="phone-portrait-outline"></ion-icon>Send SMS</a>
                                       <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div x-on:click="moveToFolder(currentChatFolder === 'HIRED' ? 'NEW' : 'HIRED' ,application.applicationid)" :class="currentChatFolder === 'HIRED' && 'active'" class="icon-wrapper">
                                           <span class="icon-outline">
@@ -625,8 +723,8 @@
                       </div>
   
                       <!-- /Pagination start here-->
-                      <div class="pagination-area pt-30">
-                        <button @click="fetchApplications()" type="button" class="btn mainBtn btnoutlineSecondary"><ion-icon name="refresh-outline"></ion-icon> Load more</button>
+                      <div x-show="applications.length > 0 && !isApplicationsLoading" class="pagination-area pt-30">
+                        <button @click="fetchApplications()" type="button" class="btn mainBtn btnoutlineSecondary"><ion-icon name="refresh-outline"></ion-icon> <span x-text="textLoadMore"></span></button>
                       </div>
                       <!-- /Pagination end here-->
                   
@@ -723,9 +821,37 @@
     <script src="js/owl.carousel.min.js"></script>
     <!-- main-->
     <script src="js/main.js"></script>
-   
-    <script src="js/application-data.js"></script>
+    
+ 
+
+    <!-- Alpine JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+     
+    <!-- Apline Application Data -->
+    <script src="js/application-data.js"></script>
+
+    <!-- Apline SMS data -->
+    <script src="js/smsData.js"></script>
+
+    <script>
+      document.addEventListener("alpine:init", () => {
+          Alpine.data('combinedComponent', () => ({
+            ...applicationComponent(),
+            ...smsComponent(),
+            get countryFlagUrl() {
+              return this.selectedCountry ? this.selectedCountry.flagUrl : '';
+            },
+            init() {
+              this.fetchFolders();
+              this.fetchOrderBy();
+              this.fetchApplications();
+              this.selectedCountry = this.countries[0];
+            },
+          }));
+      });
+    </script>
+    
+
 </body>
 
 </html>

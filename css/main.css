@@ -4617,11 +4617,22 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 .profile-left {
     display: block;
 }
+.application-loader {
+    padding: 20px;
+    text-align: center;
+    font-size: 16px;
+  }
 
 .list-view .profileItem {
     display: flex;
-    justify-content: space-between;
     transition: 0.2s all ease;
+}
+.list-view .star-rating {
+    margin-left: auto;
+}
+
+.list-view .right-side {
+    margin-left: 15vw;
 }
 
 .profileItem .dropdown-container .dropdown-toggle {

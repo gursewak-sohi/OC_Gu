@@ -705,6 +705,9 @@
         top: -15px;
         white-space: nowrap;
     }
+    .list-view .right-side {
+        margin-left: auto;
+    }
     .list-view .profileItem .profile-left .form-check {
         position: absolute;
     top: 20px;
