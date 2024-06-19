@@ -573,8 +573,10 @@ window.addEventListener('click', function(e) {
    /*******************************************************************************************/
 
 
- $("[data-fancybox]").fancybox({
-     clickContent: "next",
- });
+   if ($("[data-fancybox]").length) {
+    $("[data-fancybox]").fancybox({
+        clickContent: "next",
+    });
+}
 
  /*******************************************************************************************/

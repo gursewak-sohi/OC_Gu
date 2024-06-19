@@ -149,6 +149,10 @@ a:active {
     color: #6b6b6b !important;
 }
 
+.text-muted-light {
+    color: #b5b5b5 !important;
+}
+
 .text-black {
     color: #19191C !important;
 }
@@ -4519,9 +4523,18 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     display: none; 
   }
 
+  .icon-wrapper.active-red .icon-outline {
+    display: none; 
+  }
+
   .icon-wrapper.active .icon-solid {
     display: flex; 
     color: #eb783e;
+  }
+
+  .icon-wrapper.active-red .icon-solid {
+    display: flex; 
+    color: rgb(255, 0, 60);
   }
 
   .icon-checkmark {
@@ -4849,7 +4862,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     text-transform: capitalize;
   }
 
-  .grid-view .profile-time {
+  .grid-view .profile-data {
     margin-top: 10px;
   }
 

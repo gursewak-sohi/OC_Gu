@@ -21,6 +21,8 @@ if (!sendSmsModalInstance) {
 
 
 
+
+
 function applicationComponent() {
   return {
     
@@ -93,7 +95,7 @@ function applicationComponent() {
               }
               this.removeApplication(applicationid);
                
-              console.log(data.StatusMessage);
+              // console.log(data.StatusMessage);
             }
           })
           .catch(error => {
@@ -130,8 +132,45 @@ function applicationComponent() {
           });
     },
 
+    initializeTooltips() {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    },
+
     changeOrderBy(newOrder) {
       this.currentOrderBy = newOrder;
+      this.applications = [];
+      this.applicationSkip = 0;
+      this.applicationLimit = 5;
+
+      this.fetchApplications()
+    },
+
+    filterBy : [],
+    currentFilterBy: '',
+    fetchFilterBy() {
+      fetch(`https://www.onlinecasting.dk/api/applications/applications_filter.asp`)
+          .then(response => response.json())
+          .then(data => {
+              if (data && Array.isArray(data.folders)) {
+                  this.filterBy = data.folders;
+                  // Find the folder with default set to True
+                  const defaultFolder = data.folders.find(folder => folder.default === "True");
+                  if (defaultFolder) {
+                      this.currentFilterBy = defaultFolder.searchname;
+                  }
+                  else {
+                     this.currentFilterBy = 'ALL_GENDER';
+                  }
+              }
+          })
+          .catch(error => {
+            console.error("Error fetching applications filter by:", error);
+          })
+    },
+
+    changeFilterBy(newFilter) {
+      this.currentFilterBy = newFilter;
       this.applications = [];
       this.applicationSkip = 0;
       this.applicationLimit = 5;
@@ -144,14 +183,16 @@ function applicationComponent() {
     applicationSkip: 0,
     applicationLimit: 5,
     textLoadMore: '',
+    textMoveTo: '',
     fetchApplications() {
       this.isApplicationsLoading = true;
-      fetch(`https://www.onlinecasting.dk/api/applications/applications.asp?skip=${this.applicationSkip}&limit=${this.applicationLimit}&folder=${this.currentChatFolder}&orderby=${this.currentOrderBy}`)
+      fetch(`https://www.onlinecasting.dk/api/applications/applications.asp?skip=${this.applicationSkip}&limit=${this.applicationLimit}&folder=${this.currentChatFolder}&orderby=${this.currentOrderBy}&filter=${this.currentFilterBy}`)
           .then(response => response.json())
           .then(data => {
               if (data && Array.isArray(data.applications)) {
                   this.textLoadMore = data.text_load_more;
                   this.showLoadMoreBtn = data.load_more;
+                  this.textMoveTo = data.text_move_to;
                   this.applications = [...this.applications, ...data.applications];
                   this.applicationSkip += this.applicationLimit;
               }
@@ -162,6 +203,7 @@ function applicationComponent() {
           })
           .finally(() => {
               this.isApplicationsLoading = false;
+              this.initializeTooltips();
               console.log('Application fetched')
           });
     },
@@ -362,10 +404,40 @@ function applicationComponent() {
                 this.newSMS = '';
                 this.isSendingSMS = false;
             });
+      },
+
+      isChangingHiring: false,
+      changeHiring(newStatus, applicationId) {
+        this.isChangingHiring = true;
+
+        fetch(`https://www.onlinecasting.dk/api/applications/change_hired.asp?applicationid=${applicationId}&hired=${newStatus}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.Status == 'OK') {
+                  const application = this.applications.find(app => app.applicationid === applicationId);
+                  if (application) {
+                    application.hired = newStatus;
+                  }
+                  if (data.ShowMessage == 'YES') {
+                      this.statusMessageHeadline = data.StatusMessageHeadline
+                      this.statusMessage = data.StatusMessage
+                      this.textClose = data.text_close
+                      statusModalInstance.show(); 
+                  }
+                }
+                else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                    this.statusMessageHeadline = data.StatusMessageHeadline
+                    this.statusMessage = data.StatusMessage
+                    this.textClose = data.text_close
+                    statusModalInstance.show(); 
+                }  
+            })
+            .catch(error => {
+                console.error("Error changing Hiring:", error);
+            })
+            .finally(() => {
+                this.isChangingHiring = false;
+            });
       }
-
-
-    
-
   }
 }
