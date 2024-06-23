@@ -400,6 +400,10 @@ a:active {
     line-height: 120px
 }
 
+.font-size-10px {
+    font-size: 10px !important;
+}
+
 .font-size-11px {
     font-size: 11px !important;
 }
@@ -4907,6 +4911,56 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     opacity: 0.2;
 }
 
+.profileModal .modal-content {
+    overflow: auto;
+    
+}
+
+.profileModal .modal-header {
+    background-color: white;
+    padding: 16px;
+    position: sticky;
+    top: 0;
+}
+.profileModal .modal-body {
+    padding-bottom: 32px;
+}
+.profileModal .modal-footer {
+    background-color: #19191C;
+    padding: 16px;
+    position: sticky;
+    bottom: 0;
+}
+
+.profileModal .modal-footer a {
+    transition: 0.2s all ease;
+}
+
+.icon-bottom {
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+}
+
+.icon-bottom-muted {
+ opacity: 0.3 !important;
+ pointer-events: none;
+}
+
+.profileModal .modal-footer a:hover {
+    opacity: 0.7;
+}
+
+.btn-icon {
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    display: flex;
+}
+.btn-icon:disabled {
+    opacity: 0.3;
+}
 
 @media (max-width: 767px) {
      

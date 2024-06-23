@@ -5,18 +5,16 @@ if (!notesModalInstance) {
   notesModalInstance = new bootstrap.Modal(notesModal);
 }
 
-
-// let statusModal = document.getElementById('statusModal');
-// let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-// if (!statusModalInstance) {
-//   statusModalInstance = new bootstrap.Modal(statusModal);
-// }
-
-
 let sendSmsModal = document.getElementById('sendSmsModal');
 let sendSmsModalInstance = bootstrap.Modal.getInstance(sendSmsModal);
 if (!sendSmsModalInstance) {
   sendSmsModalInstance = new bootstrap.Modal(sendSmsModal);
+}
+
+let profileModal = document.getElementById('profileModal');
+let profileModalInstance = bootstrap.Modal.getInstance(profileModal);
+if (!profileModalInstance) {
+  profileModalInstance = new bootstrap.Modal(profileModal);
 }
 
 
@@ -25,7 +23,6 @@ if (!sendSmsModalInstance) {
 
 function applicationComponent() {
   return {
-    
     currentView: 'list',
     showLoadMoreBtn: '',
     folders : [],
@@ -34,6 +31,7 @@ function applicationComponent() {
       fetch(`https://www.onlinecasting.dk/api/applications/applications_folders.asp?auditionid=23406`)
           .then(response => response.json())
           .then(data => {
+              // console.log(data, 'folders'); 
               if (data && Array.isArray(data.folders)) {
                   this.folders = data.folders.map(folder => {
                     return {
@@ -52,7 +50,7 @@ function applicationComponent() {
               console.error("Error fetching applications folders:", error);
           })
           .finally(() => {
-              console.log('Folder fetched')
+              // console.log('Folder fetched')
           });
     },
 
@@ -93,7 +91,11 @@ function applicationComponent() {
                 this.updateFolderCount(this.currentChatFolder, -1);
                 this.updateFolderCount(newFolder, 1);
               }
+              
               this.removeApplication(applicationid);
+
+              // Move item to new folder for single profile in modal
+              this.profile.application_folder = newFolder;
                
               // console.log(data.StatusMessage);
             }
@@ -128,7 +130,7 @@ function applicationComponent() {
             console.error("Error fetching applications order by:", error);
           })
           .finally(() => {
-              console.log('Orderby fetched')
+              // console.log('Orderby fetched')
           });
     },
 
@@ -204,7 +206,7 @@ function applicationComponent() {
           .finally(() => {
               this.isApplicationsLoading = false;
               this.initializeTooltips();
-              console.log('Application fetched')
+              // console.log('Application fetched')
           });
     },
 
@@ -227,16 +229,20 @@ function applicationComponent() {
       textSubmitButton: '',
       textHeaderInputNote: '',
       statusMessage: '',
-      currentApplication: '',
+      currentApplicationID: '',
+      currentProfileID: '',
       
-      fetchNotes(application) {
+      fetchNotes(applicationId, profileId) {
         this.isFetchingNotes = true;
-        this.currentApplication = application;
-        fetch(`https://www.onlinecasting.dk/api/notes_profile.asp?profileid=${application.profileid}&applicationid=${application.applicationid}`)
+        this.currentApplicationID = applicationId,
+        this.currentProfileID = profileId,
+        fetch(`https://www.onlinecasting.dk/api/notes_profile.asp?profileid=${profileId}&applicationid=${applicationId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK') {
-            
+                  
+                  profileModalInstance.hide(); 
+
                   this.notes = data.notes;
                   this.statusMessageHeadline = data.StatusMessageHeadline;
                   this.textSubmitButton = data.text_submit_button;
@@ -246,6 +252,9 @@ function applicationComponent() {
                   notesModalInstance.show(); 
                 }
                 else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+
+                  profileModalInstance.hide(); 
+
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
                   this.textClose = data.text_close
@@ -261,12 +270,12 @@ function applicationComponent() {
             });
       },
 
+
       newNote: '',
       isCreatingNote: false,
       createNote() {
         this.isCreatingNote = true;
-
-        fetch(`https://www.onlinecasting.dk/api/notes_profile_submit.asp?profileid=${this.currentApplication.profileid}&applicationid=${this.currentApplication.applicationid}&note=${this.newNote}`)
+        fetch(`https://www.onlinecasting.dk/api/notes_profile_submit.asp?profileid=${this.currentProfileID}&applicationid=${this.currentApplicationID}&note=${this.newNote}`)
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK') {
@@ -333,13 +342,17 @@ function applicationComponent() {
       textHeaderInput: '',
       casterPhoneValidated : '',
 
-      fetchSMS(application) {
+      fetchSMS(applicationId, profileId) {
         this.isFetchingSms = true;
-        this.currentApplication = application;
-        fetch(`https://www.onlinecasting.dk/api/sms_to_profile_from_caster.asp?profileid=${application.profileid}&applicationid=${application.applicationid}`)
+        this.currentApplicationID = applicationId,
+        this.currentProfileID = profileId,
+        fetch(`https://www.onlinecasting.dk/api/sms_to_profile_from_caster.asp?profileid=${profileId}&applicationid=${applicationId}`)
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK') {
+
+                  profileModalInstance.hide(); 
+                  
                   this.casterPhoneValidated = data.caster_phone_validated;
                   this.textHtml = data.text_html;
                   this.statusMessageHeadline = data.StatusMessageHeadline;
@@ -350,6 +363,9 @@ function applicationComponent() {
                   sendSmsModalInstance.show(); 
                 }
                 else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+
+                  profileModalInstance.hide(); 
+                  
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
                   this.textClose = data.text_close
@@ -368,9 +384,8 @@ function applicationComponent() {
       newSMS: '',
       isSendingSMS: false,
       sendSMS() {
-        this.isSendingSMS = true;
-
-        fetch(`https://www.onlinecasting.dk/api/sms_to_profile_from_caster.asp?profileid=${this.currentApplication.profileid}&applicationid=${this.currentApplication.applicationid}&text=${this.newSMS}`)
+        this.isSendingSMS = true;        
+        fetch(`https://www.onlinecasting.dk/api/sms_to_profile_from_caster.asp?profileid=${this.currentProfileID}&applicationid=${this.currentApplicationID}&text=${this.newSMS}`)
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK') {
@@ -437,6 +452,47 @@ function applicationComponent() {
             })
             .finally(() => {
                 this.isChangingHiring = false;
+            });
+      },
+
+
+      isFetchingProfile : false,
+      profile: '',
+      currentApplication : '',
+      totalApplications : '',
+      fetchProfile(applicationId) {
+        this.isFetchingProfile = true;
+        // this.currentApplication = application;
+        fetch(`https://www.onlinecasting.dk/api/applications/application_profile.asp?applicationid=${applicationId}&orderby=${this.currentOrderBy}&folder=${this.currentChatFolder}`)
+            .then(response => response.json())
+            .then(data => {
+                this.profile = data;
+                this.currentApplication = this.profile.text_numberofapplications.split(' af ')[0];
+                this.totalApplications = this.profile.text_numberofapplications.split(' af ')[1];
+                profileModalInstance.show(); 
+                // if (data.Status == 'OK') {
+                //   this.casterPhoneValidated = data.caster_phone_validated;
+                //   this.textHtml = data.text_html;
+                //   this.statusMessageHeadline = data.StatusMessageHeadline;
+                //   this.textSubmitButton = data.text_submit_button;
+                //   this.textHeaderInput = data.text_header_input;
+                //   this.textClose = data.text_close;
+
+                  
+                // }
+                // else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                //   this.statusMessageHeadline = data.StatusMessageHeadline
+                //   this.statusMessage = data.StatusMessage
+                //   this.textClose = data.text_close
+                  
+                //   statusModalInstance.show();  
+                // }  
+            })
+            .catch(error => {
+                console.error("Error fetching Profile:", error);
+            })
+            .finally(() => {
+                this.isFetchingProfile = false;
             });
       }
   }

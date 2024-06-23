@@ -41,6 +41,136 @@
             </div>
         </div> -->
 
+
+        <!-- Profile View Modal -->
+        <div class="modal fade profileModal" id="profileModal" tabindex="-1" aria-labelledby="profileModal" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div class="d-flex align-items-center justify-content-between w-100">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="d-flex align-items-center gap-2">
+                        <button :disabled="currentApplication == 1" @click="fetchProfile(profile.previousapplicationID)" class="btn-icon" type="button">
+                          <ion-icon name="arrow-back-circle-outline"></ion-icon>
+                        </button>
+                        <button :disabled="currentApplication == totalApplications" @click="fetchProfile(profile.nextapplicationID)" class="btn-icon" type="button">
+                          <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+                        </button>
+                      </div>
+                      <div x-text="profile.text_numberofapplications"></div>
+                    </div>
+                    <button class="btn-icon" data-bs-dismiss="modal" aria-label="Close" type="button">
+                      <img src="img/close-icon.svg" alt="">
+                    </button>
+                </div>
+                </div>
+                
+                <div class="modal-body">
+                  <div class="row mt-3">
+                    <div class="col-md-4">
+                        <div class="position-relative">
+                            <div>
+                                <img x-bind:src="profile.profileimage" alt="" class="img-fluid rounded mb-20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="tags-area mb-3">
+                          <template x-for="category in profile.categories" :key="category">
+                             <div class="tags" x-text="category"></div>
+                          </template>
+                        </div>
+                        <a href="javascript:;" class="profile-time">
+                          <ion-icon name="time-outline"></ion-icon><i x-text="profile.date_application_sent"></i>
+                        </a>
+                        <h1 class="mb-0" x-text="profile.name"></h1>
+                        <h3 class="text-muted mb-3" x-text="profile.age_area"></h3>
+                        <a x-bind:href="'mailto:' + profile.email" class="font-size-16px mb-2 d-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="mail-outline"></ion-icon> <span x-text="profile.email"></span></a>
+                        <a x-bind:href="'tel:' + profile.phone" class="font-size-16px mb-2 d-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="call-outline"></ion-icon> <span x-text="profile.phone"></span></a>
+                        <a x-bind:href="profile.profile_link" href="javascript:;" class="font-size-16px mb-2 d-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-24px" name="link-outline"></ion-icon> <span x-text="profile.profile_link_text"></span></a>
+                        <h4 x-text="profile.profile_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
+                        <div class="mt-1">
+                          <div class="font-size-16px  text-muted">
+                                <span x-html="profile.profile_text_short === '' ? profile.profile_text : profile.profile_text_short"></span>
+                                <a data-bs-toggle="collapse" class="text-decoration-underline text-orange" :data-bs-target="`#moreProfileInfo-01-${profile.applicationid}`" aria-expanded="true" aria-controls="moreInfo" href="javascript:;">
+                                <span x-show="profile.profile_text_short !== ''" x-text="profile.profile_text_short_see_more"></span>
+                            </a>
+                          </div>
+                          <div :id="`moreProfileInfo-01-${profile.applicationid}`" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              <div class="accordion-body pt-2">
+                                  <div class="font-size-16px  text-muted" x-html="profile.profile_text"></div>
+                              </div>
+                          </div>
+                        </div>
+                        <h4 x-text="profile.text_rating_stars" class="font-size-16px font-weight-700 mt-3 mb-1"></h4>
+                        <div class="star-rating">
+                          <!-- <span class="rating-text">mins siden</span> -->
+                          <template x-for="star in 5" :key="star">
+                            <label>
+                              <input type="radio" x-model="profile.rating_stars" :value="6 - star" hidden/>
+                              <ion-icon :class="{'active': profile.rating_stars >= 6 - star, 'inactive': profile.rating_stars < 6 - star}" @click="setRating(6 - star, profile.applicationid)" name="star"></ion-icon>
+                            </label>
+                          </template>
+                        </div>
+                        <h4 x-text="profile.application_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
+                        <div class="mt-1">
+                          <div class="font-size-16px  text-muted">
+                                <span x-html="profile.allication_text_short === '' ? profile.application_text : profile.allication_text_short"></span>
+                                <a data-bs-toggle="collapse" class="text-decoration-underline text-orange" :data-bs-target="`#moreProfileInfo-02-${profile.applicationid}`" aria-expanded="true" aria-controls="moreInfo" href="javascript:;">
+                                <span x-show="profile.allication_text_short !== ''" x-text="profile.allication_text_short_see_more"></span>
+                            </a>
+                          </div>
+                          <div :id="`moreProfileInfo-02-${profile.applicationid}`" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              <div class="accordion-body pt-2">
+                                  <div class="font-size-16px  text-muted" x-html="profile.application_text"></div>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+                     
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="w-100 d-flex justify-content-center gap-3">
+                      <template x-for="folder in folders" :key="folder.name">
+                          <a class="text-white d-flex flex-column align-items-center" @click="moveToFolder(folder.searchname, profile.applicationid)" href="javascript:;" x-bind:class="profile.application_folder === folder.searchname ? 'icon-bottom-muted pointer-events-none' : ''">
+                            <div class="font-size-26px d-flex icon-bottom">
+                              <span class="icon-solid">
+                                <ion-icon x-bind:name="folder.icon"></ion-icon>
+                              </span>
+                            </div>
+                            <div class="font-size-10px text-center"><span x-text="textMoveTo"></span> <span x-text="folder.name"></span></div>
+                          </a>
+                      </template>
+                        <a @click="fetchSMS(profile.applicationid, profile.profileid)" class="text-white d-flex flex-column align-items-center" href="javascript:;">
+                          <div class="font-size-26px d-flex icon-bottom">
+                            <svg width="25" height="25" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                              <g>
+                                  <path stroke="currentColor" stroke-width="5" fill="currentColor" d="M403.858 27.346H108.142C48.512 27.346 0 75.858 0 135.488v138.286c0 25.593 9.156 50.436 25.781 69.951 14.348 16.841 33.493 28.887 54.642 34.54l-24.101 95.568a8.692 8.692 0 0 0 8.431 10.82 8.674 8.674 0 0 0 4.584-1.308l163.428-101.431h171.092c59.63 0 108.142-48.512 108.142-108.142V135.488C512 75.858 463.488 27.346 403.858 27.346zm90.753 246.428c0 50.042-40.712 90.753-90.754 90.753H230.741c-.039 0-.077.005-.117.006a8.654 8.654 0 0 0-4.922 1.302l-147.26 91.396 20.65-81.883c.018-.073.027-.146.044-.219a8.69 8.69 0 0 0 .568-1.898 8.696 8.696 0 0 0-7.069-10.061c-43.6-7.616-75.245-45.212-75.245-89.395V135.488c0-50.042 40.711-90.754 90.753-90.754h295.716c50.042 0 90.754 40.712 90.754 90.754v138.286zm-355.904-79.491c-14.067-3.374-26.216-6.288-26.216-17.125 0-11.905 13.354-16.146 25.851-16.146 8.257 0 16.314 1.344 23.991 4.012 1.173.47 2.078.689 2.849.689 4.45 0 7.205-3.898 7.205-7.509 0-3.502-1.722-5.967-4.99-7.133-9.089-3.368-19.374-5.075-30.57-5.075-27.918 0-40.414 16.185-40.414 32.225 0 21.892 21.709 27.45 39.154 31.917 13.571 3.474 25.291 6.475 25.291 15.393 0 4.031 0 16.298-25.396 16.298-10.381 0-20.284-2.062-29.423-6.125-1.113-.476-2.171-.699-3.33-.699-4.125 0-7.357 3.298-7.357 7.508 0 3.016 2.111 6.134 4.934 7.264 11.348 4.892 23.642 7.372 36.541 7.372 23.527 0 39.958-12.628 39.958-30.709 0-23.022-21.113-28.087-38.078-32.157zm165.365-47.531h-5.004c-4.399 0-8.543 2.852-10.308 7.084l-33.364 83.187-33.369-83.201c-1.763-4.229-5.902-7.07-10.302-7.07h-5.004c-6.064 0-10.997 5.001-10.997 11.148v90.526c0 4.391 3.573 7.963 7.964 7.963 4.475 0 8.115-3.572 8.115-7.963v-75.309l1.862-.362 30.983 76.585c1.915 4.348 6.033 7.049 10.748 7.049 4.717 0 8.845-2.723 10.762-7.08l30.969-76.554 1.862.362v75.309c0 4.391 3.64 7.963 8.115 7.963 4.391 0 7.964-3.572 7.964-7.963V157.9c-.001-6.147-4.933-11.148-10.996-11.148zm74.498 47.531c-14.067-3.375-26.216-6.288-26.216-17.125 0-11.905 13.354-16.146 25.851-16.146 8.257 0 16.314 1.344 23.991 4.012 1.173.47 2.078.689 2.849.689 4.45 0 7.205-3.898 7.205-7.509 0-3.502-1.722-5.967-4.99-7.133-9.089-3.368-19.374-5.075-30.571-5.075-27.917 0-40.414 16.185-40.414 32.225 0 21.893 21.709 27.451 39.154 31.917 13.571 3.474 25.291 6.475 25.291 15.393 0 4.031 0 16.298-25.396 16.298-10.381 0-20.284-2.062-29.424-6.125-1.113-.477-2.171-.699-3.33-.699-4.125 0-7.357 3.298-7.357 7.508 0 3.016 2.111 6.134 4.934 7.264 11.348 4.892 23.642 7.372 36.541 7.372 23.527 0 39.958-12.628 39.958-30.709.002-23.022-21.111-28.087-38.076-32.157z"></path>
+                              </g>
+                            </svg>
+                          </div>
+                          <div class="font-size-10px text-center">Send SMS</div>
+                        </a>
+
+                        <a @click="fetchNotes(profile.applicationid, profile.profileid)" class="text-white d-flex flex-column align-items-center" href="javascript:;">
+                          <div class="font-size-26px d-flex icon-bottom">
+                            <span class="icon-solid">
+                              <ion-icon name="create-outline"></ion-icon>
+                            </span>
+                          </div>
+                          <div class="font-size-10px text-center">Add Note</div>
+                        </a>
+
+ 
+                      </div>
+                </div>
+              </div>
+          </div>
+          </div>
+
+
         <!-- CASTER SMS Modal -->
         <div class="modal fade filterModal" id="sendSmsModal" tabindex="-1" aria-labelledby="sendSmsModal" aria-hidden="true">
           <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
@@ -172,7 +302,7 @@
           </div>
           </div>
 
-           <!-- Modal -->
+           <!-- Status Modal -->
           <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
             <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
                 <div class="modal-content">
@@ -459,12 +589,12 @@
                                     <div class="form-check">
                                       <input type="checkbox" class="form-check-input cursor-pointer">
                                     </div>
-                                    <a class="profile-card-wrapper" href="javascript:;">
+                                    <a @click="fetchProfile(application.applicationid)" class="profile-card-wrapper" href="javascript:;">
                                       <div class="profileCard" :style="`background-image: url(${application.image})`"></div>
                                     </a>
                                     <div class="profile-data">
                                       <div class="d-flex gap-2 align-items-center">
-                                        <a href="javascript:;" class="profile-time">
+                                        <a @click="fetchProfile(application.applicationid)" href="javascript:;" class="profile-time">
                                           <ion-icon name="time-outline"></ion-icon> <i x-text="application.date_application_sent"></i>
                                         </a>
                                         <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted font-size-17px">
@@ -477,8 +607,8 @@
                                       </div>
                                       
                                       <div class="profile-text">
-                                          <a href="javascript:;" class="profile-name" x-text="application.name_and_age_text"></h4>
-                                          <a href="javascript:;" class="profile-location"><ion-icon name="location-outline"></ion-icon> <span x-text="application.region"></span></a>
+                                          <a @click="fetchProfile(application.applicationid)" href="javascript:;" class="profile-name" x-text="application.name_and_age_text"></h4>
+                                          <a @click="fetchProfile(application.applicationid)" href="javascript:;" class="profile-location"><ion-icon name="location-outline"></ion-icon> <span x-text="application.region"></span></a>
                                       </div>
                                       <div class="detailed-only mt-2">
                                         <div class="d-flex gap-2 mb-3 flex-wrap">
@@ -487,10 +617,6 @@
                                               <span x-text="textMoveTo"></span><ion-icon x-bind:name="folder.icon"></ion-icon>
                                              </a>
                                          </template>
-                                          <!-- <div class="ml-0 badge badge-outline-muted badge-hover d-flex align-items-center gap-1">Move
-                                              <ion-icon name="star-outline"></ion-icon> to all new
-                                          </div> -->
-                                          
                                       </div>
                                         <div class="font-size-16px mb-2"><b>Email:</b> <span x-text="application.email"></span></div>
                                         <div class="font-size-16px mb-2"><b>Phone:</b> <span x-text="application.phone"></span></div>
@@ -509,7 +635,7 @@
                                       <div class="d-flex align-items-center gap-2 mt-3 fs-3">
                                         
                                       <a class="btn-iconed-primary" href="javascript:;"><ion-icon class="font-size-22px" name="chatbox-ellipses-outline"></ion-icon>Reply</a>
-                                      <a @click="fetchSMS(application)"  class="btn-iconed-primary" href="javascript:;">
+                                      <a @click="fetchSMS(application.applicationid, application.profileid)"  class="btn-iconed-primary" href="javascript:;">
                                         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                           <g>
                                               <path stroke="currentColor" stroke-width="5" fill="currentColor" d="M403.858 27.346H108.142C48.512 27.346 0 75.858 0 135.488v138.286c0 25.593 9.156 50.436 25.781 69.951 14.348 16.841 33.493 28.887 54.642 34.54l-24.101 95.568a8.692 8.692 0 0 0 8.431 10.82 8.674 8.674 0 0 0 4.584-1.308l163.428-101.431h171.092c59.63 0 108.142-48.512 108.142-108.142V135.488C512 75.858 463.488 27.346 403.858 27.346zm90.753 246.428c0 50.042-40.712 90.753-90.754 90.753H230.741c-.039 0-.077.005-.117.006a8.654 8.654 0 0 0-4.922 1.302l-147.26 91.396 20.65-81.883c.018-.073.027-.146.044-.219a8.69 8.69 0 0 0 .568-1.898 8.696 8.696 0 0 0-7.069-10.061c-43.6-7.616-75.245-45.212-75.245-89.395V135.488c0-50.042 40.711-90.754 90.753-90.754h295.716c50.042 0 90.754 40.712 90.754 90.754v138.286zm-355.904-79.491c-14.067-3.374-26.216-6.288-26.216-17.125 0-11.905 13.354-16.146 25.851-16.146 8.257 0 16.314 1.344 23.991 4.012 1.173.47 2.078.689 2.849.689 4.45 0 7.205-3.898 7.205-7.509 0-3.502-1.722-5.967-4.99-7.133-9.089-3.368-19.374-5.075-30.57-5.075-27.918 0-40.414 16.185-40.414 32.225 0 21.892 21.709 27.45 39.154 31.917 13.571 3.474 25.291 6.475 25.291 15.393 0 4.031 0 16.298-25.396 16.298-10.381 0-20.284-2.062-29.423-6.125-1.113-.476-2.171-.699-3.33-.699-4.125 0-7.357 3.298-7.357 7.508 0 3.016 2.111 6.134 4.934 7.264 11.348 4.892 23.642 7.372 36.541 7.372 23.527 0 39.958-12.628 39.958-30.709 0-23.022-21.113-28.087-38.078-32.157zm165.365-47.531h-5.004c-4.399 0-8.543 2.852-10.308 7.084l-33.364 83.187-33.369-83.201c-1.763-4.229-5.902-7.07-10.302-7.07h-5.004c-6.064 0-10.997 5.001-10.997 11.148v90.526c0 4.391 3.573 7.963 7.964 7.963 4.475 0 8.115-3.572 8.115-7.963v-75.309l1.862-.362 30.983 76.585c1.915 4.348 6.033 7.049 10.748 7.049 4.717 0 8.845-2.723 10.762-7.08l30.969-76.554 1.862.362v75.309c0 4.391 3.64 7.963 8.115 7.963 4.391 0 7.964-3.572 7.964-7.963V157.9c-.001-6.147-4.933-11.148-10.996-11.148zm74.498 47.531c-14.067-3.375-26.216-6.288-26.216-17.125 0-11.905 13.354-16.146 25.851-16.146 8.257 0 16.314 1.344 23.991 4.012 1.173.47 2.078.689 2.849.689 4.45 0 7.205-3.898 7.205-7.509 0-3.502-1.722-5.967-4.99-7.133-9.089-3.368-19.374-5.075-30.571-5.075-27.917 0-40.414 16.185-40.414 32.225 0 21.893 21.709 27.451 39.154 31.917 13.571 3.474 25.291 6.475 25.291 15.393 0 4.031 0 16.298-25.396 16.298-10.381 0-20.284-2.062-29.424-6.125-1.113-.477-2.171-.699-3.33-.699-4.125 0-7.357 3.298-7.357 7.508 0 3.016 2.111 6.134 4.934 7.264 11.348 4.892 23.642 7.372 36.541 7.372 23.527 0 39.958-12.628 39.958-30.709.002-23.022-21.111-28.087-38.076-32.157z"></path>
@@ -534,7 +660,7 @@
                                           <div class="dropdown-menu fs-4 min-w-140px">
                                             <ul class="social-links-listing">
                                              <li>
-                                               <a @click="fetchNotes(application)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                               <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
                                                  <div :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
                                                    <span class="icon-outline">
                                                      <ion-icon name="create-outline"></ion-icon>
@@ -669,7 +795,7 @@
                                         </div>
                                       </a>
 
-                                      <a @click="fetchSMS(application)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted list-only hidden-list-xs ms-1">
+                                      <a @click="fetchSMS(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted list-only hidden-list-xs ms-1">
                                         <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                           <g>
                                               <path stroke="#6b6b6b" stroke-width="5" fill="#6b6b6b" d="M403.858 27.346H108.142C48.512 27.346 0 75.858 0 135.488v138.286c0 25.593 9.156 50.436 25.781 69.951 14.348 16.841 33.493 28.887 54.642 34.54l-24.101 95.568a8.692 8.692 0 0 0 8.431 10.82 8.674 8.674 0 0 0 4.584-1.308l163.428-101.431h171.092c59.63 0 108.142-48.512 108.142-108.142V135.488C512 75.858 463.488 27.346 403.858 27.346zm90.753 246.428c0 50.042-40.712 90.753-90.754 90.753H230.741c-.039 0-.077.005-.117.006a8.654 8.654 0 0 0-4.922 1.302l-147.26 91.396 20.65-81.883c.018-.073.027-.146.044-.219a8.69 8.69 0 0 0 .568-1.898 8.696 8.696 0 0 0-7.069-10.061c-43.6-7.616-75.245-45.212-75.245-89.395V135.488c0-50.042 40.711-90.754 90.753-90.754h295.716c50.042 0 90.754 40.712 90.754 90.754v138.286zm-355.904-79.491c-14.067-3.374-26.216-6.288-26.216-17.125 0-11.905 13.354-16.146 25.851-16.146 8.257 0 16.314 1.344 23.991 4.012 1.173.47 2.078.689 2.849.689 4.45 0 7.205-3.898 7.205-7.509 0-3.502-1.722-5.967-4.99-7.133-9.089-3.368-19.374-5.075-30.57-5.075-27.918 0-40.414 16.185-40.414 32.225 0 21.892 21.709 27.45 39.154 31.917 13.571 3.474 25.291 6.475 25.291 15.393 0 4.031 0 16.298-25.396 16.298-10.381 0-20.284-2.062-29.423-6.125-1.113-.476-2.171-.699-3.33-.699-4.125 0-7.357 3.298-7.357 7.508 0 3.016 2.111 6.134 4.934 7.264 11.348 4.892 23.642 7.372 36.541 7.372 23.527 0 39.958-12.628 39.958-30.709 0-23.022-21.113-28.087-38.078-32.157zm165.365-47.531h-5.004c-4.399 0-8.543 2.852-10.308 7.084l-33.364 83.187-33.369-83.201c-1.763-4.229-5.902-7.07-10.302-7.07h-5.004c-6.064 0-10.997 5.001-10.997 11.148v90.526c0 4.391 3.573 7.963 7.964 7.963 4.475 0 8.115-3.572 8.115-7.963v-75.309l1.862-.362 30.983 76.585c1.915 4.348 6.033 7.049 10.748 7.049 4.717 0 8.845-2.723 10.762-7.08l30.969-76.554 1.862.362v75.309c0 4.391 3.64 7.963 8.115 7.963 4.391 0 7.964-3.572 7.964-7.963V157.9c-.001-6.147-4.933-11.148-10.996-11.148zm74.498 47.531c-14.067-3.375-26.216-6.288-26.216-17.125 0-11.905 13.354-16.146 25.851-16.146 8.257 0 16.314 1.344 23.991 4.012 1.173.47 2.078.689 2.849.689 4.45 0 7.205-3.898 7.205-7.509 0-3.502-1.722-5.967-4.99-7.133-9.089-3.368-19.374-5.075-30.571-5.075-27.917 0-40.414 16.185-40.414 32.225 0 21.893 21.709 27.451 39.154 31.917 13.571 3.474 25.291 6.475 25.291 15.393 0 4.031 0 16.298-25.396 16.298-10.381 0-20.284-2.062-29.424-6.125-1.113-.477-2.171-.699-3.33-.699-4.125 0-7.357 3.298-7.357 7.508 0 3.016 2.111 6.134 4.934 7.264 11.348 4.892 23.642 7.372 36.541 7.372 23.527 0 39.958-12.628 39.958-30.709.002-23.022-21.111-28.087-38.076-32.157z"></path>
@@ -678,7 +804,7 @@
                                       </a>
                                       
                                       <a class="btn-iconed-primary grid-only" href="javascript:;"><ion-icon class="font-size-22px" name="chatbox-ellipses-outline"></ion-icon>Reply</a>
-                                      <a @click="fetchSMS(application)"  class="btn-iconed-primary grid-only" href="javascript:;">
+                                      <a @click="fetchSMS(application.applicationid, application.profileid)"  class="btn-iconed-primary grid-only" href="javascript:;">
                                         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                           <g>
                                               <path stroke="currentColor" stroke-width="5" fill="currentColor" d="M403.858 27.346H108.142C48.512 27.346 0 75.858 0 135.488v138.286c0 25.593 9.156 50.436 25.781 69.951 14.348 16.841 33.493 28.887 54.642 34.54l-24.101 95.568a8.692 8.692 0 0 0 8.431 10.82 8.674 8.674 0 0 0 4.584-1.308l163.428-101.431h171.092c59.63 0 108.142-48.512 108.142-108.142V135.488C512 75.858 463.488 27.346 403.858 27.346zm90.753 246.428c0 50.042-40.712 90.753-90.754 90.753H230.741c-.039 0-.077.005-.117.006a8.654 8.654 0 0 0-4.922 1.302l-147.26 91.396 20.65-81.883c.018-.073.027-.146.044-.219a8.69 8.69 0 0 0 .568-1.898 8.696 8.696 0 0 0-7.069-10.061c-43.6-7.616-75.245-45.212-75.245-89.395V135.488c0-50.042 40.711-90.754 90.753-90.754h295.716c50.042 0 90.754 40.712 90.754 90.754v138.286zm-355.904-79.491c-14.067-3.374-26.216-6.288-26.216-17.125 0-11.905 13.354-16.146 25.851-16.146 8.257 0 16.314 1.344 23.991 4.012 1.173.47 2.078.689 2.849.689 4.45 0 7.205-3.898 7.205-7.509 0-3.502-1.722-5.967-4.99-7.133-9.089-3.368-19.374-5.075-30.57-5.075-27.918 0-40.414 16.185-40.414 32.225 0 21.892 21.709 27.45 39.154 31.917 13.571 3.474 25.291 6.475 25.291 15.393 0 4.031 0 16.298-25.396 16.298-10.381 0-20.284-2.062-29.423-6.125-1.113-.476-2.171-.699-3.33-.699-4.125 0-7.357 3.298-7.357 7.508 0 3.016 2.111 6.134 4.934 7.264 11.348 4.892 23.642 7.372 36.541 7.372 23.527 0 39.958-12.628 39.958-30.709 0-23.022-21.113-28.087-38.078-32.157zm165.365-47.531h-5.004c-4.399 0-8.543 2.852-10.308 7.084l-33.364 83.187-33.369-83.201c-1.763-4.229-5.902-7.07-10.302-7.07h-5.004c-6.064 0-10.997 5.001-10.997 11.148v90.526c0 4.391 3.573 7.963 7.964 7.963 4.475 0 8.115-3.572 8.115-7.963v-75.309l1.862-.362 30.983 76.585c1.915 4.348 6.033 7.049 10.748 7.049 4.717 0 8.845-2.723 10.762-7.08l30.969-76.554 1.862.362v75.309c0 4.391 3.64 7.963 8.115 7.963 4.391 0 7.964-3.572 7.964-7.963V157.9c-.001-6.147-4.933-11.148-10.996-11.148zm74.498 47.531c-14.067-3.375-26.216-6.288-26.216-17.125 0-11.905 13.354-16.146 25.851-16.146 8.257 0 16.314 1.344 23.991 4.012 1.173.47 2.078.689 2.849.689 4.45 0 7.205-3.898 7.205-7.509 0-3.502-1.722-5.967-4.99-7.133-9.089-3.368-19.374-5.075-30.571-5.075-27.917 0-40.414 16.185-40.414 32.225 0 21.893 21.709 27.451 39.154 31.917 13.571 3.474 25.291 6.475 25.291 15.393 0 4.031 0 16.298-25.396 16.298-10.381 0-20.284-2.062-29.424-6.125-1.113-.477-2.171-.699-3.33-.699-4.125 0-7.357 3.298-7.357 7.508 0 3.016 2.111 6.134 4.934 7.264 11.348 4.892 23.642 7.372 36.541 7.372 23.527 0 39.958-12.628 39.958-30.709.002-23.022-21.111-28.087-38.076-32.157z"></path>
@@ -701,7 +827,7 @@
                                         <div class="dropdown-menu fs-4 min-w-140px">
                                            <ul class="social-links-listing">
                                             <li>
-                                              <a @click="fetchNotes(application)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                              <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
                                                 <div :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
                                                   <span class="icon-outline">
                                                     <ion-icon name="create-outline"></ion-icon>
