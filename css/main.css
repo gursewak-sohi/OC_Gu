@@ -4536,6 +4536,9 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     display: flex; 
     color: rgb(255, 0, 60);
   }
+  .pointer-events-none {
+    pointer-events: none;
+  }
 
   .icon-checkmark {
 	position: absolute;

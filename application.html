@@ -467,16 +467,13 @@
                                         <a href="javascript:;" class="profile-time">
                                           <ion-icon name="time-outline"></ion-icon> <i x-text="application.date_application_sent"></i>
                                         </a>
-                                        <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted font-size-17px">
+                                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted font-size-17px">
                                           <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
-                                            <span class="icon-outline">
-                                              <ion-icon name="balloon-outline"></ion-icon>
-                                            </span>
                                             <span class="icon-solid">
                                               <ion-icon name="balloon"></ion-icon>
                                             </span>
                                           </div>
-                                        </a>
+                                        </div>
                                       </div>
                                       
                                       <div class="profile-text">
@@ -486,7 +483,7 @@
                                       <div class="detailed-only mt-2">
                                         <div class="d-flex gap-2 mb-3 flex-wrap">
                                           <template x-for="folder in folders" :key="folder.name">
-                                             <a href="javascript:;" @click="moveToFolder(folder.searchname, application.applicationid)" class="ml-0 badge badge-light-gray badge-hover d-flex align-items-center gap-1 cursor-pointer">
+                                             <a href="javascript:;" @click="moveToFolder(folder.searchname, application.applicationid)" x-bind:class="currentChatFolder === folder.searchname ? 'badge-outline-muted pointer-events-none' : 'badge-light-gray badge-hover'"  class="ml-0 badge  d-flex align-items-center gap-1 cursor-pointer">
                                               <span x-text="textMoveTo"></span><ion-icon x-bind:name="folder.icon"></ion-icon>
                                              </a>
                                          </template>
