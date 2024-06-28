@@ -18,6 +18,23 @@ if (!profileModalInstance) {
 }
 
 
+ 
+
+// Function to initialize or reinitialize Masonry
+function initializeMasonry() {
+    $(".grid").masonry({
+        itemSelector: ".grid-item",
+    });
+}
+function reloadMasonry() {
+  $(".grid").masonry({
+      itemSelector: ".grid-item",
+  }).masonry('reloadItems');
+}
+
+profileModal.addEventListener('shown.bs.modal', function () {
+  initializeMasonry();
+});
 
 
 
@@ -462,37 +479,25 @@ function applicationComponent() {
       totalApplications : '',
       fetchProfile(applicationId) {
         this.isFetchingProfile = true;
-        // this.currentApplication = application;
         fetch(`https://www.onlinecasting.dk/api/applications/application_profile.asp?applicationid=${applicationId}&orderby=${this.currentOrderBy}&folder=${this.currentChatFolder}`)
             .then(response => response.json())
             .then(data => {
+                console.dir(data,'data')
                 this.profile = data;
                 this.currentApplication = this.profile.text_numberofapplications.split(' af ')[0];
                 this.totalApplications = this.profile.text_numberofapplications.split(' af ')[1];
                 profileModalInstance.show(); 
-                // if (data.Status == 'OK') {
-                //   this.casterPhoneValidated = data.caster_phone_validated;
-                //   this.textHtml = data.text_html;
-                //   this.statusMessageHeadline = data.StatusMessageHeadline;
-                //   this.textSubmitButton = data.text_submit_button;
-                //   this.textHeaderInput = data.text_header_input;
-                //   this.textClose = data.text_close;
-
-                  
-                // }
-                // else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
-                //   this.statusMessageHeadline = data.StatusMessageHeadline
-                //   this.statusMessage = data.StatusMessage
-                //   this.textClose = data.text_close
-                  
-                //   statusModalInstance.show();  
-                // }  
             })
             .catch(error => {
                 console.error("Error fetching Profile:", error);
             })
             .finally(() => {
                 this.isFetchingProfile = false;
+                // refreshMasonry();
+                reloadMasonry();
+                setTimeout(() => {
+                  initializeMasonry()  
+                }, 50);
             });
       }
   }

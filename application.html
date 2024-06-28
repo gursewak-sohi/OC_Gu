@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="css/theme-responsive.css">
     <!-- Owl Stylesheets -->
     <link rel="stylesheet" href="css/owl.carousel.min.css">
+      <!-- Fancy Box -->
+      <link rel="stylesheet" href="css/jquery.fancybox.min.css">
 
     
 
@@ -44,7 +46,7 @@
 
         <!-- Profile View Modal -->
         <div class="modal fade profileModal" id="profileModal" tabindex="-1" aria-labelledby="profileModal" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+          <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
               <div class="modal-content">
                 <div class="modal-header">
                   <div class="d-flex align-items-center justify-content-between w-100">
@@ -129,6 +131,71 @@
                     </div>
                      
                   </div>
+
+                  <div x-show="profile.attached_media_text_title !== ''" class="row mt-4">
+                    <div class="col-md-12 mb-3">
+                      <h3  class="font-weight-800" x-text="profile.attached_media_text_title"></h3>
+                    </div>
+                  </div>
+
+                    <div x-show="profile.profile_images_text_title !== ''" class="row mt-4">
+                      <div class="col-md-12 col-12">
+                        <h3 class="font-weight-800" x-text="profile.profile_images_text_title"></h3>
+                      </div>
+                      <div class="col-12 filterTabs pt-0">
+                        <div class="grid">
+                        <template x-for="image in profile.profileimages" :key="image.imageurl">
+                            <div class="grid-item">
+                                <a :href="image.imageurl" data-fancybox="gallery" :data-caption="image.datecreated">
+                                  <img class="w-100 rounded" :src="image.imageurl"/>
+                                </a>
+                            </div>
+                        </template>
+                      </div>
+                      </div>
+                    </div>
+
+                    <div x-show="profile.profile_videos_text_title !== ''" class="row mt-4">
+                      <div class="col-md-12 col-12">
+                        <h3 class="font-weight-800" x-text="profile.profile_videos_text_title"></h3>
+                      </div>
+                      <div class="col-12">
+                          <template x-for="video in profile.profilevideos" :key="video.link">
+                              <div class="ratio ratio-16x9 mb-20" x-html="video.html"></div>
+                          </template>
+                      </div>
+                    </div>
+
+                    <div x-show="profile.profile_audio_text_title !== ''" class="row mt-4">
+                      <div class="col-md-12 col-12">
+                        <h3 class="font-weight-800" x-text="profile.profile_audio_text_title"></h3>
+                      </div>
+                      <div class="col-12">
+                        <template x-for="audio in profile.profileaudio" :key="audio.src">
+                          <div>
+                            <div class="mb-1" x-text="audio.filename"></div>
+                            <div x-html="audio.html"></div>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+
+                    <div class="row mt-4">
+                      <div class="col-md-12 col-12">
+                        <h3 class="font-weight-800" x-text="profile.attribues_text_title"></h3>
+                      </div>
+                      <div class="col-md-9 filterTabs pt-0 mt-3">
+                        <template x-for="attribute in profile.attributes" :key="attribute.Name">
+                            <div class="row pb-0 contentBox">
+                              <div class="col-6 font-size-18px font-weight-700" x-text="attribute.Name"></div>
+                              <div class="col-6 text-end font-size-18px" x-text="attribute.Value"></div>
+                              <hr class="seprator">
+                            </div>
+                          
+                        </template>
+                      </div>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">
@@ -162,8 +229,6 @@
                           </div>
                           <div class="font-size-10px text-center">Add Note</div>
                         </a>
-
- 
                       </div>
                 </div>
               </div>
@@ -958,16 +1023,25 @@
     <!-- Icon Fonts -->
     <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
+    <!-- Masonry -->
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+
     <!-- Owl Slider -->
     <script src="js/owl.carousel.min.js"></script>
+
+    <!-- Fancybox -->
+    <script src="js/jquery.fancybox.min.js"></script>
+    
     <!-- main-->
     <script src="js/main.js"></script>
     
- 
+    
 
     <!-- Alpine JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-     
+
+    
     <!-- Apline Application Data -->
     <script src="js/application-data.js"></script>
 
@@ -988,14 +1062,11 @@
               this.fetchFilterBy();
               this.fetchApplications();
               this.selectedCountry = this.countries[0];
+              
             },
           }));
       });
     </script>
-
-   
-    
-
 </body>
 
 </html>
