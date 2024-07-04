@@ -506,7 +506,7 @@ function applicationComponent() {
                 reloadMasonry();
                 setTimeout(() => {
                   initializeMasonry()  
-                }, 50);
+                }, 200);
             });
       }
   }
