@@ -22,21 +22,26 @@ if (!profileModalInstance) {
 
 // Function to initialize or reinitialize Masonry
 function initializeMasonry() {
-    $(".grid").masonry({
-        itemSelector: ".grid-item",
-    });
+  $(".grid").imagesLoaded(function() {
+      $(".grid").masonry({
+          itemSelector: ".grid-item"
+      });
+  });
+    // $(".grid").masonry({
+    //     itemSelector: ".grid-item",
+    // });
 }
 function reloadMasonry() {
-  $(".grid").masonry({
-      itemSelector: ".grid-item",
-  }).masonry('reloadItems');
+  $(".grid").imagesLoaded(function() {
+    $(".grid").masonry({
+        itemSelector: ".grid-item",
+    }).masonry('reloadItems');
+  });
 }
 
 profileModal.addEventListener('shown.bs.modal', function () {
   initializeMasonry();
 });
-
-
 
 function applicationComponent() {
   return {
@@ -93,7 +98,7 @@ function applicationComponent() {
 
     movingApplicationId: null,
     isMovingToFolder: false,
-    moveToFolder(newFolder, applicationid) {
+    moveToFolder(newFolder, applicationid, nextProfileId) {
       this.movingApplicationId = applicationid;
       this.isMovingToFolder = true;
       fetch(`https://www.onlinecasting.dk/api/applications/change_folder.asp?applicationid=${applicationid}&newfolder=${newFolder}`)
@@ -110,11 +115,15 @@ function applicationComponent() {
               }
               
               this.removeApplication(applicationid);
-
-              // Move item to new folder for single profile in modal
-              this.profile.application_folder = newFolder;
-               
-              // console.log(data.StatusMessage);
+              if (nextProfileId) {
+                  // console.log(nextProfileId, 'nextProfileId')
+                  this.fetchProfile(nextProfileId)
+                   // Move item to new folder for single profile in modal
+                  // this.profile.application_folder = newFolder;
+              }
+              else {
+                profileModalInstance.hide();
+              }
             }
           })
           .catch(error => {
@@ -258,7 +267,7 @@ function applicationComponent() {
             .then(data => {
                 if (data.Status == 'OK') {
                   
-                  profileModalInstance.hide(); 
+                  // profileModalInstance.hide(); 
 
                   this.notes = data.notes;
                   this.statusMessageHeadline = data.StatusMessageHeadline;
@@ -270,7 +279,7 @@ function applicationComponent() {
                 }
                 else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
 
-                  profileModalInstance.hide(); 
+                  // profileModalInstance.hide(); 
 
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
@@ -368,7 +377,7 @@ function applicationComponent() {
             .then(data => {
                 if (data.Status == 'OK') {
 
-                  profileModalInstance.hide(); 
+                  // profileModalInstance.hide(); 
                   
                   this.casterPhoneValidated = data.caster_phone_validated;
                   this.textHtml = data.text_html;
@@ -381,7 +390,7 @@ function applicationComponent() {
                 }
                 else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
 
-                  profileModalInstance.hide(); 
+                  // profileModalInstance.hide(); 
                   
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
@@ -482,7 +491,7 @@ function applicationComponent() {
         fetch(`https://www.onlinecasting.dk/api/applications/application_profile.asp?applicationid=${applicationId}&orderby=${this.currentOrderBy}&folder=${this.currentChatFolder}`)
             .then(response => response.json())
             .then(data => {
-                console.dir(data,'data')
+                // console.dir(data,'data')
                 this.profile = data;
                 this.currentApplication = this.profile.text_numberofapplications.split(' af ')[0];
                 this.totalApplications = this.profile.text_numberofapplications.split(' af ')[1];

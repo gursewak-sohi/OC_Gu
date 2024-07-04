@@ -4587,31 +4587,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     transition: 0.2s all ease;
   }
 
-  
-  .rating-text {
-	display: flex;
-	position: absolute;
-	top: -10px;
-	color: #969696;
-	font-size: 14px;
-	font-style: italic;
-	left: 23px;
-	white-space: nowrap;
-	opacity: 0;
-	transition: 0.2s all ease;
-	visibility: hidden;
-	z-index: 10;
-}
-
-  .star-rating:hover  .rating-text { 
-    opacity: 1;
-    visibility: visible;
-    top: -20px;
-  }
-
-  .grid-view .star-rating:hover  .rating-text { 
-    top: -15px;
-  }
+ 
   .star-rating ion-icon.active {
     color: #eb783e;
   }
@@ -4626,6 +4602,15 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     opacity: 1;
   }
  
+  .list-view .more-icon {
+    color: #6b6b6b;
+  }
+
+  .grid-view  .more-icon {
+    color: #eb783e;;
+  }
+
+  
   .btn-group-liked {
 	position: absolute;
 	right: 0;
@@ -4948,18 +4933,35 @@ input.gender-checkbox[type="checkbox"]:checked+label {
  pointer-events: none;
 }
 
-.profileModal .modal-footer a:hover {
+/* .profileModal .modal-footer a:hover {
     opacity: 0.7;
-}
+} */
 
 .btn-icon {
     background-color: transparent;
     border: none;
     font-size: 30px;
     display: flex;
+    color: #212529;
 }
 .btn-icon:disabled {
     opacity: 0.3;
+}
+
+.gap-2px {
+    gap: 2px;
+}
+
+.modal-backdrop + .modal-backdrop {
+	z-index: 9999;
+}
+
+#notesModal {
+    z-index: 99999;
+}
+
+#notesModal, #sendSmsModal, #changePhoneNumberModal, #statusModal {
+    z-index: 99999;
 }
 
 @media (max-width: 767px) {
