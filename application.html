@@ -77,9 +77,18 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <div class="tags-area mb-3">
-                          <template x-for="category in profile.categories" :key="category">
-                             <div class="tags" x-text="category"></div>
+                        <div x-show="profile.categories_experience" class="tags-area mb-3">
+                          <template x-for="category in profile.categories_experience" :key="category.text">
+                             <div class="tags" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="category.text_mouseover">
+                              <span x-text="category.text"></span>
+                              <ul>
+                                <template x-for="(star, index) in 5" :key="index">
+                                  <li>
+                                    <ion-icon :name="index < category.stars ? 'star' : 'star-outline'"></ion-icon>
+                                  </li>
+                                </template>
+                              </ul>
+                          </div>
                           </template>
                         </div>
                         <a href="javascript:;" class="profile-time">
@@ -131,13 +140,40 @@
                      
                   </div>
 
-                  <div x-show="profile.attached_media_text_title !== ''" class="row mt-4">
+                  <div x-show="profile.attached_media == 'YES'" class="row mt-4">
                     <div class="col-md-12 mb-3">
                       <h3  class="font-weight-800" x-text="profile.attached_media_text_title"></h3>
                     </div>
+                    <div class="col-12 filterTabs pt-0 mb-2">
+                      <div class="grid">
+                      <template x-for="image in profile.images_attached" :key="image.imageurl">
+                          <div class="grid-item">
+                              <a :href="image.imageurl" data-fancybox="gallery" :data-caption="image.datecreated">
+                                <img class="w-100 rounded" :src="image.imageurl"/>
+                              </a>
+                          </div>
+                      </template>
+                    </div>
+                    </div>
+                    <div class="col-12">
+                      <template x-for="video in profile.videos_attached" :key="video">
+                          <div class="ratio ratio-16x9 mb-20">
+                            <iframe :src="video" title="vimeo video" allowfullscreen></iframe>
+                          </div>
+                      </template>
+                    </div>
+                    <div class="col-12">
+                      <template x-for="audio in profile.audio_attached" :key="audio.src">
+                        <div>
+                          <div class="mb-1" x-text="audio.filename"></div>
+                          <div x-html="audio.html"></div>
+                        </div>
+                      </template>
+                    </div>
                   </div>
 
-                    <div x-show="profile.profile_images_text_title !== ''" class="row mt-4">
+
+                    <!-- <div x-show="profile.profile_images_text_title !== ''" class="row mt-4">
                       <div class="col-md-12 col-12">
                         <h3 class="font-weight-800" x-text="profile.profile_images_text_title"></h3>
                       </div>
@@ -152,9 +188,9 @@
                         </template>
                       </div>
                       </div>
-                    </div>
+                    </div> -->
 
-                    <div x-show="profile.profile_videos_text_title !== ''" class="row mt-4">
+                    <!-- <div x-show="profile.profile_videos_text_title !== ''" class="row mt-4">
                       <div class="col-md-12 col-12">
                         <h3 class="font-weight-800" x-text="profile.profile_videos_text_title"></h3>
                       </div>
@@ -163,9 +199,9 @@
                               <div class="ratio ratio-16x9 mb-20" x-html="video.html"></div>
                           </template>
                       </div>
-                    </div>
+                    </div> -->
 
-                    <div x-show="profile.profile_audio_text_title !== ''" class="row mt-4">
+                    <!-- <div x-show="profile.profile_audio_text_title !== ''" class="row mt-4">
                       <div class="col-md-12 col-12">
                         <h3 class="font-weight-800" x-text="profile.profile_audio_text_title"></h3>
                       </div>
@@ -177,7 +213,7 @@
                           </div>
                         </template>
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="row mt-4">
                       <div class="col-md-12 col-12">
@@ -311,19 +347,21 @@
                         </a>
                       </div>
                         <div class="d-none d-md-block">
-                          <a  class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
-                            <div class="font-size-26px d-flex icon-bottom">
-                              <div class="icon-wrapper active-red">
-                                <span class="icon-outline">
-                                  <ion-icon name="balloon-outline"></ion-icon>
-                                </span>
-                                <span class="icon-solid">
-                                  <ion-icon name="balloon"></ion-icon>
-                                </span>
+                          <div x-show="profile.hired == 'YES'">
+                            <div class="text-white d-flex flex-column align-items-center gap-2px">
+                              <div class="font-size-26px d-flex icon-bottom">
+                                <div class="icon-wrapper active-red">
+                                  <span class="icon-outline">
+                                    <ion-icon name="balloon-outline"></ion-icon>
+                                  </span>
+                                  <span class="icon-solid">
+                                    <ion-icon name="balloon"></ion-icon>
+                                  </span>
+                                </div>
                               </div>
+                              <div class="font-size-10px text-center">Hired</div>
                             </div>
-                            <div class="font-size-10px text-center">Hired</div>
-                          </a>
+                          </div>
                         </div>
                       </div>
                 </div>

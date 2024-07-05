@@ -411,7 +411,7 @@ function applicationComponent() {
       isSendingSMS: false,
       sendSMS() {
         this.isSendingSMS = true;        
-        fetch(`https://www.onlinecasting.dk/api/sms_to_profile_from_caster.asp?profileid=${this.currentProfileID}&applicationid=${this.currentApplicationID}&text=${this.newSMS}`)
+        fetch(`https://www.onlinecasting.dk/api/sms_to_profile_from_caster_send.asp?profileid=${this.currentProfileID}&applicationid=${this.currentApplicationID}&text=${this.newSMS}`)
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK') {
@@ -491,7 +491,7 @@ function applicationComponent() {
         fetch(`https://www.onlinecasting.dk/api/applications/application_profile.asp?applicationid=${applicationId}&orderby=${this.currentOrderBy}&folder=${this.currentChatFolder}`)
             .then(response => response.json())
             .then(data => {
-                // console.dir(data,'data')
+                console.dir(data,'data')
                 this.profile = data;
                 this.currentApplication = this.profile.text_numberofapplications.split(' af ')[0];
                 this.totalApplications = this.profile.text_numberofapplications.split(' af ')[1];
@@ -502,6 +502,7 @@ function applicationComponent() {
             })
             .finally(() => {
                 this.isFetchingProfile = false;
+                this.initializeTooltips();
                 // refreshMasonry();
                 reloadMasonry();
                 setTimeout(() => {
