@@ -456,8 +456,10 @@ function applicationComponent() {
             .then(data => {
                 if (data.Status == 'OK') {
                   const application = this.applications.find(app => app.applicationid === applicationId);
+                 
                   if (application) {
                     application.hired = newStatus;
+                    this.profile.hired = newStatus;
                   }
                   if (data.ShowMessage == 'YES') {
                       this.statusMessageHeadline = data.StatusMessageHeadline
@@ -491,7 +493,7 @@ function applicationComponent() {
         fetch(`https://www.onlinecasting.dk/api/applications/application_profile.asp?applicationid=${applicationId}&orderby=${this.currentOrderBy}&folder=${this.currentChatFolder}`)
             .then(response => response.json())
             .then(data => {
-                console.dir(data,'data')
+                // console.log(data,'data')
                 this.profile = data;
                 this.currentApplication = this.profile.text_numberofapplications.split(' af ')[0];
                 this.totalApplications = this.profile.text_numberofapplications.split(' af ')[1];
@@ -502,9 +504,12 @@ function applicationComponent() {
             })
             .finally(() => {
                 this.isFetchingProfile = false;
+                
                 this.initializeTooltips();
                 // refreshMasonry();
                 reloadMasonry();
+                
+                document.querySelector('#profileModal .modal-body').scrollTo({ top: 0, behavior: 'smooth' }); 
                 setTimeout(() => {
                   initializeMasonry()  
                 }, 500);

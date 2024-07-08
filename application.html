@@ -141,7 +141,7 @@
                   </div>
 
                   <div x-show="profile.attached_media == 'YES'" class="row mt-4">
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-12">
                       <h3  class="font-weight-800" x-text="profile.attached_media_text_title"></h3>
                     </div>
                     <div class="col-12 filterTabs pt-0 mb-2">
@@ -173,7 +173,7 @@
                   </div>
 
 
-                    <!-- <div x-show="profile.profile_images_text_title !== ''" class="row mt-4">
+                    <div x-show="profile.profile_images_text_title !== ''" class="row mt-4">
                       <div class="col-md-12 col-12">
                         <h3 class="font-weight-800" x-text="profile.profile_images_text_title"></h3>
                       </div>
@@ -188,7 +188,7 @@
                         </template>
                       </div>
                       </div>
-                    </div> -->
+                    </div>
 
                     <!-- <div x-show="profile.profile_videos_text_title !== ''" class="row mt-4">
                       <div class="col-md-12 col-12">
@@ -346,11 +346,14 @@
                           <div class="font-size-10px text-center">Add Note</div>
                         </a>
                       </div>
+
+                      
+
                         <div class="d-none d-md-block">
-                          <div x-show="profile.hired == 'YES'">
+                          <a href="javascript:;" @click="changeHiring(profile.hired === 'YES' ? 'NO' : 'YES', profile.applicationid)">
                             <div class="text-white d-flex flex-column align-items-center gap-2px">
                               <div class="font-size-26px d-flex icon-bottom">
-                                <div class="icon-wrapper active-red">
+                                <div class="icon-wrapper" :class="profile.hired === 'YES' && 'active-red'">
                                   <span class="icon-outline">
                                     <ion-icon name="balloon-outline"></ion-icon>
                                   </span>
@@ -359,15 +362,15 @@
                                   </span>
                                 </div>
                               </div>
-                              <div class="font-size-10px text-center">Hired</div>
+                              <div class="font-size-10px text-center">Hire</div>
                             </div>
-                          </div>
+                          </a>
                         </div>
                       </div>
-                </div>
+                    </div>
+                  </div>
               </div>
-          </div>
-          </div>
+              </div>
 
 
         <!-- CASTER SMS Modal -->
