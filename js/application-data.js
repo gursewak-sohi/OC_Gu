@@ -17,8 +17,21 @@ if (!profileModalInstance) {
   profileModalInstance = new bootstrap.Modal(profileModal);
 }
 
-
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const applicationId = urlParams.get('applicationid');
+  if (applicationId) {
+      fetchProfile(applicationId);
+  }
+});
  
+window.onpopstate = (event) => {
+  if (event.state && event.state.applicationId) {
+    window.fetchProfile(event.state.applicationId);
+  } else {
+    profileModalInstance.hide();
+  }
+};
 
 // Function to initialize or reinitialize Masonry
 function initializeMasonry() {
@@ -483,6 +496,7 @@ function applicationComponent() {
             });
       },
 
+      
 
       isFetchingProfile : false,
       profile: '',
@@ -498,6 +512,9 @@ function applicationComponent() {
                 this.currentApplication = this.profile.text_numberofapplications.split(' af ')[0];
                 this.totalApplications = this.profile.text_numberofapplications.split(' af ')[1];
                 profileModalInstance.show(); 
+
+                const newUrl = `${window.location.pathname}?applicationid=${applicationId}`;
+                history.pushState({ applicationId: applicationId }, '', newUrl);
             })
             .catch(error => {
                 console.error("Error fetching Profile:", error);
@@ -514,6 +531,12 @@ function applicationComponent() {
                   initializeMasonry()  
                 }, 500);
             });
-      }
+      },
+
+      handleModalClose() {
+        // Remove the applicationid parameter from the URL
+        const newUrl = window.location.pathname;
+        history.pushState({}, '', newUrl);
+      },
   }
 }

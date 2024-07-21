@@ -1217,7 +1217,8 @@
               this.fetchFilterBy();
               this.fetchApplications();
               this.selectedCountry = this.countries[0];
-              
+              window.fetchProfile = this.fetchProfile.bind(this);
+              profileModal.addEventListener('hide.bs.modal', this.handleModalClose.bind(this));
             },
           }));
       });
