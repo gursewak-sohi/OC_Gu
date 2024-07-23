@@ -11,14 +11,16 @@
 }
 
 .chat-sidebar {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 320px;
-    border-right: solid 1px rgba(0, 0, 0, 0.1);
-    overflow: auto;
-    background-color: white;
-    position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-width: 320px;
+	border-right: solid 1px rgba(0, 0, 0, 0.1);
+	overflow: auto;
+	background-color: white;
+	position: relative;
+	max-width: 25%;
+	width: 100%;
 }
 
  
@@ -47,15 +49,17 @@
 }
 
 .chat-details {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 320px;
-    border-left: solid 1px rgba(0, 0, 0, 0.1);
-    overflow: auto;
-    transition: 0.3s all ease;
-    margin-right: -320px;
-    position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-width: 320px;
+	border-left: solid 1px rgba(0, 0, 0, 0.1);
+	overflow: auto;
+	transition: 0.3s all ease;
+	margin-right: -320px;
+	position: relative;
+	max-width: 25%;
+	width: 100%;
 }
 
 .chat-details.active {
@@ -133,12 +137,32 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 17.5px 12px;
     position: sticky;
     top: 0;
     background-color: white;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     z-index: 90;
+}
+
+.chat-sidebar-header-inner { 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17.5px 12px;
+    width: 100%;
+    max-width: 450px;
+    min-width: 90%;
+    margin: 0 auto;
+} 
+
+.chat-sidebar-body {
+    width: 100%;
+    max-width: 450px;
+    min-width: 90%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 0 auto;
 }
 
 .chat-sidebar-header h5 {
@@ -568,13 +592,15 @@
 
 .chat-details-inner {
     padding: 14px;
+    max-width: 450px;
+    margin: 0 auto;
 }
 
 .chat-details-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 14px;
+    
     position: sticky;
     top: 0;
     background-color: white;
@@ -582,6 +608,16 @@
     z-index: 90;
     width: 100%;
     min-height: 55px;
+}
+
+.chat-details-header-inner { 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 450px;
+    width: 100%;
+    padding: 10px 14px;
 }
 
 .chat-details-header h5 {
@@ -822,6 +858,7 @@
         z-index: 90;
         transform: translateX(0);
         transition: 0.3s all ease;
+        max-width: 100%;
     }
 
     .chat-sidebar.hide {
@@ -836,6 +873,7 @@
         width: 100%;
         z-index: 90;
         background-color: white;
+        max-width: 100%;
     }
 
     .chat-details.active {
