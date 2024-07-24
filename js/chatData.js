@@ -69,7 +69,7 @@ document.addEventListener("alpine:init", () => {
        // Chat Data
         isChatSidebarClosed : false,
         fetchFolders() {
-            fetch(`http://84.247.163.91/api/chat/conversations_folders.asp`)
+            fetch(`https://www.onlinecasting.dk/api/chat/conversations_folders.asp`)
                 .then(response => response.json())
                 .then(data => {
                     if (data && Array.isArray(data.folders)) {
@@ -107,7 +107,7 @@ document.addEventListener("alpine:init", () => {
         currentAudition: '', 
         currentAuditionID: 0,
         fetchAuditions() {
-            let url = `http://84.247.163.91/api/chat/conversations_auditions.asp`;
+            let url = `https://www.onlinecasting.dk/api/chat/conversations_auditions.asp`;
             if (this.currentAuditionID) {
                 url += `?auditionid=${this.currentAuditionID}`;
             }
@@ -159,7 +159,7 @@ document.addEventListener("alpine:init", () => {
             if (this.isConversationsFetching) return;
             this.isConversationsFetching = true;
             this.isConversationError = false;
-            fetch(`http://84.247.163.91/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentChatFolder}&auditionid=${this.currentAuditionID}`)
+            fetch(`https://www.onlinecasting.dk/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentChatFolder}&auditionid=${this.currentAuditionID}`)
                 .then(response => response.json())
                 .then(data => {
                     // console.log("API Data:", data);
@@ -249,7 +249,7 @@ document.addEventListener("alpine:init", () => {
             }
             
            
-            fetch(`http://84.247.163.91/api/chat/conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
+            fetch(`https://www.onlinecasting.dk/api/chat/conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
                     // console.log(data, 'data')
@@ -338,7 +338,7 @@ document.addEventListener("alpine:init", () => {
 
         fetchProfileImages() {
             if (!this.currentProfileID) return;
-            fetch(`http://84.247.163.91/api/chat/profile_images.asp?profileid=${this.currentProfileID}`)
+            fetch(`https://www.onlinecasting.dk/api/chat/profile_images.asp?profileid=${this.currentProfileID}`)
                 .then(response => response.json())
                 .then(data => {
                     
@@ -382,7 +382,7 @@ document.addEventListener("alpine:init", () => {
         fetchProfileData() {
             if (!this.currentProfileID) return;
             if (!this.currentConversationID) return;
-            fetch(`http://84.247.163.91/api/chat/profile_data.asp?profileid=${this.currentProfileID}&conversationid=${this.currentConversationID}`)
+            fetch(`https://www.onlinecasting.dk/api/chat/profile_data.asp?profileid=${this.currentProfileID}&conversationid=${this.currentConversationID}`)
                 .then(response => response.json())
                 .then(data => {
                     this.profileData = data
@@ -404,7 +404,7 @@ document.addEventListener("alpine:init", () => {
          newMessage: '',
          postChatMessage() {  
            
-             const url = "https://proxy.cors.sh/http://84.247.163.91/api/chat/post_message.asp";
+             const url = "https://proxy.cors.sh/https://www.onlinecasting.dk/api/chat/post_message.asp";
              
              // Convert newlines to <br/> tags
              const formattedMessage = this.newMessage.replace(/\n/g, '<br/>');
@@ -447,7 +447,7 @@ document.addEventListener("alpine:init", () => {
 
          
         toggleStar(conversation, setAsStarred) {
-            const apiUrl = `http://84.247.163.91/api/chat/tag_conversation.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversationparticipantid}&Tag=${setAsStarred}&chatfolder=${this.currentChatFolder}`;
+            const apiUrl = `https://www.onlinecasting.dk/api/chat/tag_conversation.asp?ConversationID=${conversation.conversationid}&ConversationParticipantID=${conversation.conversationparticipantid}&Tag=${setAsStarred}&chatfolder=${this.currentChatFolder}`;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -471,7 +471,7 @@ document.addEventListener("alpine:init", () => {
 
         toggleArchieve(conversation, setAsArchieved) {
             
-            const apiUrl = `http://84.247.163.91/api/chat/change_folder_conversation.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&folder=${setAsArchieved}&chatfolder=${this.currentChatFolder}`;
+            const apiUrl = `https://www.onlinecasting.dk/api/chat/change_folder_conversation.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&folder=${setAsArchieved}&chatfolder=${this.currentChatFolder}`;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -492,7 +492,7 @@ document.addEventListener("alpine:init", () => {
         },
 
         toggleReadyOnly(conversation, setReadStatus) {
-            const apiUrl = `http://84.247.163.91/api/chat/change_readonly.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&ReadOnly=${setReadStatus}&chatfolder=${this.currentChatFolder}`;
+            const apiUrl = `https://www.onlinecasting.dk/api/chat/change_readonly.asp?ConversationParticipantID=${conversation.conversationparticipantid}&ConversationID=${conversation.conversationid}&ReadOnly=${setReadStatus}&chatfolder=${this.currentChatFolder}`;
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
@@ -538,7 +538,7 @@ document.addEventListener("alpine:init", () => {
         blockConversation() {  
             // console.log(this.currentConversation, 'curent');
             
-            const url = "https://proxy.cors.sh/http://84.247.163.91/api/chat/block_user.asp";
+            const url = "https://proxy.cors.sh/https://www.onlinecasting.dk/api/chat/block_user.asp";
             const data = {
                 ConversationID: this.currentConversationID,
                 CasterID: this.currentConversation.casterid,
@@ -603,7 +603,7 @@ document.addEventListener("alpine:init", () => {
         
 
         unBlockConversation(conversation) {  
-            const apiUrl = `http://84.247.163.91/api/chat/unblock_user.asp?ConversationID=${conversation.conversationid}&CasterID=${conversation.casterid}&ProfileID=${conversation.profileid}&BlockedCasterID=${conversation.casterid}&BlockedProfileID=${conversation.profileid}`;
+            const apiUrl = `https://www.onlinecasting.dk/api/chat/unblock_user.asp?ConversationID=${conversation.conversationid}&CasterID=${conversation.casterid}&ProfileID=${conversation.profileid}&BlockedCasterID=${conversation.casterid}&BlockedProfileID=${conversation.profileid}`;
             fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
