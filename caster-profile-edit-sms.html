@@ -345,51 +345,16 @@
                                                         <div x-text="selectedText">Choose</div>
                                                     </div>
                                                     <div class="dropdown-menu font-size-15px">
-                                                       <ul>
-                                                           <li>
-                                                                <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Male" x-model="selectedGenders.Male">
-                                                                    <label class="form-check-label cursor-pointer" for="Male">Male</label>
-                                                                </div> 
-                                                           </li>
-                                                           <li>
-                                                                <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Female" x-model="selectedGenders.Female">
-                                                                    <label class="form-check-label cursor-pointer" for="Female">Female</label>
-                                                                </div> 
-                                                           </li>
-                                                           <li>
-                                                                <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="GenderNonconforming" x-model="selectedGenders.GenderNonconforming">
-                                                                    <label class="form-check-label cursor-pointer" for="GenderNonconforming">Gender-nonconforming</label>
-                                                                </div> 
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="NonBinary" x-model="selectedGenders.NonBinary">
-                                                                    <label class="form-check-label cursor-pointer" for="NonBinary">Non-binary</label>
-                                                                </div> 
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="TransFemale" x-model="selectedGenders.TransFemale">
-                                                                    <label class="form-check-label cursor-pointer" for="TransFemale">Trans Female</label>
-                                                                </div> 
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="TransMale" x-model="selectedGenders.TransMale">
-                                                                    <label class="form-check-label cursor-pointer" for="TransMale">Trans Male</label>
-                                                                </div> 
-                                                            </li>
-                                                            <li>
-                                                                <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input cursor-pointer" id="Unspecified" x-model="selectedGenders.Unspecified">
-                                                                    <label class="form-check-label cursor-pointer" for="Unspecified">Unspecified</label>
-                                                                </div> 
-                                                            </li>
-                                                          
-                                                       </ul>
+                                                        <ul>
+                                                            <template x-for="[label, value] in Object.entries(options)">
+                                                                <li>
+                                                                    <div class="form-check">
+                                                                        <input type="checkbox" class="form-check-input cursor-pointer" :id="value" x-model="selectedGenders[value]">
+                                                                        <label class="form-check-label cursor-pointer" :for="value" x-text="label"></label>
+                                                                    </div>
+                                                                </li>
+                                                            </template>
+                                                        </ul>
                                                     </div>
                                                  </div>
                                             </div>
@@ -578,24 +543,37 @@
     <script>
         function dropdownHandler() {
             return {
+                options: {
+                    'Male': 'male',
+                    'Female': 'female',
+                    'Gender-nonconforming': 'genderNonconforming',
+                    'Non-binary': 'nonBinary',
+                    'Trans Female': 'transFemale',
+                    'Trans Male': 'transMale',
+                    'Unspecified': 'unspecified'
+                },
                 selectedGenders: {
-                    Male: true,
-                    Female: true,
-                    GenderNonconforming: false,
-                    NonBinary: false,
-                    TransFemale: false,
-                    TransMale: false,
-                    Unspecified: false
+                    male: false,
+                    female: true,
+                    genderNonconforming: false,
+                    nonBinary: false,
+                    transFemale: false,
+                    transMale: false,
+                    unspecified: false
                 },
                 get selectedText() {
-                    const selected = Object.keys(this.selectedGenders).filter(gender => this.selectedGenders[gender]);
+                    const selected = Object.entries(this.selectedGenders)
+                        .filter(([key, value]) => value)
+                        .map(([key]) => {
+                            return Object.keys(this.options).find(label => this.options[label] === key);
+                        });
                     const count = selected.length;
                     if (count === 0) return 'Choose';
-                    if (count === 1) return selected[0].replace(/([A-Z])/g, ' $1').trim(); // Adds space before capital letters for better readability
+                    if (count === 1) return selected[0];
                     return `${count} selected`;
                 }
             };
-        }
+            }
         </script>
 </body>
 
