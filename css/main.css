@@ -4743,6 +4743,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 
 .list-view  .list-only .icon-wrapper {
     font-size: 26px;
+    height: 26px;
 }
 
 .grid-only {
@@ -4962,6 +4963,54 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 
 #notesModal, #sendSmsModal, #changePhoneNumberModal, #statusModal {
     z-index: 99999;
+}
+
+.unset-p p {
+    color: #19191C;
+    font-size: 16px;
+    text-transform: none;
+    font-weight: 400;
+}
+
+.invisible {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.icon-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+}
+
+
+.icon-text {
+    font-size: 10px;
+    font-weight: 400;
+    display: none;
+    white-space: nowrap;
+}
+
+.list-view .icon-text {
+    display: block;
+}
+
+.icon-text-rating {
+    font-size: 10px;
+    font-weight: 400;
+    display: none;
+    white-space: nowrap;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 90%;
+    color: #6b6b6b;
+}
+
+.list-view .icon-text-rating {
+    display: block;
 }
 
 @media (max-width: 767px) {

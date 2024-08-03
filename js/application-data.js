@@ -11,6 +11,12 @@ if (!sendSmsModalInstance) {
   sendSmsModalInstance = new bootstrap.Modal(sendSmsModal);
 }
 
+let shareChatModal = document.getElementById('shareChatModal');
+let shareChatModalInstance = bootstrap.Modal.getInstance(shareChatModal);
+if (!shareChatModalInstance) {
+  shareChatModalInstance = new bootstrap.Modal(shareChatModal);
+}
+
 let profileModal = document.getElementById('profileModal');
 let profileModalInstance = bootstrap.Modal.getInstance(profileModal);
 if (!profileModalInstance) {
@@ -62,12 +68,14 @@ function applicationComponent() {
     showLoadMoreBtn: '',
     folders : [],
     currentChatFolder: '',
+    shareLinkText: '',
     fetchFolders() {
       fetch(`https://www.onlinecasting.dk/api/applications/applications_folders.asp?auditionid=23406`)
           .then(response => response.json())
           .then(data => {
               // console.log(data, 'folders'); 
               if (data && Array.isArray(data.folders)) {
+                  this.shareLinkText = data.text_sharelink;
                   this.folders = data.folders.map(folder => {
                     return {
                       ...folder,
@@ -86,6 +94,52 @@ function applicationComponent() {
           })
           .finally(() => {
               // console.log('Folder fetched')
+          });
+    },
+
+    linkToShare : '',
+    textCopyLink : '',
+    shareChatFolder() {
+      fetch(`https://www.onlinecasting.dk/api/applications/applications_share.asp?auditionid=23406&folder=YES`)
+          .then(response => response.json())
+          .then(data => {
+              // console.log(data, 'share chat'); 
+              if (data.Status === 'OK') {
+                  this.statusMessageHeadline = data.StatusMessageHeadline
+                  this.textHtml = data.text_html;
+                  this.statusMessage = data.StatusMessage;
+                  this.textClose = data.text_close;
+                  this.linkToShare = data.link_to_share;
+                  this.textCopyLink = data.text_copy_link;
+                  this.textCopiedLink = data.text_link_copied;
+                  shareChatModalInstance.show(); 
+              }
+              else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                this.statusMessageHeadline = data.StatusMessageHeadline
+                this.statusMessage = data.StatusMessage
+                this.textClose = data.text_close
+                statusModalInstance.show();  
+              } 
+          })
+          .catch(error => {
+              console.error("Error sharing chat:", error);
+          })
+          .finally(() => {
+              // console.log('Folder fetched')
+          });
+    },
+    
+    isLinkCopied : false,
+    copyLink() {
+      navigator.clipboard.writeText(this.linkToShare)
+          .then(() => {
+              this.isLinkCopied = true,
+              setTimeout(() => {
+                this.isLinkCopied = false
+              }, 2000);
+          })
+          .catch(err => {
+              console.error('Failed to copy text: ', err);
           });
     },
 
@@ -230,6 +284,7 @@ function applicationComponent() {
       fetch(`https://www.onlinecasting.dk/api/applications/applications.asp?skip=${this.applicationSkip}&limit=${this.applicationLimit}&folder=${this.currentChatFolder}&orderby=${this.currentOrderBy}&filter=${this.currentFilterBy}`)
           .then(response => response.json())
           .then(data => {
+              console.log(data, 'isApplicationsLoading')
               if (data && Array.isArray(data.applications)) {
                   this.textLoadMore = data.text_load_more;
                   this.showLoadMoreBtn = data.load_more;

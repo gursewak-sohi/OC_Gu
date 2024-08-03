@@ -504,6 +504,32 @@
           </div>
           </div>
 
+          
+          <!-- Share Chat Modal -->
+        <div class="modal fade filterModal" id="shareChatModal" tabindex="-1" aria-labelledby="shareChatModal" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                          <img src="img/close-icon.svg" alt="">
+                      </div>
+                      <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+                  </div>
+                  <div class="modal-body chat-modal-body latestProfileSection">
+                      <div class="unset-p" x-html="textHtml" class="mb-3 font-size-16px overflow-auto" style="max-height: 250px;"></div>
+                      <div class="form-group mb-3">
+                          <!-- <label x-text="textHeaderInput" class="form-label font-size-16px"></label> -->
+                           <input x-model="linkToShare" type="text" class="form-control mb-2">
+                      </div>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-between">
+                      <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                      <button @click="copyLink()" x-text="isLinkCopied ? textCopiedLink : textCopyLink" type="button" class="btn mainBtn"></button>
+                  </div>
+              </div>
+          </div>
+          </div>
+
            <!-- Status Modal -->
           <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
             <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
@@ -711,8 +737,8 @@
                              </a>
                            </li>
                        </template>
-                        <li>
-                          <a class="btn-share" href="javascript:;">Share <ion-icon name="share-outline"></ion-icon></a>
+                        <li x-show="currentChatFolder === 'YES'">
+                          <a @click="shareChatFolder()" class="btn-share" href="javascript:;"><span x-text="shareLinkText"></span> <ion-icon name="share-outline"></ion-icon></a>
                         </li>
                      </ul>
                     </div>
@@ -853,7 +879,6 @@
                                         Send SMS
                                       </a>
 
-                                        
                                       
                                         <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="dropdown-container">
                                           <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle dropdown-arrow-none px-0">
@@ -902,20 +927,24 @@
                                       
                                       <div class="list-only grid-only bottom-icons">
                                         <div class="d-flex align-items-center gap-2 my-1">
-                                          <a x-show="application.allow_attach_image == 'YES'" x-bind:class="application.attached_image == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
-                                            <div class="icon-wrapper fs-4">
-                                              <span class="icon-outline">
-                                                  <ion-icon name="images-outline"></ion-icon>
-                                              </span>
-                                              <span class="icon-solid">
-                                                  <ion-icon name="images"></ion-icon>
-                                              </span>
-                                              <span x-show="application.attached_image == 'YES'" class="icon-checkmark">
-                                                <ion-icon name="checkmark-circle"></ion-icon>
-                                              </span>
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_image == 'YES'" x-bind:class="application.attached_image == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
+                                            <div class="icon-text-wrapper">
+                                              <div class="icon-wrapper fs-4">
+                                                <span class="icon-outline">
+                                                    <ion-icon name="images-outline"></ion-icon>
+                                                </span>
+                                                <span class="icon-solid">
+                                                    <ion-icon name="images"></ion-icon>
+                                                </span>
+                                                <span x-show="application.attached_image == 'YES'" class="icon-checkmark">
+                                                  <ion-icon name="checkmark-circle"></ion-icon>
+                                                </span>
+                                              </div>
+                                              <div class="icon-text" x-text="application.text_icon_image_attached"></div>
                                             </div>
                                           </a>
-                                          <a x-show="application.allow_attach_video == 'YES'" x-bind:class="application.attached_video == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_video == 'YES'" x-bind:class="application.attached_video == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
+                                            <div class="icon-text-wrapper">
                                             <div class="icon-wrapper fs-4">
                                               <span class="icon-outline">
                                                 <ion-icon name="videocam-outline"></ion-icon>
@@ -927,8 +956,11 @@
                                                 <ion-icon name="checkmark-circle"></ion-icon>
                                               </span>
                                             </div>
+                                            <div class="icon-text" x-text="application.text_icon_video_attached"></div>
+                                            </div>
                                           </a>
-                                          <a x-show="application.allow_attach_audio == 'YES'" x-bind:class="application.attached_audio == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_audio == 'YES'" x-bind:class="application.attached_audio == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
+                                            <div class="icon-text-wrapper">
                                             <div class="icon-wrapper fs-3">
                                               <span class="icon-outline">
                                                 <ion-icon name="attach-outline"></ion-icon>
@@ -940,10 +972,11 @@
                                                 <ion-icon name="checkmark-circle"></ion-icon>
                                               </span>
                                             </div>
+                                            <div class="icon-text" x-text="application.text_icon_audio_attached"></div>
+                                            </div>
                                           </a>
                                         </div>
                                       </div>
-                                     
                                     </div>
                                   </div>
                                   <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="star-rating list-only grid-only">
@@ -953,21 +986,26 @@
                                         <ion-icon :class="{'active': application.rating_stars >= 6 - star, 'inactive': application.rating_stars < 6 - star}" @click="setRating(6 - star, application.applicationid)" name="star"></ion-icon>
                                       </label>
                                     </template>
+                                    <div class="icon-text-rating" x-text="application.text_icon_audio_attached"></div>
                                   </div>
                                   <div class="right-side list-only grid-only">
                                     <div class="d-flex align-items-center gap-2 fs-3">
                                       <div class="btn-group-liked">
                                         <a x-on:click="moveToFolder(currentChatFolder === 'YES' ? 'NEW' : 'YES' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
-                                          <div :class="currentChatFolder === 'YES' && 'active'" class="icon-wrapper">
-                                            <span class="icon-outline">
-                                              <ion-icon name="thumbs-up-outline"></ion-icon>
-                                            </span>
-                                            <span class="icon-solid">
-                                              <ion-icon name="thumbs-up"></ion-icon>
-                                            </span>
+                                          <div class="icon-text-wrapper">
+                                            <div :class="currentChatFolder === 'YES' && 'active'" class="icon-wrapper">
+                                              <span class="icon-outline">
+                                                <ion-icon name="thumbs-up-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="thumbs-up"></ion-icon>
+                                              </span>
+                                            </div>
+                                            <div class="icon-text" x-text="application.text_icon_yes"></div>
                                           </div>
                                         </a>
                                         <a x-on:click="moveToFolder(currentChatFolder === 'MAYBE' ? 'NEW' : 'MAYBE' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                          <div class="icon-text-wrapper">
                                           <div :class="currentChatFolder === 'MAYBE' && 'active'" class="icon-wrapper">
                                             <span class="icon-outline">
                                               <ion-icon name="help-circle-outline"></ion-icon>
@@ -976,8 +1014,11 @@
                                               <ion-icon name="help-circle"></ion-icon>
                                             </span>
                                           </div>
+                                          <div class="icon-text" x-text="application.text_icon_maybe"></div>
+                                          </div>
                                         </a>
                                         <a x-on:click="moveToFolder(currentChatFolder === 'NO' ? 'NEW' : 'NO' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                          <div class="icon-text-wrapper">
                                           <div :class="currentChatFolder === 'NO' && 'active'" class="icon-wrapper">
                                             <span class="icon-outline">
                                               <ion-icon name="thumbs-down-outline"></ion-icon>
@@ -986,24 +1027,31 @@
                                                 <ion-icon name="thumbs-down"></ion-icon>
                                             </span>
                                           </div>
+                                          <div class="icon-text" x-text="application.text_icon_no"></div>
+                                         </div>
                                         </a>
                                       </div>
                                       
                                       <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted list-only hidden-list-xs">
-                                        <div class="icon-wrapper">
-                                          <span class="icon-outline">
-                                            <ion-icon name="chatbox-ellipses-outline"></ion-icon>
-                                          </span>
-                                          <span class="icon-solid">
-                                            <ion-icon name="chatbox-ellipses"></ion-icon>
-                                          </span>
-                                          <span class="icon-counter">
-                                            1
-                                          </span>
+                                        <div class="icon-text-wrapper">
+                                          <div class="icon-wrapper">
+                                            <span class="icon-outline">
+                                              <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                                            </span>
+                                            <span class="icon-solid">
+                                              <ion-icon name="chatbox-ellipses"></ion-icon>
+                                            </span>
+                                            <span class="icon-counter">
+                                              1
+                                            </span>
+                                          </div>
+                                          <div class="icon-text" x-text="application.text_icon_chat"></div>
                                         </div>
                                       </a>
 
+                                      <div x-bind:class="application.show_sms_icon === 'YES' ? 'visible' : 'invisible'">
                                       <a @click="fetchSMS(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted list-only hidden-list-xs ms-1">
+                                        <div class="icon-text-wrapper">
                                         <div class="icon-wrapper more-icon">
                                           <span class="icon-outline">
                                             <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -1021,7 +1069,10 @@
                                               </svg>
                                           </span>
                                         </div>
+                                        <div class="icon-text" x-text="application.text_icon_sms"></div>
+                                      </div>
                                       </a>
+                                    </div>
                                       
                                       <a class="btn-iconed-primary grid-only" href="javascript:;"><ion-icon class="font-size-22px" name="chatbox-ellipses-outline"></ion-icon>Reply</a>
                                       <a @click="fetchSMS(application.applicationid, application.profileid)"  class="btn-iconed-primary grid-only" href="javascript:;">
@@ -1034,20 +1085,24 @@
                                       </a>
                                      
                                       <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="dropdown-container">
-                                        <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle dropdown-arrow-none px-0">
-                                          <div class="icon-wrapper more-icon">
-                                            <span class="icon-outline">
-                                              <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
-                                            </span>
-                                            <span class="icon-solid">
-                                              <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
-                                            </span>
+                                        <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle dropdown-arrow-none px-0 text-muted">
+                                          <div class="icon-text-wrapper">
+                                            <div class="icon-wrapper more-icon">
+                                              <span class="icon-outline">
+                                                <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="ellipsis-horizontal-circle"></ion-icon>
+                                              </span>
+                                            </div>
+                                            <div class="icon-text" x-text="application.text_icon_more"></div>
                                           </div>
                                         </div>
-                                        <div class="dropdown-menu fs-4 min-w-140px">
+                                        <div class="dropdown-menu fs-4 min-w-140px_">
                                            <ul class="social-links-listing">
                                             <li>
                                               <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                                <div class="icon-text-wrapper">
                                                 <div :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
                                                   <span class="icon-outline">
                                                     <ion-icon name="create-outline"></ion-icon>
@@ -1056,10 +1111,13 @@
                                                     <ion-icon name="create"></ion-icon>
                                                   </span>
                                                 </div>
+                                                <div class="icon-text" x-text="application.text_icon_notes"></div>
+                                               </div>
                                               </a>
                                             </li>
                                             <li>
                                               <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                                <div class="icon-text-wrapper">
                                                 <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
                                                   <span class="icon-outline">
                                                     <ion-icon name="balloon-outline"></ion-icon>
@@ -1068,6 +1126,8 @@
                                                     <ion-icon name="balloon"></ion-icon>
                                                   </span>
                                                 </div>
+                                                <div class="icon-text" x-text="application.text_icon_hired"></div>
+                                               </div>
                                               </a>
                                             </li>
                                             
