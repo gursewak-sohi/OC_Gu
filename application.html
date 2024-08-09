@@ -79,7 +79,7 @@
                     <div class="col-md-8">
                         <div x-show="profile.categories_experience" class="tags-area mb-3">
                           <template x-for="category in profile.categories_experience" :key="category.text">
-                             <div class="tags" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="category.text_mouseover">
+                             <div class="tags" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="category.text_mouseover || 'toolip'">
                               <span x-text="category.text"></span>
                               <ul>
                                 <template x-for="(star, index) in 4" :key="index">
@@ -96,9 +96,18 @@
                         </a>
                         <h1 class="mb-0" x-text="profile.name"></h1>
                         <h3 class="text-muted mb-3" x-text="profile.age_area"></h3>
-                        <a x-bind:href="'mailto:' + profile.email" class="font-size-16px mb-2 d-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="mail-outline"></ion-icon> <span x-text="profile.email"></span></a>
-                        <a x-bind:href="'tel:' + profile.phone" class="font-size-16px mb-2 d-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="call-outline"></ion-icon> <span x-text="profile.phone"></span></a>
-                        <a x-bind:href="profile.profile_link" href="javascript:;" class="font-size-16px mb-2 d-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-24px" name="link-outline"></ion-icon> <span x-text="profile.profile_link_text"></span></a>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                          <a x-bind:href="'mailto:' + profile.email" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="mail-outline"></ion-icon> <span x-text="profile.email"></span></a>
+                          <button @click="copyLink(profile.email, 'email')" class="btn-copy" type="button" x-text="isCopied === 'email' ? profile.text_copy_copied : profile.text_copy"></button>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                          <a x-bind:href="'tel:' + profile.phone" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="call-outline"></ion-icon> <span x-text="profile.phone"></span></a>
+                          <button @click="copyLink(profile.phone, 'phone')" class="btn-copy" type="button" x-text="isCopied === 'phone' ? profile.text_copy_copied : profile.text_copy"></button>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                          <a x-bind:href="profile.profile_link" href="javascript:;" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-24px" name="link-outline"></ion-icon> <span x-text="profile.profile_link_text"></span></a>
+                          <button @click="copyLink(profile.profile_link, 'profileLink')" class="btn-copy" type="button" x-text="isCopied === 'profileLink' ? profile.text_copy_copied : profile.text_copy"></button>
+                        </div>
                         <h4 x-text="profile.profile_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
                         <div class="mt-1">
                           <div class="font-size-16px  text-muted">
@@ -114,7 +123,7 @@
                           </div>
                         </div>
                         <h4 x-text="profile.text_rating_stars" class="font-size-16px font-weight-700 mt-3 mb-1"></h4>
-                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="star-rating">
+                        <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_rating_stars_hover || 'toolip'" class="star-rating">
                           <template x-for="star in 5" :key="star">
                             <label>
                               <input type="radio" x-model="profile.rating_stars" :value="6 - star" hidden/>
@@ -234,22 +243,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <div class="w-100 d-flex justify-content-center gap-3">
-                      
-                      <!-- <template x-for="folder in folders" :key="folder.name">
-                        <div x-show="folder.searchname != 'NEW'">
-                          <a x-bind:class="profile.application_folder === folder.searchname ? 'active' : ''"  @click="moveToFolder(folder.searchname, profile.applicationid)" href="javascript:;" class="text-white d-flex flex-column align-items-center">
-                            <div class="font-size-26px d-flex icon-bottom">
-                              <span class="icon-solid">
-                                <ion-icon x-bind:name="folder.icon"></ion-icon>
-                              </span>
-                            </div>
-                            <div class="font-size-10px text-center"><span x-text="textMoveTo"></span> <span x-text="folder.name"></span></div>
-                          </a>
-                        </div>
-                      </template> -->
-
-                      <a x-on:click="moveToFolder(profile.application_folder === 'YES' ? 'NEW' : 'YES', profile.applicationid, profile.nextapplicationID);" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                    <div class="w-100 d-flex justify-content-center gap-4">
+                      <a  x-on:click="moveToFolder(profile.application_folder === 'YES' ? 'NEW' : 'YES', profile.applicationid, profile.nextapplicationID);" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_yes_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                            <div :class="profile.application_folder === 'YES' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -260,9 +255,9 @@
                             </span>
                           </div>
                         </div>
-                        <div :class="profile.application_folder === 'YES' && 'text-orange'" class="font-size-10px text-center">Move to Yes</div>
+                        <div :class="profile.application_folder === 'YES' && 'text-orange'" class="font-size-10px text-center" x-text="profile.text_icon_yes">Move to Yes</div>
                       </a>
-                      <a x-on:click="moveToFolder(profile.application_folder === 'MAYBE' ? 'NEW' : 'MAYBE', profile.applicationid , profile.nextapplicationID)" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a x-on:click="moveToFolder(profile.application_folder === 'MAYBE' ? 'NEW' : 'MAYBE', profile.applicationid , profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_maybe_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div :class="profile.application_folder === 'MAYBE' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -273,10 +268,10 @@
                             </span>
                           </div>
                         </div>
-                        <div :class="profile.application_folder === 'MAYBE' && 'text-orange'" class="font-size-10px text-center">Move to Maybe</div>
+                        <div :class="profile.application_folder === 'MAYBE' && 'text-orange'" class="font-size-10px text-center" x-text="profile.text_icon_maybe">Move to Maybe</div>
                       </a>
 
-                      <a x-on:click="moveToFolder(profile.application_folder === 'NO' ? 'NEW' : 'NO', profile.applicationid, profile.nextapplicationID)" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a x-on:click="moveToFolder(profile.application_folder === 'NO' ? 'NEW' : 'NO', profile.applicationid, profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_no_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div :class="profile.application_folder === 'NO' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -287,11 +282,11 @@
                             </span>
                           </div>
                         </div>
-                        <div :class="profile.application_folder === 'NO' && 'text-orange'" class="font-size-10px text-center">Move to No</div>
+                        <div :class="profile.application_folder === 'NO' && 'text-orange'" class="font-size-10px text-center" x-text="profile.text_icon_no">Move to No</div>
                       </a>
 
                       
-                      <a class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div class="icon-wrapper">
                             <span class="icon-outline">
@@ -305,10 +300,10 @@
                             </span>
                           </div>
                         </div>
-                        <div class="font-size-10px text-center">Add Note</div>
+                        <div class="font-size-10px text-center" x-text="profile.text_icon_chat">Chat</div>
                       </a>
 
-                      <a @click="fetchSMS(profile.applicationid, profile.profileid)" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a @click="fetchSMS(profile.applicationid, profile.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_sms_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div class="icon-wrapper">
                             <span class="icon-outline">
@@ -328,29 +323,27 @@
                             </span>
                           </div>
                         </div>
-                        <div class="font-size-10px text-center">Send SMS</div>
+                        <div class="font-size-10px text-center" x-text="profile.text_icon_sms">Send SMS</div>
                       </a>
 
                       <div class="d-none d-md-block">
-                        <a @click="fetchNotes(profile.applicationid, profile.profileid)" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                        <a @click="fetchNotes(profile.applicationid, profile.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_notes_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                           <div class="font-size-26px d-flex icon-bottom">
                             <div class="icon-wrapper">
-                              <span class="icon-outline">
+                              <span class="icon-outline" x-bind:class="applicationHasNotes ? 'text-orange' : ''">
                                 <ion-icon name="create-outline"></ion-icon>
                               </span>
-                              <span class="icon-solid">
+                              <span class="icon-solid" x-bind:class="applicationHasNotes ? 'text-orange' : ''">
                                 <ion-icon name="create"></ion-icon>
                               </span>
                             </div>
                           </div>
-                          <div class="font-size-10px text-center">Add Note</div>
+                          <div class="font-size-10px text-center" x-text="profile.text_icon_notes" x-bind:class="applicationHasNotes ? 'text-orange' : ''">Add Note</div>
                         </a>
                       </div>
-
-                      
-
+ 
                         <div class="d-none d-md-block">
-                          <a href="javascript:;" @click="changeHiring(profile.hired === 'YES' ? 'NO' : 'YES', profile.applicationid)">
+                          <a href="javascript:;" @click="changeHiring(profile.hired === 'YES' ? 'NO' : 'YES', profile.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_hired_hover || 'toolip'" data-bs-custom-class="orange-tooltip">
                             <div class="text-white d-flex flex-column align-items-center gap-2px">
                               <div class="font-size-26px d-flex icon-bottom">
                                 <div class="icon-wrapper" :class="profile.hired === 'YES' && 'active-red'">
@@ -362,7 +355,7 @@
                                   </span>
                                 </div>
                               </div>
-                              <div class="font-size-10px text-center">Hire</div>
+                              <div class="font-size-10px text-center" x-text="profile.text_icon_hired">Hire</div>
                             </div>
                           </a>
                         </div>
@@ -371,6 +364,8 @@
                   </div>
               </div>
               </div>
+
+             
 
 
         <!-- CASTER SMS Modal -->
@@ -524,7 +519,7 @@
                   </div>
                   <div class="modal-footer d-flex justify-content-between">
                       <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
-                      <button @click="copyLink()" x-text="isLinkCopied ? textCopiedLink : textCopyLink" type="button" class="btn mainBtn"></button>
+                      <button @click="copyLink(linkToShare, 'sharingLink')" x-text="isCopied === 'sharingLink' ? textCopiedLink : textCopyLink"  type="button" class="btn mainBtn"></button>
                   </div>
               </div>
           </div>
@@ -763,18 +758,18 @@
                         <li>
                           <div class="dropdown-container dropdown-select">
                             <div data-bs-toggle="dropdown" class="btn-circle">
-                                <ion-icon :name="currentView === 'list' ? 'list-outline' : currentView === 'grid' ? 'grid-outline' : 'document-text-outline'"></ion-icon>
+                                <ion-icon :name="currentView === 'LIST' ? 'list-outline' : currentView === 'GRID' ? 'grid-outline' : 'document-text-outline'"></ion-icon>
                             </div>
-                            <div class="dropdown-menu filter-dropdown font-size-14px mt-2 downdown-w-sm">
+                            <div class="dropdown-menu filter-dropdown font-size-14px mt-2 downdown-w-sm white-space-nowrap">
                               <ul>
                                  <li>
-                                    <a @click="currentView = 'list';" :class="currentView === 'list' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="list-outline"></ion-icon> List View</a>
+                                    <a @click="setCurrentView('LIST')" :class="currentView === 'LIST' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="list-outline"></ion-icon> Liste visning</a>
                                  </li>
                                  <li>
-                                    <a @click="currentView = 'grid';" :class="currentView === 'grid' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="grid-outline"></ion-icon> Grid View</a>
+                                    <a @click="setCurrentView('GRID')" :class="currentView === 'GRID' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="grid-outline"></ion-icon> Gitter visning</a>
                                  </li>
                                  <li>
-                                  <a @click="currentView = 'detailed';" :class="currentView === 'detailed' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="document-text-outline"></ion-icon> Detailed View</a>
+                                  <a @click="setCurrentView('DETAILED')" :class="currentView === 'DETAILED' && 'active'" class="d-flex align-items-center" href="javascript:;"><ion-icon name="document-text-outline"></ion-icon> Detaljeret visning</a>
                                </li>
                               </ul>
                            </div>
@@ -802,7 +797,7 @@
                 </div>
 
                
-                <section :class="currentView === 'list' ? 'latestProfileSection list-view pt-4 mt-2' : currentView === 'grid' ? 'latestProfileSection grid-view pt-4 mt-2' : 'latestProfileSection detailed-view pt-4 mt-2'">
+                <section :class="currentView === 'LIST' ? 'latestProfileSection list-view pt-4 mt-2' : currentView === 'GRID' ? 'latestProfileSection grid-view pt-4 mt-2' : 'latestProfileSection detailed-view pt-4 mt-2'">
                       <div class="row">
                         <div class="application-loader" x-show="isApplicationsLoading">
                            Loading Application..
@@ -810,8 +805,8 @@
                         <div class="application-loader" x-show="applications.length === 0 && !isApplicationsLoading">
                           No Application found
                         </div>
-                          <template x-for="application in applications" :key="application.applicationid">
-                            <div class="col-12 application-item" :class="`${currentView === 'grid' ? 'col-md-6 col-lg-3' : ''} ${movingApplicationId === application.applicationid ? 'moving' : ''}`">
+                          <template x-for="(application, index) in applications" :key="application.applicationid + '-' + index">
+                            <div class="col-12 application-item" :class="`${currentView === 'GRID' ? 'col-md-6 col-lg-3' : ''} ${movingApplicationId === application.applicationid ? 'moving' : ''}`">
                               <div class="profileItem">
                                   <div class="profile-left">
                                     <div class="form-check">
@@ -848,7 +843,7 @@
                                         <div class="font-size-16px mb-2"><b>Email:</b> <span x-text="application.email"></span></div>
                                         <div class="font-size-16px mb-2"><b>Phone:</b> <span x-text="application.phone"></span></div>
                                         <div>
-                                          <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="star-rating">
+                                          <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_rating_stars_hover" class="star-rating">
                                             <template x-for="star in 5" :key="star">
                                               <label>
                                                 <input type="radio" x-model="application.rating_stars" :value="6 - star" hidden/>
@@ -880,9 +875,9 @@
                                       </a>
 
                                       
-                                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="dropdown-container">
+                                        <div class="dropdown-container">
                                           <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle dropdown-arrow-none px-0">
-                                            <div class="icon-wrapper text-orange more-icon">
+                                            <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_more_hover" class="icon-wrapper text-orange more-icon">
                                               <span class="icon-outline">
                                                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
                                               </span>
@@ -894,7 +889,7 @@
                                           <div class="dropdown-menu fs-4 min-w-140px">
                                             <ul class="social-links-listing">
                                              <li>
-                                               <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                               <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_notes_hover" href="javascript:;" class="text-muted">
                                                  <div :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
                                                    <span class="icon-outline">
                                                      <ion-icon name="create-outline"></ion-icon>
@@ -906,7 +901,7 @@
                                                </a>
                                              </li>
                                              <li>
-                                               <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                               <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_hired_hover" href="javascript:;" class="text-muted">
                                                 <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
                                                    <span class="icon-outline">
                                                      <ion-icon name="balloon-outline"></ion-icon>
@@ -927,7 +922,7 @@
                                       
                                       <div class="list-only grid-only bottom-icons">
                                         <div class="d-flex align-items-center gap-2 my-1">
-                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_image == 'YES'" x-bind:class="application.attached_image == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_image == 'YES'" x-bind:class="application.attached_image == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_image_attached_hover" href="javascript:;">
                                             <div class="icon-text-wrapper">
                                               <div class="icon-wrapper fs-4">
                                                 <span class="icon-outline">
@@ -943,7 +938,7 @@
                                               <div class="icon-text" x-text="application.text_icon_image_attached"></div>
                                             </div>
                                           </a>
-                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_video == 'YES'" x-bind:class="application.attached_video == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_video == 'YES'" x-bind:class="application.attached_video == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_video_attached_hover" href="javascript:;">
                                             <div class="icon-text-wrapper">
                                             <div class="icon-wrapper fs-4">
                                               <span class="icon-outline">
@@ -959,7 +954,7 @@
                                             <div class="icon-text" x-text="application.text_icon_video_attached"></div>
                                             </div>
                                           </a>
-                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_audio == 'YES'" x-bind:class="application.attached_audio == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_audio == 'YES'" x-bind:class="application.attached_audio == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_audio_attached_hover" href="javascript:;">
                                             <div class="icon-text-wrapper">
                                             <div class="icon-wrapper fs-3">
                                               <span class="icon-outline">
@@ -979,19 +974,19 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="star-rating list-only grid-only">
+                                  <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_rating_stars_hover" class="star-rating list-only grid-only">
                                     <template x-for="star in 5" :key="star">
                                       <label>
                                         <input type="radio" x-model="application.rating_stars" :value="6 - star" hidden/>
                                         <ion-icon :class="{'active': application.rating_stars >= 6 - star, 'inactive': application.rating_stars < 6 - star}" @click="setRating(6 - star, application.applicationid)" name="star"></ion-icon>
                                       </label>
                                     </template>
-                                    <div class="icon-text-rating" x-text="application.text_icon_audio_attached"></div>
+                                    <div class="icon-text-rating" x-text="application.text_icon_rating_stars"></div>
                                   </div>
                                   <div class="right-side list-only grid-only">
                                     <div class="d-flex align-items-center gap-2 fs-3">
                                       <div class="btn-group-liked">
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'YES' ? 'NEW' : 'YES' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'YES' ? 'NEW' : 'YES' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_yes_hover" class="text-muted" href="javascript:;">
                                           <div class="icon-text-wrapper">
                                             <div :class="currentChatFolder === 'YES' && 'active'" class="icon-wrapper">
                                               <span class="icon-outline">
@@ -1004,7 +999,7 @@
                                             <div class="icon-text" x-text="application.text_icon_yes"></div>
                                           </div>
                                         </a>
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'MAYBE' ? 'NEW' : 'MAYBE' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="text-muted" href="javascript:;">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'MAYBE' ? 'NEW' : 'MAYBE' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_maybe_hover" class="text-muted" href="javascript:;">
                                           <div class="icon-text-wrapper">
                                           <div :class="currentChatFolder === 'MAYBE' && 'active'" class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1017,7 +1012,7 @@
                                           <div class="icon-text" x-text="application.text_icon_maybe"></div>
                                           </div>
                                         </a>
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'NO' ? 'NEW' : 'NO' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'NO' ? 'NEW' : 'NO' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_no_hover" href="javascript:;" class="text-muted">
                                           <div class="icon-text-wrapper">
                                           <div :class="currentChatFolder === 'NO' && 'active'" class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1032,7 +1027,7 @@
                                         </a>
                                       </div>
                                       
-                                      <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted list-only hidden-list-xs">
+                                      <a data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
                                           <div class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1050,7 +1045,7 @@
                                       </a>
 
                                       <div x-bind:class="application.show_sms_icon === 'YES' ? 'visible' : 'invisible'">
-                                      <a @click="fetchSMS(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted list-only hidden-list-xs ms-1">
+                                      <a @click="fetchSMS(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_sms_hover" href="javascript:;" class="text-muted list-only hidden-list-xs ms-1">
                                         <div class="icon-text-wrapper">
                                         <div class="icon-wrapper more-icon">
                                           <span class="icon-outline">
@@ -1084,9 +1079,9 @@
                                         Send SMS
                                       </a>
                                      
-                                      <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" class="dropdown-container">
+                                      <div class="dropdown-container">
                                         <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle dropdown-arrow-none px-0 text-muted">
-                                          <div class="icon-text-wrapper">
+                                          <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_more_hover" class="icon-text-wrapper">
                                             <div class="icon-wrapper more-icon">
                                               <span class="icon-outline">
                                                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
@@ -1101,7 +1096,7 @@
                                         <div class="dropdown-menu fs-4 min-w-140px_">
                                            <ul class="social-links-listing">
                                             <li>
-                                              <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                              <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_notes_hover" href="javascript:;" class="text-muted">
                                                 <div class="icon-text-wrapper">
                                                 <div :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
                                                   <span class="icon-outline">
@@ -1116,7 +1111,7 @@
                                               </a>
                                             </li>
                                             <li>
-                                              <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted">
+                                              <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_hired_hover" href="javascript:;" class="text-muted">
                                                 <div class="icon-text-wrapper">
                                                 <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
                                                   <span class="icon-outline">
@@ -1279,6 +1274,20 @@
               this.selectedCountry = this.countries[0];
               window.fetchProfile = this.fetchProfile.bind(this);
               profileModal.addEventListener('hide.bs.modal', this.handleModalClose.bind(this));
+
+              // Handling URL PARAMS
+              const urlParams = new URLSearchParams(window.location.search);
+
+              const viewType = urlParams.get('view') || 'LIST';
+              this.setCurrentView(viewType);
+
+              const folder = urlParams.get('folder') || 'NEW';
+              this.changeChatFolder(folder);
+
+              const applicationId = urlParams.get('applicationid');
+              if (applicationId) {
+                  this.fetchProfile(applicationId);
+              }
             },
           }));
       });

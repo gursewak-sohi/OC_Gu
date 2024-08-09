@@ -23,14 +23,16 @@ if (!profileModalInstance) {
   profileModalInstance = new bootstrap.Modal(profileModal);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const applicationId = urlParams.get('applicationid');
-  if (applicationId) {
-      fetchProfile(applicationId);
-  }
-});
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
  
+// When click browser back button close application modal
 window.onpopstate = (event) => {
   if (event.state && event.state.applicationId) {
     window.fetchProfile(event.state.applicationId);
@@ -46,9 +48,6 @@ function initializeMasonry() {
           itemSelector: ".grid-item"
       });
   });
-    // $(".grid").masonry({
-    //     itemSelector: ".grid-item",
-    // });
 }
 function reloadMasonry() {
   $(".grid").imagesLoaded(function() {
@@ -64,11 +63,20 @@ profileModal.addEventListener('shown.bs.modal', function () {
 
 function applicationComponent() {
   return {
-    currentView: 'list',
+    currentView: '',
     showLoadMoreBtn: '',
     folders : [],
     currentChatFolder: '',
     shareLinkText: '',
+
+    setCurrentView(view) {
+      this.currentView = view;
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set('view', view);
+      const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+      history.pushState({ view: view }, '', newUrl);
+    },
+
     fetchFolders() {
       fetch(`https://www.onlinecasting.dk/api/applications/applications_folders.asp?auditionid=23406`)
           .then(response => response.json())
@@ -83,10 +91,10 @@ function applicationComponent() {
                     };
                   });
                   // Find the folder with default set to True
-                  const defaultFolder = data.folders.find(folder => folder.default === "True");
-                  if (defaultFolder) {
-                      this.currentChatFolder = defaultFolder.searchname;
-                  }
+                  // const defaultFolder = data.folders.find(folder => folder.default === "True");
+                  // if (defaultFolder) {
+                  //     this.currentChatFolder = defaultFolder.searchname;
+                  // }
               }
           })
           .catch(error => {
@@ -129,13 +137,13 @@ function applicationComponent() {
           });
     },
     
-    isLinkCopied : false,
-    copyLink() {
-      navigator.clipboard.writeText(this.linkToShare)
+    isCopied : null,
+    copyLink(linkToShare, type) {
+      navigator.clipboard.writeText(linkToShare)
           .then(() => {
-              this.isLinkCopied = true,
+              this.isCopied = type,
               setTimeout(() => {
-                this.isLinkCopied = false
+                this.isCopied = null;
               }, 2000);
           })
           .catch(err => {
@@ -148,6 +156,11 @@ function applicationComponent() {
       this.applications = [];
       this.applicationSkip = 0;
       this.applicationLimit = 5;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set('folder', newFolder);
+      const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+      history.pushState({ folder: newFolder }, '', newUrl);
 
       this.fetchApplications()
     },
@@ -284,7 +297,7 @@ function applicationComponent() {
       fetch(`https://www.onlinecasting.dk/api/applications/applications.asp?skip=${this.applicationSkip}&limit=${this.applicationLimit}&folder=${this.currentChatFolder}&orderby=${this.currentOrderBy}&filter=${this.currentFilterBy}`)
           .then(response => response.json())
           .then(data => {
-              console.log(data, 'isApplicationsLoading')
+              // console.log(data, 'isApplicationsLoading')
               if (data && Array.isArray(data.applications)) {
                   this.textLoadMore = data.text_load_more;
                   this.showLoadMoreBtn = data.load_more;
@@ -300,7 +313,6 @@ function applicationComponent() {
           .finally(() => {
               this.isApplicationsLoading = false;
               this.initializeTooltips();
-              // console.log('Application fetched')
           });
     },
 
@@ -334,9 +346,6 @@ function applicationComponent() {
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK') {
-                  
-                  // profileModalInstance.hide(); 
-
                   this.notes = data.notes;
                   this.statusMessageHeadline = data.StatusMessageHeadline;
                   this.textSubmitButton = data.text_submit_button;
@@ -346,9 +355,6 @@ function applicationComponent() {
                   notesModalInstance.show(); 
                 }
                 else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
-
-                  // profileModalInstance.hide(); 
-
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
                   this.textClose = data.text_close
@@ -397,6 +403,12 @@ function applicationComponent() {
                 console.error("Error adding note:", error);
             })
             .finally(() => {
+                if (this.notes.length > 0) {
+                  this.applicationHasNotes = true
+                }
+                else {
+                  this.applicationHasNotes = false
+                }
                 this.newNote = '';
                 this.isCreatingNote = false;
             });
@@ -426,6 +438,12 @@ function applicationComponent() {
                 console.error("Error deleting note:", error);
             })
             .finally(() => {
+                if (this.notes.length > 0) {
+                  this.applicationHasNotes = true
+                }
+                else {
+                  this.applicationHasNotes = false
+                }
                 this.isDeletingNote = false;
             });
       },
@@ -444,8 +462,6 @@ function applicationComponent() {
             .then(response => response.json())
             .then(data => {
                 if (data.Status == 'OK') {
-
-                  // profileModalInstance.hide(); 
                   
                   this.casterPhoneValidated = data.caster_phone_validated;
                   this.textHtml = data.text_html;
@@ -457,8 +473,6 @@ function applicationComponent() {
                   sendSmsModalInstance.show(); 
                 }
                 else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
-
-                  // profileModalInstance.hide(); 
                   
                   this.statusMessageHeadline = data.StatusMessageHeadline
                   this.statusMessage = data.StatusMessage
@@ -557,19 +571,30 @@ function applicationComponent() {
       profile: '',
       currentApplication : '',
       totalApplications : '',
+
+      applicationHasNotes: false,
       fetchProfile(applicationId) {
         this.isFetchingProfile = true;
+        this.applicationHasNotes = false;
         fetch(`https://www.onlinecasting.dk/api/applications/application_profile.asp?applicationid=${applicationId}&orderby=${this.currentOrderBy}&folder=${this.currentChatFolder}`)
             .then(response => response.json())
             .then(data => {
                 // console.log(data,'data')
                 this.profile = data;
+                if (data.notes_on_profile === "YES") {
+                  this.applicationHasNotes = true
+                }
                 this.currentApplication = this.profile.text_numberofapplications.split(' af ')[0];
                 this.totalApplications = this.profile.text_numberofapplications.split(' af ')[1];
                 profileModalInstance.show(); 
+              
+                debounce(() => {
+                  const urlParams = new URLSearchParams(window.location.search);
+                  urlParams.set('applicationid', applicationId);
+                  const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+                  history.pushState({ applicationId: applicationId }, '', newUrl);
+              }, 100)(); 
 
-                const newUrl = `${window.location.pathname}?applicationid=${applicationId}`;
-                history.pushState({ applicationId: applicationId }, '', newUrl);
             })
             .catch(error => {
                 console.error("Error fetching Profile:", error);
@@ -581,17 +606,24 @@ function applicationComponent() {
                 // refreshMasonry();
                 reloadMasonry();
                 
-                document.querySelector('#profileModal .modal-body').scrollTo({ top: 0, behavior: 'smooth' }); 
                 setTimeout(() => {
                   initializeMasonry()  
+                  setTimeout(() => {
+                    document.querySelector('#profileModal .modal-body').scrollTo({ top: 0, behavior: 'smooth' });     
+                  }, 100);
                 }, 500);
             });
       },
 
       handleModalClose() {
-        // Remove the applicationid parameter from the URL
-        const newUrl = window.location.pathname;
-        history.pushState({}, '', newUrl);
-      },
+        // Debounced URL cleanup
+        debounce(() => {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.delete('applicationid');  // Remove only the applicationid parameter
+            const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+            history.pushState({}, '', newUrl);
+            profileModalInstance.hide();
+        }, 100)(); // Adjust the debounce delay as necessary
+    }    
   }
 }
