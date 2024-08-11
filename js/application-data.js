@@ -609,7 +609,7 @@ function applicationComponent() {
                 setTimeout(() => {
                   initializeMasonry()  
                   setTimeout(() => {
-                    document.querySelector('#profileModal .modal-body').scrollTo({ top: 0, behavior: 'smooth' });     
+                    document.querySelector('#profileModal .modal-body').scrollTo({ top: 0 });     
                   }, 100);
                 }, 500);
             });

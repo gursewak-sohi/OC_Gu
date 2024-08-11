@@ -4866,11 +4866,12 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     white-space: nowrap;
 }
 .btn-copy {
-    padding: 0 10px 1px;
+    padding: 0 6px 1px;
     border-radius: 20px;
     border: 1px solid #000;
     background-color: transparent;
     cursor: pointer;
+    font-size: 10px;
 }
 
 

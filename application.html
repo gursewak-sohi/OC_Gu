@@ -105,7 +105,7 @@
                           <button @click="copyLink(profile.phone, 'phone')" class="btn-copy" type="button" x-text="isCopied === 'phone' ? profile.text_copy_copied : profile.text_copy"></button>
                         </div>
                         <div class="d-flex align-items-center gap-2 mb-2">
-                          <a x-bind:href="profile.profile_link" href="javascript:;" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-24px" name="link-outline"></ion-icon> <span x-text="profile.profile_link_text"></span></a>
+                          <a target="_blank" x-bind:href="profile.profile_link" href="javascript:;" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-24px" name="link-outline"></ion-icon> <span x-text="profile.profile_link_text"></span></a>
                           <button @click="copyLink(profile.profile_link, 'profileLink')" class="btn-copy" type="button" x-text="isCopied === 'profileLink' ? profile.text_copy_copied : profile.text_copy"></button>
                         </div>
                         <h4 x-text="profile.profile_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
@@ -131,17 +131,28 @@
                             </label>
                           </template>
                         </div>
-                        <h4 x-text="profile.application_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
+                        <h4 x-show="profile.application_text_text_title !== ''" x-text="profile.application_text_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
                         <div class="mt-1">
-                          <div class="font-size-16px  text-muted">
-                                <span x-html="profile.allication_text_short === '' ? profile.application_text : profile.allication_text_short"></span>
+                          <div class="font-size-16px text-muted">
+                                <div>
+                                  <span x-show="profile.application_text_title !== ''">
+                                    <span class="fw-bold" x-html="profile.application_text_title"></span>
+                                    <span>:</span>
+                                  </span>
+                                  
+                                  <span x-html="profile.allication_text_short === '' ? profile.application_text : profile.allication_text_short"></span>
+                                </div>
+                                
                                 <a data-bs-toggle="collapse" class="text-decoration-underline text-orange" :data-bs-target="`#moreProfileInfo-02-${profile.applicationid}`" aria-expanded="true" aria-controls="moreInfo" href="javascript:;">
                                 <span x-show="profile.allication_text_short !== ''" x-text="profile.allication_text_short_see_more"></span>
-                            </a>
+                                </a>
                           </div>
                           <div :id="`moreProfileInfo-02-${profile.applicationid}`" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                               <div class="accordion-body pt-2">
-                                  <div class="font-size-16px  text-muted" x-html="profile.application_text"></div>
+                                  <div class="font-size-16px  text-muted">
+                                    <span class="fw-bold" x-show="profile.application_text_title !== ''" x-html="profile.application_text_title"></span>
+                                    <span x-html="profile.application_text"></span>
+                                  </div>
                               </div>
                           </div>
                         </div>
@@ -244,7 +255,7 @@
 
                 <div class="modal-footer">
                     <div class="w-100 d-flex justify-content-center gap-4">
-                      <a  x-on:click="moveToFolder(profile.application_folder === 'YES' ? 'NEW' : 'YES', profile.applicationid, profile.nextapplicationID);" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_yes_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a  x-on:click="moveToFolder(profile.application_folder === 'YES' ? 'INBOX' : 'YES', profile.applicationid, profile.nextapplicationID);" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_yes_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                            <div :class="profile.application_folder === 'YES' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -257,7 +268,7 @@
                         </div>
                         <div :class="profile.application_folder === 'YES' && 'text-orange'" class="font-size-10px text-center" x-text="profile.text_icon_yes">Move to Yes</div>
                       </a>
-                      <a x-on:click="moveToFolder(profile.application_folder === 'MAYBE' ? 'NEW' : 'MAYBE', profile.applicationid , profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_maybe_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a x-on:click="moveToFolder(profile.application_folder === 'MAYBE' ? 'INBOX' : 'MAYBE', profile.applicationid , profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_maybe_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div :class="profile.application_folder === 'MAYBE' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -271,7 +282,7 @@
                         <div :class="profile.application_folder === 'MAYBE' && 'text-orange'" class="font-size-10px text-center" x-text="profile.text_icon_maybe">Move to Maybe</div>
                       </a>
 
-                      <a x-on:click="moveToFolder(profile.application_folder === 'NO' ? 'NEW' : 'NO', profile.applicationid, profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_no_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a x-on:click="moveToFolder(profile.application_folder === 'NO' ? 'INBOX' : 'NO', profile.applicationid, profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_no_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div :class="profile.application_folder === 'NO' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -820,7 +831,7 @@
                                         <a @click="fetchProfile(application.applicationid)" href="javascript:;" class="profile-time">
                                           <ion-icon name="time-outline"></ion-icon> <i x-text="application.date_application_sent"></i>
                                         </a>
-                                        <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Some text" href="javascript:;" class="text-muted font-size-17px">
+                                        <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_hired_selected" href="javascript:;" class="text-muted font-size-17px">
                                           <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
                                             <span class="icon-solid">
                                               <ion-icon name="balloon"></ion-icon>
@@ -986,9 +997,9 @@
                                   <div class="right-side list-only grid-only">
                                     <div class="d-flex align-items-center gap-2 fs-3">
                                       <div class="btn-group-liked">
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'YES' ? 'NEW' : 'YES' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_yes_hover" class="text-muted" href="javascript:;">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'YES' ? 'INBOX' : 'YES' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_yes_hover" class="text-muted" href="javascript:;">
                                           <div class="icon-text-wrapper">
-                                            <div :class="currentChatFolder === 'YES' && 'active'" class="icon-wrapper">
+                                            <div :class="currentChatFolder === 'INBOX' && 'active'" class="icon-wrapper">
                                               <span class="icon-outline">
                                                 <ion-icon name="thumbs-up-outline"></ion-icon>
                                               </span>
@@ -999,7 +1010,7 @@
                                             <div class="icon-text" x-text="application.text_icon_yes"></div>
                                           </div>
                                         </a>
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'MAYBE' ? 'NEW' : 'MAYBE' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_maybe_hover" class="text-muted" href="javascript:;">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'MAYBE' ? 'INBOX' : 'MAYBE' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_maybe_hover" class="text-muted" href="javascript:;">
                                           <div class="icon-text-wrapper">
                                           <div :class="currentChatFolder === 'MAYBE' && 'active'" class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1012,7 +1023,7 @@
                                           <div class="icon-text" x-text="application.text_icon_maybe"></div>
                                           </div>
                                         </a>
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'NO' ? 'NEW' : 'NO' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_no_hover" href="javascript:;" class="text-muted">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'NO' ? 'INBOX' : 'NO' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_no_hover" href="javascript:;" class="text-muted">
                                           <div class="icon-text-wrapper">
                                           <div :class="currentChatFolder === 'NO' && 'active'" class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1281,7 +1292,7 @@
               const viewType = urlParams.get('view') || 'LIST';
               this.setCurrentView(viewType);
 
-              const folder = urlParams.get('folder') || 'NEW';
+              const folder = urlParams.get('folder') || 'INBOX';
               this.changeChatFolder(folder);
 
               const applicationId = urlParams.get('applicationid');
