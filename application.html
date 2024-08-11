@@ -68,138 +68,107 @@
                 </div>
                 
                 <div class="modal-body">
-                  <div class="row mt-3">
-                    <div class="col-md-4">
-                        <div class="position-relative">
-                            <div>
-                                <img x-bind:src="profile.profileimage" alt="" class="img-fluid rounded mb-20">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div x-show="profile.categories_experience" class="tags-area mb-3">
-                          <template x-for="category in profile.categories_experience" :key="category.text">
-                             <div class="tags" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="category.text_mouseover || 'toolip'">
-                              <span x-text="category.text"></span>
-                              <ul>
-                                <template x-for="(star, index) in 4" :key="index">
-                                  <li>
-                                    <ion-icon :name="index < category.stars ? 'star' : 'star-outline'"></ion-icon>
-                                  </li>
-                                </template>
-                              </ul>
-                          </div>
-                          </template>
-                        </div>
-                        <a href="javascript:;" class="profile-time">
-                          <ion-icon name="time-outline"></ion-icon><i x-text="profile.date_application_sent"></i>
-                        </a>
-                        <h1 class="mb-0" x-text="profile.name"></h1>
-                        <h3 class="text-muted mb-3" x-text="profile.age_area"></h3>
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                          <a x-bind:href="'mailto:' + profile.email" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="mail-outline"></ion-icon> <span x-text="profile.email"></span></a>
-                          <button @click="copyLink(profile.email, 'email')" class="btn-copy" type="button" x-text="isCopied === 'email' ? profile.text_copy_copied : profile.text_copy"></button>
-                        </div>
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                          <a x-bind:href="'tel:' + profile.phone" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="call-outline"></ion-icon> <span x-text="profile.phone"></span></a>
-                          <button @click="copyLink(profile.phone, 'phone')" class="btn-copy" type="button" x-text="isCopied === 'phone' ? profile.text_copy_copied : profile.text_copy"></button>
-                        </div>
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                          <a target="_blank" x-bind:href="profile.profile_link" href="javascript:;" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-24px" name="link-outline"></ion-icon> <span x-text="profile.profile_link_text"></span></a>
-                          <button @click="copyLink(profile.profile_link, 'profileLink')" class="btn-copy" type="button" x-text="isCopied === 'profileLink' ? profile.text_copy_copied : profile.text_copy"></button>
-                        </div>
-                        <h4 x-text="profile.profile_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
-                        <div class="mt-1">
-                          <div class="font-size-16px  text-muted">
-                                <span x-html="profile.profile_text_short === '' ? profile.profile_text : profile.profile_text_short"></span>
-                                <a data-bs-toggle="collapse" class="text-decoration-underline text-orange" :data-bs-target="`#moreProfileInfo-01-${profile.applicationid}`" aria-expanded="true" aria-controls="moreInfo" href="javascript:;">
-                                <span x-show="profile.profile_text_short !== ''" x-text="profile.profile_text_short_see_more"></span>
-                            </a>
-                          </div>
-                          <div :id="`moreProfileInfo-01-${profile.applicationid}`" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                              <div class="accordion-body pt-2">
-                                  <div class="font-size-16px  text-muted" x-html="profile.profile_text"></div>
+                  <div class="loading-profile" x-show="isFetchingProfile">Loading Application..</div>
+                  <div x-bind:class="isFetchingProfile && 'opacity-0'">
+                    <div class="row mt-3">
+                      <div class="col-md-4">
+                          <div class="position-relative">
+                              <div>
+                                  <img x-bind:src="profile.profileimage" alt="" class="img-fluid rounded mb-20">
                               </div>
                           </div>
-                        </div>
-                        <h4 x-text="profile.text_rating_stars" class="font-size-16px font-weight-700 mt-3 mb-1"></h4>
-                        <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_rating_stars_hover || 'toolip'" class="star-rating">
-                          <template x-for="star in 5" :key="star">
-                            <label>
-                              <input type="radio" x-model="profile.rating_stars" :value="6 - star" hidden/>
-                              <ion-icon :class="{'active': profile.rating_stars >= 6 - star, 'inactive': profile.rating_stars < 6 - star}" @click="setRating(6 - star, profile.applicationid)" name="star"></ion-icon>
-                            </label>
-                          </template>
-                        </div>
-                        <h4 x-show="profile.application_text_text_title !== ''" x-text="profile.application_text_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
-                        <div class="mt-1">
-                          <div class="font-size-16px text-muted">
-                                <div>
-                                  <span x-show="profile.application_text_title !== ''">
-                                    <span class="fw-bold" x-html="profile.application_text_title"></span>
-                                    <span>:</span>
-                                  </span>
-                                  
-                                  <span x-html="profile.allication_text_short === '' ? profile.application_text : profile.allication_text_short"></span>
-                                </div>
-                                
-                                <a data-bs-toggle="collapse" class="text-decoration-underline text-orange" :data-bs-target="`#moreProfileInfo-02-${profile.applicationid}`" aria-expanded="true" aria-controls="moreInfo" href="javascript:;">
-                                <span x-show="profile.allication_text_short !== ''" x-text="profile.allication_text_short_see_more"></span>
-                                </a>
-                          </div>
-                          <div :id="`moreProfileInfo-02-${profile.applicationid}`" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                              <div class="accordion-body pt-2">
-                                  <div class="font-size-16px  text-muted">
-                                    <span class="fw-bold" x-show="profile.application_text_title !== ''" x-html="profile.application_text_title"></span>
-                                    <span x-html="profile.application_text"></span>
-                                  </div>
-                              </div>
-                          </div>
-                        </div>
-                    </div>
-                     
-                  </div>
-
-                  <div x-show="profile.attached_media == 'YES'" class="row mt-4">
-                    <div class="col-md-12">
-                      <h3  class="font-weight-800" x-text="profile.attached_media_text_title"></h3>
-                    </div>
-                    <div class="col-12 filterTabs pt-0 mb-2">
-                      <div class="grid">
-                      <template x-for="image in profile.images_attached" :key="image.imageurl">
-                          <div class="grid-item">
-                              <a :href="image.imageurl" data-fancybox="gallery" :data-caption="image.datecreated">
-                                <img class="w-100 rounded" :src="image.imageurl"/>
-                              </a>
-                          </div>
-                      </template>
-                    </div>
-                    </div>
-                    <div class="col-12">
-                      <template x-for="video in profile.videos_attached" :key="video">
-                          <div class="ratio ratio-16x9 mb-20">
-                            <iframe :src="video" title="vimeo video" allowfullscreen></iframe>
-                          </div>
-                      </template>
-                    </div>
-                    <div class="col-12">
-                      <template x-for="audio in profile.audio_attached" :key="audio.src">
-                        <div>
-                          <div class="mb-1" x-text="audio.filename"></div>
-                          <div x-html="audio.html"></div>
-                        </div>
-                      </template>
-                    </div>
-                  </div>
-
-
-                    <div x-show="profile.profile_images_text_title !== ''" class="row mt-4">
-                      <div class="col-md-12 col-12">
-                        <h3 class="font-weight-800" x-text="profile.profile_images_text_title"></h3>
                       </div>
-                      <div class="col-12 filterTabs pt-0">
+                      <div class="col-md-8">
+                          <div x-show="profile.categories_experience" class="tags-area mb-3">
+                            <template x-for="category in profile.categories_experience" :key="category.text">
+                               <div class="tags" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="category.text_mouseover || 'toolip'">
+                                <span x-text="category.text"></span>
+                                <ul>
+                                  <template x-for="(star, index) in 4" :key="index">
+                                    <li>
+                                      <ion-icon :name="index < category.stars ? 'star' : 'star-outline'"></ion-icon>
+                                    </li>
+                                  </template>
+                                </ul>
+                            </div>
+                            </template>
+                          </div>
+                          <a href="javascript:;" class="profile-time">
+                            <ion-icon name="time-outline"></ion-icon><i x-text="profile.date_application_sent"></i>
+                          </a>
+                          <h1 class="mb-0" x-text="profile.name"></h1>
+                          <h3 class="text-muted mb-3" x-text="profile.age_area"></h3>
+                          <div class="d-flex align-items-center gap-2 mb-2">
+                            <a x-bind:href="'mailto:' + profile.email" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="mail-outline"></ion-icon> <span x-text="profile.email"></span></a>
+                            <button @click="copyLink(profile.email, 'email')" class="btn-copy" type="button" x-text="isCopied === 'email' ? profile.text_copy_copied : profile.text_copy"></button>
+                          </div>
+                          <div class="d-flex align-items-center gap-2 mb-2">
+                            <a x-bind:href="'tel:' + profile.phone" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-22px" name="call-outline"></ion-icon> <span x-text="profile.phone"></span></a>
+                            <button @click="copyLink(profile.phone, 'phone')" class="btn-copy" type="button" x-text="isCopied === 'phone' ? profile.text_copy_copied : profile.text_copy"></button>
+                          </div>
+                          <div class="d-flex align-items-center gap-2 mb-2">
+                            <a target="_blank" x-bind:href="profile.profile_link" href="javascript:;" class="font-size-16px d-inline-flex align-items-center gap-2 text-decoration-underline"><ion-icon class="font-size-24px" name="link-outline"></ion-icon> <span x-text="profile.profile_link_text"></span></a>
+                            <button @click="copyLink(profile.profile_link, 'profileLink')" class="btn-copy" type="button" x-text="isCopied === 'profileLink' ? profile.text_copy_copied : profile.text_copy"></button>
+                          </div>
+                          <h4 x-text="profile.profile_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
+                          <div class="mt-1">
+                            <div class="font-size-16px  text-muted">
+                                  <span x-html="profile.profile_text_short === '' ? profile.profile_text : profile.profile_text_short"></span>
+                                  <a data-bs-toggle="collapse" class="text-decoration-underline text-orange" :data-bs-target="`#moreProfileInfo-01-${profile.applicationid}`" aria-expanded="true" aria-controls="moreInfo" href="javascript:;">
+                                  <span x-show="profile.profile_text_short !== ''" x-text="profile.profile_text_short_see_more"></span>
+                              </a>
+                            </div>
+                            <div :id="`moreProfileInfo-01-${profile.applicationid}`" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body pt-2">
+                                    <div class="font-size-16px  text-muted" x-html="profile.profile_text"></div>
+                                </div>
+                            </div>
+                          </div>
+                          <h4 x-text="profile.text_rating_stars" class="font-size-16px font-weight-700 mt-3 mb-1"></h4>
+                          <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_rating_stars_hover || 'toolip'" class="star-rating">
+                            <template x-for="star in 5" :key="star">
+                              <label>
+                                <input type="radio" x-model="profile.rating_stars" :value="6 - star" hidden/>
+                                <ion-icon :class="{'active': profile.rating_stars >= 6 - star, 'inactive': profile.rating_stars < 6 - star}" @click="setRating(6 - star, profile.applicationid)" name="star"></ion-icon>
+                              </label>
+                            </template>
+                          </div>
+                          <h4 x-show="profile.application_text_text_title !== ''" x-text="profile.application_text_text_title"  class="font-size-16px font-weight-700 color-secondary text-muted mt-3 mb-1"></h4>
+                          <div class="mt-1">
+                            <div class="font-size-16px text-muted">
+                                  <div>
+                                    <span x-show="profile.application_text_title !== ''">
+                                      <span class="fw-bold" x-html="profile.application_text_title"></span>
+                                      <span>:</span>
+                                    </span>
+                                    
+                                    <span x-html="profile.allication_text_short === '' ? profile.application_text : profile.allication_text_short"></span>
+                                  </div>
+                                  
+                                  <a data-bs-toggle="collapse" class="text-decoration-underline text-orange" :data-bs-target="`#moreProfileInfo-02-${profile.applicationid}`" aria-expanded="true" aria-controls="moreInfo" href="javascript:;">
+                                  <span x-show="profile.allication_text_short !== ''" x-text="profile.allication_text_short_see_more"></span>
+                                  </a>
+                            </div>
+                            <div :id="`moreProfileInfo-02-${profile.applicationid}`" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body pt-2">
+                                    <div class="font-size-16px  text-muted">
+                                      <span class="fw-bold" x-show="profile.application_text_title !== ''" x-html="profile.application_text_title"></span>
+                                      <span x-html="profile.application_text"></span>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                       
+                    </div>
+  
+                    <div x-show="profile.attached_media == 'YES'" class="row mt-4">
+                      <div class="col-md-12">
+                        <h3  class="font-weight-800" x-text="profile.attached_media_text_title"></h3>
+                      </div>
+                      <div class="col-12 filterTabs pt-0 mb-2">
                         <div class="grid">
-                        <template x-for="image in profile.profileimages" :key="image.imageurl">
+                        <template x-for="image in profile.images_attached" :key="image.imageurl">
                             <div class="grid-item">
                                 <a :href="image.imageurl" data-fancybox="gallery" :data-caption="image.datecreated">
                                   <img class="w-100 rounded" :src="image.imageurl"/>
@@ -208,54 +177,65 @@
                         </template>
                       </div>
                       </div>
-                    </div>
-
-                    <!-- <div x-show="profile.profile_videos_text_title !== ''" class="row mt-4">
-                      <div class="col-md-12 col-12">
-                        <h3 class="font-weight-800" x-text="profile.profile_videos_text_title"></h3>
+                      <div class="col-12">
+                        <template x-for="video in profile.videos_attached" :key="video">
+                            <div class="ratio ratio-16x9 mb-20">
+                              <iframe :src="video" title="vimeo video" allowfullscreen></iframe>
+                            </div>
+                        </template>
                       </div>
                       <div class="col-12">
-                          <template x-for="video in profile.profilevideos" :key="video.link">
-                              <div class="ratio ratio-16x9 mb-20" x-html="video.html"></div>
-                          </template>
-                      </div>
-                    </div> -->
-
-                    <!-- <div x-show="profile.profile_audio_text_title !== ''" class="row mt-4">
-                      <div class="col-md-12 col-12">
-                        <h3 class="font-weight-800" x-text="profile.profile_audio_text_title"></h3>
-                      </div>
-                      <div class="col-12">
-                        <template x-for="audio in profile.profileaudio" :key="audio.src">
+                        <template x-for="audio in profile.audio_attached" :key="audio.src">
                           <div>
                             <div class="mb-1" x-text="audio.filename"></div>
                             <div x-html="audio.html"></div>
                           </div>
                         </template>
                       </div>
-                    </div> -->
-
-                    <div class="row mt-4">
-                      <div class="col-md-12 col-12">
-                        <h3 class="font-weight-800" x-text="profile.attribues_text_title"></h3>
-                      </div>
-                      <div class="col-md-9 filterTabs pt-0 mt-3">
-                        <template x-for="attribute in profile.attributes" :key="attribute.Name">
-                            <div class="row pb-0 contentBox">
-                              <div class="col-6 font-size-18px font-weight-700" x-text="attribute.Name"></div>
-                              <div class="col-6 text-end font-size-18px" x-text="attribute.Value"></div>
-                              <hr class="seprator">
-                            </div>
-                          
-                        </template>
-                      </div>
                     </div>
+  
+  
+                      <div x-show="profile.profile_images_text_title !== ''" class="row mt-4">
+                        <div class="col-md-12 col-12">
+                          <h3 class="font-weight-800" x-text="profile.profile_images_text_title"></h3>
+                        </div>
+                        <div class="col-12 filterTabs pt-0">
+                          <div class="grid">
+                          <template x-for="image in profile.profileimages" :key="image.imageurl">
+                              <div class="grid-item">
+                                  <a :href="image.imageurl" data-fancybox="gallery" :data-caption="image.datecreated">
+                                    <img class="w-100 rounded" :src="image.imageurl"/>
+                                  </a>
+                              </div>
+                          </template>
+                        </div>
+                        </div>
+                      </div>
+  
+  
+                      <div class="row mt-4">
+                        <div class="col-md-12 col-12">
+                          <h3 class="font-weight-800" x-text="profile.attribues_text_title"></h3>
+                        </div>
+                        <div class="col-md-9 filterTabs pt-0 mt-3">
+                          <template x-for="attribute in profile.attributes" :key="attribute.Name">
+                              <div class="row pb-0 contentBox">
+                                <div class="col-6 font-size-18px font-weight-700" x-text="attribute.Name"></div>
+                                <div class="col-6 text-end font-size-18px" x-text="attribute.Value"></div>
+                                <hr class="seprator">
+                              </div>
+                            
+                          </template>
+                        </div>
+                      </div>
+                  </div>
+                 
 
                 </div>
 
                 <div class="modal-footer">
                     <div class="w-100 d-flex justify-content-center gap-4">
-                      <a  x-on:click="moveToFolder(profile.application_folder === 'YES' ? 'INBOX' : 'YES', profile.applicationid, profile.nextapplicationID);" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_yes_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a  x-on:click="moveToFolder(profile.application_folder === 'YES' ? 'INBOX' : 'YES', profile.applicationid, profile.nextapplicationID);" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_yes_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                            <div :class="profile.application_folder === 'YES' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -268,7 +248,7 @@
                         </div>
                         <div :class="profile.application_folder === 'YES' && 'text-orange'" class="font-size-10px text-center" x-text="profile.text_icon_yes">Move to Yes</div>
                       </a>
-                      <a x-on:click="moveToFolder(profile.application_folder === 'MAYBE' ? 'INBOX' : 'MAYBE', profile.applicationid , profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_maybe_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a x-on:click="moveToFolder(profile.application_folder === 'MAYBE' ? 'INBOX' : 'MAYBE', profile.applicationid , profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_maybe_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div :class="profile.application_folder === 'MAYBE' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -282,7 +262,7 @@
                         <div :class="profile.application_folder === 'MAYBE' && 'text-orange'" class="font-size-10px text-center" x-text="profile.text_icon_maybe">Move to Maybe</div>
                       </a>
 
-                      <a x-on:click="moveToFolder(profile.application_folder === 'NO' ? 'INBOX' : 'NO', profile.applicationid, profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_no_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a x-on:click="moveToFolder(profile.application_folder === 'NO' ? 'INBOX' : 'NO', profile.applicationid, profile.nextapplicationID)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_no_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div :class="profile.application_folder === 'NO' && 'active'" class="icon-wrapper">
                             <span class="icon-outline">
@@ -297,7 +277,7 @@
                       </a>
 
                       
-                      <a class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
+                      <a class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div class="icon-wrapper">
                             <span class="icon-outline">
@@ -314,7 +294,7 @@
                         <div class="font-size-10px text-center" x-text="profile.text_icon_chat">Chat</div>
                       </a>
 
-                      <a @click="fetchSMS(profile.applicationid, profile.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_sms_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                      <a @click="fetchSMS(profile.applicationid, profile.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_sms_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div class="icon-wrapper">
                             <span class="icon-outline">
@@ -338,7 +318,7 @@
                       </a>
 
                       <div class="d-none d-md-block">
-                        <a @click="fetchNotes(profile.applicationid, profile.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_notes_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
+                        <a @click="fetchNotes(profile.applicationid, profile.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_notes_hover || 'toolip'" data-bs-custom-class="orange-tooltip" class="text-white d-flex flex-column align-items-center gap-2px" href="javascript:;">
                           <div class="font-size-26px d-flex icon-bottom">
                             <div class="icon-wrapper">
                               <span class="icon-outline" x-bind:class="applicationHasNotes ? 'text-orange' : ''">
@@ -354,7 +334,7 @@
                       </div>
  
                         <div class="d-none d-md-block">
-                          <a href="javascript:;" @click="changeHiring(profile.hired === 'YES' ? 'NO' : 'YES', profile.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="profile.text_icon_hired_hover || 'toolip'" data-bs-custom-class="orange-tooltip">
+                          <a href="javascript:;" @click="changeHiring(profile.hired === 'YES' ? 'NO' : 'YES', profile.applicationid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_hired_hover || 'toolip'" data-bs-custom-class="orange-tooltip">
                             <div class="text-white d-flex flex-column align-items-center gap-2px">
                               <div class="font-size-26px d-flex icon-bottom">
                                 <div class="icon-wrapper" :class="profile.hired === 'YES' && 'active-red'">
@@ -831,7 +811,7 @@
                                         <a @click="fetchProfile(application.applicationid)" href="javascript:;" class="profile-time">
                                           <ion-icon name="time-outline"></ion-icon> <i x-text="application.date_application_sent"></i>
                                         </a>
-                                        <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_hired_selected" href="javascript:;" class="text-muted font-size-17px">
+                                        <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_hired_selected" href="javascript:;" class="text-muted font-size-17px">
                                           <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
                                             <span class="icon-solid">
                                               <ion-icon name="balloon"></ion-icon>
@@ -854,7 +834,7 @@
                                         <div class="font-size-16px mb-2"><b>Email:</b> <span x-text="application.email"></span></div>
                                         <div class="font-size-16px mb-2"><b>Phone:</b> <span x-text="application.phone"></span></div>
                                         <div>
-                                          <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_rating_stars_hover" class="star-rating">
+                                          <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_rating_stars_hover" class="star-rating">
                                             <template x-for="star in 5" :key="star">
                                               <label>
                                                 <input type="radio" x-model="application.rating_stars" :value="6 - star" hidden/>
@@ -888,7 +868,7 @@
                                       
                                         <div class="dropdown-container">
                                           <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle dropdown-arrow-none px-0">
-                                            <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_more_hover" class="icon-wrapper text-orange more-icon">
+                                            <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_more_hover" class="icon-wrapper text-orange more-icon">
                                               <span class="icon-outline">
                                                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
                                               </span>
@@ -900,7 +880,7 @@
                                           <div class="dropdown-menu fs-4 min-w-140px">
                                             <ul class="social-links-listing">
                                              <li>
-                                               <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_notes_hover" href="javascript:;" class="text-muted">
+                                               <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_notes_hover" href="javascript:;" class="text-muted">
                                                  <div :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
                                                    <span class="icon-outline">
                                                      <ion-icon name="create-outline"></ion-icon>
@@ -912,7 +892,7 @@
                                                </a>
                                              </li>
                                              <li>
-                                               <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_hired_hover" href="javascript:;" class="text-muted">
+                                               <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_hired_hover" href="javascript:;" class="text-muted">
                                                 <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
                                                    <span class="icon-outline">
                                                      <ion-icon name="balloon-outline"></ion-icon>
@@ -933,7 +913,7 @@
                                       
                                       <div class="list-only grid-only bottom-icons">
                                         <div class="d-flex align-items-center gap-2 my-1">
-                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_image == 'YES'" x-bind:class="application.attached_image == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_image_attached_hover" href="javascript:;">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_image == 'YES'" x-bind:class="application.attached_image == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_image_attached_hover" href="javascript:;">
                                             <div class="icon-text-wrapper">
                                               <div class="icon-wrapper fs-4">
                                                 <span class="icon-outline">
@@ -949,7 +929,7 @@
                                               <div class="icon-text" x-text="application.text_icon_image_attached"></div>
                                             </div>
                                           </a>
-                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_video == 'YES'" x-bind:class="application.attached_video == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_video_attached_hover" href="javascript:;">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_video == 'YES'" x-bind:class="application.attached_video == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_video_attached_hover" href="javascript:;">
                                             <div class="icon-text-wrapper">
                                             <div class="icon-wrapper fs-4">
                                               <span class="icon-outline">
@@ -965,7 +945,7 @@
                                             <div class="icon-text" x-text="application.text_icon_video_attached"></div>
                                             </div>
                                           </a>
-                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_audio == 'YES'" x-bind:class="application.attached_audio == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_audio_attached_hover" href="javascript:;">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_audio == 'YES'" x-bind:class="application.attached_audio == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_audio_attached_hover" href="javascript:;">
                                             <div class="icon-text-wrapper">
                                             <div class="icon-wrapper fs-3">
                                               <span class="icon-outline">
@@ -985,7 +965,7 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_rating_stars_hover" class="star-rating list-only grid-only">
+                                  <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_rating_stars_hover" class="star-rating list-only grid-only">
                                     <template x-for="star in 5" :key="star">
                                       <label>
                                         <input type="radio" x-model="application.rating_stars" :value="6 - star" hidden/>
@@ -997,9 +977,9 @@
                                   <div class="right-side list-only grid-only">
                                     <div class="d-flex align-items-center gap-2 fs-3">
                                       <div class="btn-group-liked">
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'YES' ? 'INBOX' : 'YES' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_yes_hover" class="text-muted" href="javascript:;">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'YES' ? 'INBOX' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_yes_hover" class="text-muted" href="javascript:;">
                                           <div class="icon-text-wrapper">
-                                            <div :class="currentChatFolder === 'INBOX' && 'active'" class="icon-wrapper">
+                                            <div :class="currentChatFolder === 'YES' && 'active'" class="icon-wrapper">
                                               <span class="icon-outline">
                                                 <ion-icon name="thumbs-up-outline"></ion-icon>
                                               </span>
@@ -1010,7 +990,7 @@
                                             <div class="icon-text" x-text="application.text_icon_yes"></div>
                                           </div>
                                         </a>
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'MAYBE' ? 'INBOX' : 'MAYBE' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_maybe_hover" class="text-muted" href="javascript:;">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'MAYBE' ? 'INBOX' : 'MAYBE', application.applicationid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_maybe_hover" class="text-muted" href="javascript:;">
                                           <div class="icon-text-wrapper">
                                           <div :class="currentChatFolder === 'MAYBE' && 'active'" class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1023,7 +1003,7 @@
                                           <div class="icon-text" x-text="application.text_icon_maybe"></div>
                                           </div>
                                         </a>
-                                        <a x-on:click="moveToFolder(currentChatFolder === 'NO' ? 'INBOX' : 'NO' ,application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_no_hover" href="javascript:;" class="text-muted">
+                                        <a x-on:click="moveToFolder(currentChatFolder === 'NO' ? 'INBOX' : 'NO', application.applicationid)" data-bs-toggle="tooltip"data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_no_hover" href="javascript:;" class="text-muted">
                                           <div class="icon-text-wrapper">
                                           <div :class="currentChatFolder === 'NO' && 'active'" class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1038,7 +1018,7 @@
                                         </a>
                                       </div>
                                       
-                                      <a data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
+                                      <a data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
                                           <div class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1056,7 +1036,7 @@
                                       </a>
 
                                       <div x-bind:class="application.show_sms_icon === 'YES' ? 'visible' : 'invisible'">
-                                      <a @click="fetchSMS(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_sms_hover" href="javascript:;" class="text-muted list-only hidden-list-xs ms-1">
+                                      <a @click="fetchSMS(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_sms_hover" href="javascript:;" class="text-muted list-only hidden-list-xs ms-1">
                                         <div class="icon-text-wrapper">
                                         <div class="icon-wrapper more-icon">
                                           <span class="icon-outline">
@@ -1092,7 +1072,7 @@
                                      
                                       <div class="dropdown-container">
                                         <div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="dropdown-toggle dropdown-arrow-none px-0 text-muted">
-                                          <div data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_more_hover" class="icon-text-wrapper">
+                                          <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_more_hover" class="icon-text-wrapper">
                                             <div class="icon-wrapper more-icon">
                                               <span class="icon-outline">
                                                 <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
@@ -1107,7 +1087,7 @@
                                         <div class="dropdown-menu fs-4 min-w-140px_">
                                            <ul class="social-links-listing">
                                             <li>
-                                              <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_notes_hover" href="javascript:;" class="text-muted">
+                                              <a @click="fetchNotes(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_notes_hover" href="javascript:;" class="text-muted">
                                                 <div class="icon-text-wrapper">
                                                 <div :class="{ 'active': application.notes_on_profile == 'YES' }" class="icon-wrapper">
                                                   <span class="icon-outline">
@@ -1122,7 +1102,7 @@
                                               </a>
                                             </li>
                                             <li>
-                                              <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-placement="top" :data-bs-title="application.text_icon_hired_hover" href="javascript:;" class="text-muted">
+                                              <a @click="changeHiring(application.hired === 'YES' ? 'NO' : 'YES', application.applicationid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_hired_hover" href="javascript:;" class="text-muted">
                                                 <div class="icon-text-wrapper">
                                                 <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
                                                   <span class="icon-outline">
@@ -1283,7 +1263,7 @@
               this.fetchFilterBy();
               this.fetchApplications();
               this.selectedCountry = this.countries[0];
-              window.fetchProfile = this.fetchProfile.bind(this);
+              // window.fetchProfile = this.fetchProfile.bind(this);
               profileModal.addEventListener('hide.bs.modal', this.handleModalClose.bind(this));
 
               // Handling URL PARAMS

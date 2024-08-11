@@ -33,13 +33,13 @@ function debounce(func, wait) {
 
  
 // When click browser back button close application modal
-window.onpopstate = (event) => {
-  if (event.state && event.state.applicationId) {
-    window.fetchProfile(event.state.applicationId);
-  } else {
-    profileModalInstance.hide();
-  }
-};
+// window.onpopstate = (event) => {
+//   if (event.state && event.state.applicationId) {
+//     window.fetchProfile(event.state.applicationId);
+//   } else {
+//     profileModalInstance.hide();
+//   }
+// };
 
 // Function to initialize or reinitialize Masonry
 function initializeMasonry() {
@@ -212,6 +212,8 @@ function applicationComponent() {
           .finally(() => {
             this.isMovingToFolder = false;
             this.movingApplicationId = null;
+
+           
         });
     },
 
@@ -600,8 +602,6 @@ function applicationComponent() {
                 console.error("Error fetching Profile:", error);
             })
             .finally(() => {
-                this.isFetchingProfile = false;
-                
                 this.initializeTooltips();
                 // refreshMasonry();
                 reloadMasonry();
@@ -610,6 +610,7 @@ function applicationComponent() {
                   initializeMasonry()  
                   setTimeout(() => {
                     document.querySelector('#profileModal .modal-body').scrollTo({ top: 0 });     
+                    this.isFetchingProfile = false;
                   }, 100);
                 }, 500);
             });

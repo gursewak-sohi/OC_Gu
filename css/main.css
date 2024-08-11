@@ -4885,11 +4885,36 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     opacity: 1 !important;
 }
 
-.orange-tooltip .tooltip-arrow::before {
+ 
+
+.orange-tooltip[data-popper-placement^="top"] .tooltip-arrow::before {
     border-top-color: #eb783e !important;  
 }
 
-  
+.orange-tooltip[data-popper-placement^="left"] .tooltip-arrow::before {
+    border-left-color: #eb783e !important;  
+}
+
+.orange-tooltip[data-popper-placement^="right"] .tooltip-arrow::before {
+    border-right-color: #eb783e !important;  
+}
+
+.orange-tooltip[data-popper-placement^="bottom"] .tooltip-arrow::before {
+    border-bottom-color: #eb783e !important;  
+}
+
+.loading-profile {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	right: 0;
+	font-size: 16px;
+	top: 0;
+	bottom: 0;
+}
 
 @media (max-width: 767px) {
 
