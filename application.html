@@ -68,8 +68,8 @@
                 </div>
                 
                 <div class="modal-body">
-                  <div class="loading-profile" x-show="isFetchingProfile">Loading Application..</div>
-                  <div x-bind:class="isFetchingProfile && 'opacity-0'">
+                  <!-- <div class="loading-profile" x-show="isFetchingProfile">Loading Application..</div> -->
+                  
                     <div class="row mt-3">
                       <div class="col-md-4">
                           <div class="position-relative">
@@ -167,8 +167,8 @@
                         <h3  class="font-weight-800" x-text="profile.attached_media_text_title"></h3>
                       </div>
                       <div class="col-12 filterTabs pt-0 mb-2">
-                        <div class="grid">
-                        <template x-for="image in profile.images_attached" :key="image.imageurl">
+                        <div x-show="!isFetchingProfile" class="grid">
+                        <template  x-for="image in profile.images_attached" :key="image.imageurl">
                             <div class="grid-item">
                                 <a :href="image.imageurl" data-fancybox="gallery" :data-caption="image.datecreated">
                                   <img class="w-100 rounded" :src="image.imageurl"/>
@@ -228,7 +228,7 @@
                           </template>
                         </div>
                       </div>
-                  </div>
+                 
                  
 
                 </div>
@@ -1261,7 +1261,7 @@
               this.fetchFolders();
               this.fetchOrderBy();
               this.fetchFilterBy();
-              this.fetchApplications();
+              // this.fetchApplications();
               this.selectedCountry = this.countries[0];
               // window.fetchProfile = this.fetchProfile.bind(this);
               profileModal.addEventListener('hide.bs.modal', this.handleModalClose.bind(this));

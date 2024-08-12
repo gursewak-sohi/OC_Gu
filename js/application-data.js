@@ -589,7 +589,7 @@ function applicationComponent() {
                 this.currentApplication = this.profile.text_numberofapplications.split(' af ')[0];
                 this.totalApplications = this.profile.text_numberofapplications.split(' af ')[1];
                 profileModalInstance.show(); 
-              
+                document.querySelector('#profileModal .modal-body').scrollTo({ top: 0 });     
                 debounce(() => {
                   const urlParams = new URLSearchParams(window.location.search);
                   urlParams.set('applicationid', applicationId);
@@ -609,7 +609,6 @@ function applicationComponent() {
                 setTimeout(() => {
                   initializeMasonry()  
                   setTimeout(() => {
-                    document.querySelector('#profileModal .modal-body').scrollTo({ top: 0 });     
                     this.isFetchingProfile = false;
                   }, 100);
                 }, 500);
