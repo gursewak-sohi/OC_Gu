@@ -202,6 +202,7 @@ document.addEventListener("alpine:init", () => {
       
 
         setCurrentConversation(conversation) {
+            this.currentConversation.isread = 'YES';
             this.currentConversation = conversation
             this.currentConversationID = conversation.conversationid;
             this.currentProfileID = conversation.profileid;
@@ -237,7 +238,24 @@ document.addEventListener("alpine:init", () => {
         get reversedMessages() {
             return [...this.messages].reverse();
         },
+
+        lastShownDate: '',
+        shouldShowDate(index) {
+            if (!this.reversedMessages[index]) {
+                return false;
+            }
+            let currentMessage = this.reversedMessages[index];
+            if (currentMessage.date !== this.lastShownDate) {
+                this.lastShownDate = currentMessage.date;
+                return true;
+            } else {
+                return false;
+            }
+        },
+        
+
         fetchChatMessages(fetchOlderMessages = false) {
+          this.lastShownDate = '';
           if (!this.currentConversationID) return;
           if (this.isMessagesFetching) return;
             this.isMessagesFetching = true;
@@ -249,17 +267,17 @@ document.addEventListener("alpine:init", () => {
             }
             
            
-            fetch(`https://www.onlinecasting.dk/api/chat/conversation.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
+            fetch(`https://www.onlinecasting.dk/api/chat/conversation_new_july_2024.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
-                    // console.log(data, 'data')
-                  if (data && Array.isArray(data.GroupedMessages)) {
+                    console.log(data, 'data')
+                  if (data && Array.isArray(data.messages)) {
                         // this.messagesData = data  
                         if (fetchOlderMessages) {
-                            this.messages = [...JSON.parse(JSON.stringify(this.messages)), ...data.GroupedMessages];
+                            this.messages = [...JSON.parse(JSON.stringify(this.messages)), ...data.messages];
                         } else {
                             // For initial or refreshed messages, just set it directly
-                            this.messages = data.GroupedMessages;
+                            this.messages = data.messages;
                         }
                         // console.log(this.messages, 'this.messages')
 
@@ -275,6 +293,10 @@ document.addEventListener("alpine:init", () => {
                                 container.scrollTop += newScrollHeight - oldScrollHeight;
                             }
                           }
+                        // Delay setting lastShownDate to ensure proper rendering
+                        setTimeout(() => {
+                            this.lastShownDate = '';
+                        }, 50); 
                       });
                     } else {
                         console.log("Data is not an array or is empty");
@@ -442,6 +464,12 @@ document.addEventListener("alpine:init", () => {
              })
              .catch((error) => {
                  console.error('Error:', error);
+             })
+             .finally(() => {
+                setTimeout(() => {
+                    const container = document.getElementById('chatMain');
+                    container.scrollTop = container.scrollHeight;     
+                }, 500);
              });
          },
 

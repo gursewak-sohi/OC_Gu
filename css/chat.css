@@ -57,6 +57,7 @@
 	overflow: auto;
 	transition: 0.3s all ease;
 	margin-right: -320px;
+    margin-right: min(-25%, -320px);
 	position: relative;
 	max-width: 25%;
 	width: 100%;
@@ -268,6 +269,7 @@
     opacity: 1;
     right: 0;
     transition: 0.3s all ease;
+    text-transform: capitalize;
 }
 .chat-row:hover .chat-row-time {
     opacity: 0;
@@ -431,6 +433,7 @@
     gap: 15px;
     padding: 0 20px;
     color: #6b6b6b;
+    text-transform: capitalize;
 }
 
 .chat-new-date::after,
