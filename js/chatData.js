@@ -149,7 +149,8 @@ document.addEventListener("alpine:init", () => {
         conversationsLimit: 10,
         isConversationsFetching: false,
         folders : [],
-     
+        
+        searchquery: '',
         currentChatFolder: '',
         currentChatFolderName: 'Loading..',
         isConversationError: false,
@@ -159,7 +160,7 @@ document.addEventListener("alpine:init", () => {
             if (this.isConversationsFetching) return;
             this.isConversationsFetching = true;
             this.isConversationError = false;
-            fetch(`https://www.onlinecasting.dk/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentChatFolder}&auditionid=${this.currentAuditionID}`)
+            fetch(`https://www.onlinecasting.dk/api/chat/conversations.asp?skip=${this.conversationsSkip}&limit=${this.conversationsLimit}&chatfolder=${this.currentChatFolder}&auditionid=${this.currentAuditionID}&searchquery=${this.searchquery}`)
                 .then(response => response.json())
                 .then(data => {
                     // console.log("API Data:", data);
@@ -198,8 +199,20 @@ document.addEventListener("alpine:init", () => {
                     this.isMessagesFetching = false;
                 });
         },
-       
-      
+ 
+        onSearchChange() {
+            clearTimeout(this.debounceTimeout); // Clear any existing timeout
+            this.debounceTimeout = setTimeout(() => {
+              this.conversationsSkip = 0; // Reset skip
+              this.conversations = [];   // Clear current conversations
+              this.fetchChatConversations(); // Fetch new conversations based on search query
+            }, 500); // Adjust the debounce delay here (e.g., 500ms)
+          },
+
+        clearSearch() {
+            this.searchquery = '';
+            this.onSearchChange();
+        },
 
         setCurrentConversation(conversation) {
             this.currentConversation.isread = 'YES';
