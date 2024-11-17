@@ -243,6 +243,7 @@
                        placeholder="Search name" 
                        maxlength="20">
                      <button 
+                        x-show="searchquery.length > 0"
                        class="btn-search-cancel" 
                        type="button" 
                        x-on:click="clearSearch">
@@ -587,8 +588,8 @@
                     <!-- Hidden file input -->
                     <input type="file" class="fileInput" hidden multiple>
                     <textarea x-model="newMessage" id="chatInput" placeholder="Type a message"></textarea>
-                    <button id="sendBtn" @click="postChatMessage()"  class="btn-send" type="button">
-                       <ion-icon name="send"></ion-icon>
+                    <button id="sendBtn" @click="postChatMessage()" class="btn-send" x-bind:class="{ 'active': newMessage.length > 0 }" type="button">
+                       Send
                     </button>
                  </div>
                  <div class="uploadsContainer"></div>

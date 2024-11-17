@@ -164,6 +164,7 @@
 	font-size: 14px;
 	border-radius: 42px;
     padding: 0 10px;
+    overflow: hidden;
 }
 
 .chat-search .search-icon {
@@ -664,13 +665,22 @@
     margin-bottom: 0;
 }
 
-.btn-send {
+.chat-textbox button.btn-send {
     opacity: 0;
     visibility: hidden;
     transition: 0.3s all ease;
+    background-color: black;
+    border-radius: 40px;
+    width: auto;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    height: auto;
+    padding: 5px 20px;
+    font-weight: 700;
 }
 
-.btn-send.active {
+.chat-textbox button.btn-send.active {
     opacity: 1;
     visibility: visible;
 }

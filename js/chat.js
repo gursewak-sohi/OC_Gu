@@ -26,14 +26,7 @@ $(document).ready(function() {
     $chatDetails.removeClass('active');
   });
 
-  const $sendBtn = $('#sendBtn');
-  $('#chatInput').on('input', function() {
-    if ($(this).val().length > 0) {
-      $sendBtn.addClass('active');
-    } else {
-      $sendBtn.removeClass('active');
-    }
-  });
+  
 
    
 

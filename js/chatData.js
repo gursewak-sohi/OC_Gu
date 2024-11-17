@@ -199,14 +199,17 @@ document.addEventListener("alpine:init", () => {
                     this.isMessagesFetching = false;
                 });
         },
+
+
  
         onSearchChange() {
             clearTimeout(this.debounceTimeout); // Clear any existing timeout
-            this.debounceTimeout = setTimeout(() => {
+              this.debounceTimeout = setTimeout(() => {
+              this.isInitialConversatationsLoading = true;
               this.conversationsSkip = 0; // Reset skip
               this.conversations = [];   // Clear current conversations
               this.fetchChatConversations(); // Fetch new conversations based on search query
-            }, 500); // Adjust the debounce delay here (e.g., 500ms)
+            }, 1000); // Adjust the debounce delay here (e.g., 500ms)
           },
 
         clearSearch() {
