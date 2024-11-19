@@ -490,23 +490,32 @@
                                  <div x-show="message.applicationid !== 0">
                                     <h1 class="mb-3 mt-2" x-text="message.applicationtitle"></h1>
                                  </div>
-                                 <p x-html="message.message" class="mb-0 fw-semibold font-size-16px"></p>
+                                 <div class="mb-0 fw-semibold font-size-16px">
+                                    <div x-show="message.subject">
+                                       <span x-html="message.subject" class="fw-bold">Subject</span>
+                                       <br>
+                                    </div>
+                                    <p class="mb-0 fw-semibold font-size-16px" x-show="message.message" x-html="message.message"></p>
+                                 </div>
                                  <div x-show="message.applicationid !== 0">
-                                    <ul class="ps-0 mt-3 mb-3 d-flex flex-column gap-1 font-size-18px">
-                                       <li>
-                                          <a class="d-flex align-items-center gap-2 text-decoration-underline"  x-bind:href="'mailto:' + message.applicationemail">
-                                             <ion-icon class="font-size-18px" name="mail-outline"></ion-icon> <span x-text="message.applicationemail"></span>
-                                          </a>
-                                       </li>
-                                       <li>
-                                          <a class="d-flex align-items-center gap-2 text-decoration-underline"  x-bind:href="'tel:' + message.applicationphone">
-                                             <ion-icon class="font-size-18px" name="call-outline"></ion-icon> <span x-text="message.applicationphone"></span>
-                                          </a>
-                                       </li>
-                                    </ul>
+                                    <div x-show="message.applicationemail || message.applicationphone">
+                                       <ul class="ps-0 mt-3 mb-3 d-flex flex-column gap-1 font-size-18px">
+                                          <li x-show="message.applicationemail">
+                                             <a class="d-flex align-items-center gap-2 text-decoration-underline"  x-bind:href="'mailto:' + message.applicationemail">
+                                                <ion-icon class="font-size-18px" name="mail-outline"></ion-icon> <span x-text="message.applicationemail"></span>
+                                             </a>
+                                          </li>
+                                          <li x-show="message.applicationphone">
+                                             <a class="d-flex align-items-center gap-2 text-decoration-underline"  x-bind:href="'tel:' + message.applicationphone">
+                                                <ion-icon class="font-size-18px" name="call-outline"></ion-icon> <span x-text="message.applicationphone"></span>
+                                             </a>
+                                          </li>
+                                       </ul>
+                                    </div>
                                     <div x-show="message.agentstatus == 'NEW'">
                                        <div class="w-100 d-flex mt-3 mb-3 flex-wrap gap-3">
-                                          <a target="_blank" x-text="message.applicationlinktext" :href="message.applicationlink" class="btn mainBtn btnoutlineSecondary w-md-auto w-100">Reject & Close</a>
+                                          <a target="_blank" x-text="message.applicationlinktext" :href="message.applicationlink" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"></a>
+                                          <!-- <a x-text="message.applicationlinktext" :href="message.applicationlink" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"></a> -->
                                           <!-- <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"><ion-icon name="thumbs-up-outline"></ion-icon> Upvote</a> -->
                                        </div>
                                     </div>
@@ -708,7 +717,7 @@
                         </div>
                      </div>
                   </div>
-                  <div class="my-4">
+                  <div x-show="Object.keys(profileData).length > 0" class="my-4">
                      <a target="_blank" x-bind:href="profileImages.profileurl ? profileImages.profileurl : 'javascript:;'" class="btn mainBtn btnoutlineSecondary w-100">Gem</a>
                   </div>
                </div>
