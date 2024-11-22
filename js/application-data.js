@@ -581,7 +581,7 @@ function applicationComponent() {
         fetch(`https://www.onlinecasting.dk/api/applications/application_profile.asp?applicationid=${applicationId}&orderby=${this.currentOrderBy}&folder=${this.currentChatFolder}`)
             .then(response => response.json())
             .then(data => {
-                // console.log(data,'data')
+                console.log(data,'profile')
                 this.profile = data;
                 if (data.notes_on_profile === "YES") {
                   this.applicationHasNotes = true

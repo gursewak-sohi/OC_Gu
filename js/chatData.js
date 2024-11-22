@@ -64,9 +64,36 @@ function updateSingleImageContent(image) {
 
 
 
+let statusModal = document.getElementById('statusModal');
+let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
+if (!statusModalInstance) {
+  statusModalInstance = new bootstrap.Modal(statusModal);
+}
+
+
+const rejectModal = document.getElementById('rejectModal');
+let rejectModalInstance = bootstrap.Modal.getInstance(rejectModal);
+if (!rejectModalInstance) {
+    // Initialize the modal if it hasn't been initialized
+    rejectModalInstance = new bootstrap.Modal(rejectModal);
+}
+
 document.addEventListener("alpine:init", () => {
     Alpine.data('chatComponent', () => ({
        // Chat Data
+        chatBoxWidth: 0,
+        adjustChatBoxWidth() {
+            // Find the chatBox div
+            const chatBox = document.getElementById('chatBox');
+            if (chatBox) {
+                setTimeout(() => {
+                    this.chatBoxWidth = chatBox.offsetWidth;    
+                }, 200);
+                
+            }
+        },
+        
+
         isChatSidebarClosed : false,
         fetchFolders() {
             fetch(`https://www.onlinecasting.dk/api/chat/conversations_folders.asp`)
@@ -204,18 +231,27 @@ document.addEventListener("alpine:init", () => {
  
         onSearchChange() {
             clearTimeout(this.debounceTimeout); // Clear any existing timeout
-              this.debounceTimeout = setTimeout(() => {
-              this.isInitialConversatationsLoading = true;
-              this.conversationsSkip = 0; // Reset skip
-              this.conversations = [];   // Clear current conversations
-              this.fetchChatConversations(); // Fetch new conversations based on search query
-            }, 1000); // Adjust the debounce delay here (e.g., 500ms)
-          },
-
+            if (this.searchquery.length > 1) {
+                // Perform a debounced search
+                this.debounceTimeout = setTimeout(() => {
+                    this.isInitialConversatationsLoading = true;
+                    this.conversationsSkip = 0; // Reset skip
+                    this.conversations = [];   // Clear current conversations
+                    this.fetchChatConversations(); // Fetch new conversations based on search query
+                }, 1000); // Adjust the debounce delay here
+            } else if (this.searchquery.length === 0) {
+                // Clear search behavior (immediately fetch all conversations)
+                this.isInitialConversatationsLoading = true;
+                this.conversationsSkip = 0; // Reset skip
+                this.conversations = [];   // Clear current conversations
+                this.fetchChatConversations(); // Fetch default/all conversations
+            }
+        },
         clearSearch() {
             this.searchquery = '';
             this.onSearchChange();
         },
+        
 
         setCurrentConversation(conversation) {
             this.currentConversation.isread = 'YES';
@@ -466,16 +502,26 @@ document.addEventListener("alpine:init", () => {
              })
              .then(response => response.text())
              .then(data => {
-                 console.log('Response:', data);
-                 this.newMessage = '';
-                 this.messagesSkip = 0;
-                 this.fetchChatMessages();
-                 this.lastMessageTimestamp = Date.now(); // Update the timestamp
-                 this.startMessageFetchTimer();
+                 const parsedData = JSON.parse(data);
+                 if (parsedData.Status == 'OK') {  
+                    this.newMessage = '';
+                    this.messagesSkip = 0;
+                    this.fetchChatMessages();
+                    this.lastMessageTimestamp = Date.now(); // Update the timestamp
+                    this.startMessageFetchTimer();
 
-                const textarea = document.getElementById('chatInput');
-                if (textarea) {
-                    textarea.style.height = ''; // Reset to the initial height (adjust as needed)
+                    const textarea = document.getElementById('chatInput');
+                    if (textarea) {
+                        textarea.style.height = ''; // Reset to the initial height (adjust as needed)
+                    }
+                }
+                if (parsedData.Status == 'ERROR') { 
+                    // Open Status Modal
+                    this.statusHeadline = parsedData.StatusMessageHeadline;
+                    this.statusMessage = parsedData.StatusMessage;
+                    this.statusCloseBtn = parsedData.text_close;
+
+                    statusModalInstance.show();
                 }
              })
              .catch((error) => {
@@ -488,6 +534,7 @@ document.addEventListener("alpine:init", () => {
                 }, 500);
              });
          },
+
 
          
         toggleStar(conversation, setAsStarred) {
@@ -549,15 +596,9 @@ document.addEventListener("alpine:init", () => {
                     }
                     if (data.ShowMessage == 'YES') { 
                         // Open Status Modal
-                        this.blockStatus = data.Status;
-                        this.blockStatusMessage = data.StatusMessage;
+                        this.statusHeadline = data.Status;
+                        this.statusMessage = data.StatusMessage;
 
-                        const statusModal = document.getElementById('statusModal');
-                        let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-                        if (!statusModalInstance) {
-                            // Initialize the modal if it hasn't been initialized
-                            statusModalInstance = new bootstrap.Modal(statusModal);
-                        }
                         statusModalInstance.show();
                        
                     }
@@ -577,8 +618,9 @@ document.addEventListener("alpine:init", () => {
 
         //  Block User
         blockMessage: '',
-        blockStatus : '',
-        blockStatusMessage : '',
+        statusHeadline : '',
+        statusMessage : '',
+        statusCloseBtn : 'Okay',
         blockConversation() {  
             // console.log(this.currentConversation, 'curent');
             
@@ -613,15 +655,8 @@ document.addEventListener("alpine:init", () => {
 
                  
                     // Open Status Modal
-                    this.blockStatus = data.Status;
-                    this.blockStatusMessage = data.StatusMessage;
-
-                    const statusModal = document.getElementById('statusModal');
-                    let statusModalInstance = bootstrap.Modal.getInstance(statusModal);
-                    if (!statusModalInstance) {
-                        // Initialize the modal if it hasn't been initialized
-                        statusModalInstance = new bootstrap.Modal(statusModal);
-                    }
+                    this.statusHeadline = data.Status;
+                    this.statusMessage = data.StatusMessage;
                 
                     setTimeout(() => {
                         statusModalInstance.show();
@@ -652,8 +687,8 @@ document.addEventListener("alpine:init", () => {
             .then(response => response.json())
             .then(data => {
                 console.log('Response:', data);
-                // this.blockStatus = data.Status;
-                // this.blockStatusMessage = data.StatusMessage;
+                // this.statusHeadline = data.Status;
+                // this.statusMessage = data.StatusMessage;
 
                 this.currentConversation.isblocked = 'NO';
 
@@ -704,6 +739,51 @@ document.addEventListener("alpine:init", () => {
             }      
         },
 
+         rejectHeadline : '',
+         rejectMessage : '',
+         rejectCloseBtn: '',
+         rejectOkayBtn: '',
+
+         rejectAndAchiveConfirm(message) {
+            this.rejectHeadline = message.rejectandarchivewindowheadline;
+            this.rejectMessage = message.rejectandarchivewindowtext;
+            this.rejectCloseBtn = message.rejectandarchivewindowtextclosebutton;
+            this.rejectOkayBtn = message.rejectandarchivewindowtextokbutton;
+
+            
+            rejectModalInstance.show();
+        },
+
+        
+
+        rejectAndAchive() {  
+            const apiUrl = `https://www.onlinecasting.dk/api/chat/reject_and_archive.asp?conversationid=${this.currentConversation.conversationid}&conversationparticipantid=${this.currentConversation.conversationparticipantid}&chatfolder=${this.currentConversation.chatfolder}`;
+            fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);
+                rejectModalInstance.hide();
+
+                if (data.HideConversationBox == 'YES') {
+                    this.hideConversation(this.currentConversation)
+                }
+
+                if (data.ShowMessage == 'YES') {
+                    this.statusHeadline = data.StatusMessageHeadline;
+                    this.statusMessage = data.StatusMessage;
+                    statusModalInstance.show();
+                }
+              
+                })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        },
+
+
+        
+        
+
         init() {
           let debounceTimerForConversations;
           let debounceTimerForMessages;
@@ -735,7 +815,7 @@ document.addEventListener("alpine:init", () => {
                   }
               }, 300);
           });
-  
+          
           
            // Initial fetch
           this.fetchFolders();
@@ -743,6 +823,11 @@ document.addEventListener("alpine:init", () => {
           this.$nextTick(() => {
             initOwlCarousel(); // Initialize carousel after Alpine updates the DOM
           });
+
+          // Adjust the width on initialization
+          this.adjustChatBoxWidth();
+          // Optionally, adjust on window resize
+          window.addEventListener('resize', () => this.adjustChatBoxWidth());
         }      
     }));
   });

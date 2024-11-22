@@ -28,6 +28,7 @@
 .chat-main {
     flex: 1;
     height: 100%;
+    height: calc(100svh - 170px);
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -56,8 +57,8 @@
 	border-left: solid 1px rgba(0, 0, 0, 0.1);
 	overflow: auto;
 	transition: 0.3s all ease;
-	margin-right: -320px;
-    margin-right: min(-25%, -320px);
+	margin-right: -350px;
+    margin-right: min(-25%, -350px);
 	position: relative;
 	max-width: 25%;
 	width: 100%;
@@ -347,8 +348,9 @@
 }
 
 .chat-textbox-outer {
-    position: sticky;
-    bottom: 0;
+    position: fixed;
+    border: 2px solid #000;
+    bottom: 10px;
     box-shadow: 0 0 24px 0 rgba(0,0,0,.06);
     border-radius: 16px;
     padding: 20px;
@@ -675,7 +677,6 @@
     text-align: center;
     color: white;
     font-size: 14px;
-    height: auto;
     padding: 5px 20px;
     font-weight: 700;
 }
@@ -960,6 +961,9 @@
     }
     .chat-row-dropdown {
         display: none;
+    }
+    .chat-main {
+        height: calc(100svh - 140px);
     }
     .chat-main-row {
         padding: 0;

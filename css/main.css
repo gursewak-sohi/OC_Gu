@@ -4726,6 +4726,10 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     font-weight: 700;
 }
 
+.icon-counter.active {
+    background-color: rgb(255, 0, 60);
+}
+
 .section {
     padding: 60px 0 80px;
     position: relative;

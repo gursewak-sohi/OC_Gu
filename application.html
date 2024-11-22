@@ -277,17 +277,18 @@
                       </a>
 
                       
+
                       <a class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
-                          <div class="icon-wrapper">
+                          <div class="icon-wrapper active" :class="{ 'active': profile.applications_replied == 'YES' }">
                             <span class="icon-outline">
                               <ion-icon name="chatbox-ellipses-outline"></ion-icon>
                             </span>
                             <span class="icon-solid">
                               <ion-icon name="chatbox-ellipses"></ion-icon>
                             </span>
-                            <span class="icon-counter">
-                              1
+                            <span x-show="profile.icon_chat_number_of_messages" x-text="profile.icon_chat_number_of_messages" :class="{ 'active': application.applications_replied == 'YES' && application.icon_chat_number_of_messages}" class="icon-counter">
+                              0
                             </span>
                           </div>
                         </div>
@@ -1020,15 +1021,15 @@
                                       
                                       <a data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
-                                          <div class="icon-wrapper">
+                                          <div class="icon-wrapper" :class="{ 'active': application.applications_replied == 'YES' }">
                                             <span class="icon-outline">
                                               <ion-icon name="chatbox-ellipses-outline"></ion-icon>
                                             </span>
                                             <span class="icon-solid">
                                               <ion-icon name="chatbox-ellipses"></ion-icon>
                                             </span>
-                                            <span class="icon-counter">
-                                              1
+                                            <span x-show="application.icon_chat_number_of_messages" x-text="application.icon_chat_number_of_messages" class="icon-counter" :class="{ 'active': application.applications_replied == 'YES' && application.icon_chat_number_of_messages}">
+                                              0
                                             </span>
                                           </div>
                                           <div class="icon-text" x-text="application.text_icon_chat"></div>

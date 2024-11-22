@@ -30,17 +30,38 @@
                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
                          <img src="img/close-icon.svg" alt="">
                      </div>
-                     <h5 x-text="blockStatus" class="modal-title text-center"></h5>
+                     <h5 x-text="statusHeadline" class="modal-title text-center"></h5>
                  </div>
                  <div class="modal-body chat-modal-body">
-                    <p x-text="blockStatusMessage" class="font-size-16px"></p>
+                    <p x-text="statusMessage" class="font-size-16px"></p>
                  </div>
                  <div class="modal-footer">
-                     <button type="button" data-bs-dismiss="modal" class="btn mainBtn">Okay</button>
+                     <button type="button" data-bs-dismiss="modal" x-text="statusCloseBtn" class="btn mainBtn">Okay</button>
                  </div>
              </div>
          </div>
      </div>
+
+     <!-- Reject & Archive Modal -->
+     <div class="modal fade filterModal" id="rejectModal" tabindex="-1" aria-labelledby="rejectModal" aria-hidden="true">
+      <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                      <img src="img/close-icon.svg" alt="">
+                  </div>
+                  <h5 x-text="rejectHeadline" class="modal-title text-center"></h5>
+              </div>
+              <div class="modal-body chat-modal-body">
+                 <p x-text="rejectMessage" class="font-size-16px"></p>
+              </div>
+              <div class="modal-footer">
+                  <button x-text="rejectCloseBtn" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary me-2">Close</button>
+                  <button @click="rejectAndAchive()" x-text="rejectOkayBtn" type="button" class="btn mainBtn">Okay</button>
+              </div>
+          </div>
+      </div>
+  </div>
 
       <!-- Modal -->
       <!-- <div class="modal fade filterModal" id="reportModal" tabindex="-1" aria-labelledby="reportModal" aria-hidden="true">
@@ -417,7 +438,7 @@
                         </button>
                      </div>
                
-                     <button id="showDetails" class="btn btn-main-sm ms-2 d-none d-lg-block">Show Details</button>
+                     <button @click="adjustChatBoxWidth()" id="showDetails" class="btn btn-main-sm ms-2 d-none d-lg-block">Show Details</button>
                      <div class="dropdown-container dropdown-solid chat-dropdown d-lg-none">
                         <div data-bs-toggle="dropdown" data-bs-auto-close="true"  class="dropdown-toggle">
                            <ion-icon name="ellipsis-vertical"></ion-icon>
@@ -462,7 +483,7 @@
                   </div>
                </div>
                <div class="chat-main-inner">
-                  <ul class="d-flex flex-column p-0 mt-auto">
+                  <ul id="chatBox" class="d-flex flex-column p-0 mt-auto">
                      <template x-if="messagesData.applicationheader">
                         <li class="chat-inquiry-row">
                            <a class="chat-inquiry-row-inner" href="javascript:;">
@@ -517,6 +538,11 @@
                                           <a target="_blank" x-text="message.applicationlinktext" :href="message.applicationlink" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"></a>
                                           <!-- <a x-text="message.applicationlinktext" :href="message.applicationlink" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"></a> -->
                                           <!-- <a href="javascript:;" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"><ion-icon name="thumbs-up-outline"></ion-icon> Upvote</a> -->
+                                       </div>
+                                    </div>
+                                    <div x-show="message.rejectandarchivebutton == 'YES'">
+                                       <div class="w-100 d-flex mt-3 mb-3 flex-wrap gap-3">
+                                          <a @click="rejectAndAchiveConfirm(message)" x-text="message.rejectandarchivebuttontext" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"></a>
                                        </div>
                                     </div>
                                  </div>
@@ -588,7 +614,7 @@
                      
                   </ul>
                </div>
-               <div class="chat-textbox-outer">
+               <div class="chat-textbox-outer" x-bind:style="'max-width: ' + chatBoxWidth + 'px'">
                   <div class="chat-textbox">
                      <!-- Trigger for file upload -->
                     <button class="uploadTrigger" type="button">
@@ -639,7 +665,7 @@
                <div class="chat-details-header">
                   <div class="chat-details-header-inner">
                     <h5>Reservation details</h5>
-                    <button id="hideDetails" class="btn-icon" class="fs-6 cursor-pointer">
+                    <button @click="adjustChatBoxWidth()" id="hideDetails" class="btn-icon" class="fs-6 cursor-pointer">
                        <ion-icon name="close"></ion-icon>
                     </button>
                   </div>
