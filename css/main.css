@@ -3518,6 +3518,8 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     letter-spacing: -0.02em;
     /* text-transform: capitalize; */
     color: #19191C;
+    max-width: 75%;
+  margin: 0 auto;
 }
 
 .audio-filename {
@@ -4920,12 +4922,59 @@ input.gender-checkbox[type="checkbox"]:checked+label {
 	bottom: 0;
 }
 
+.image-listing {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 20px;
+    margin: 0 0 40px 0;
+    padding: 0;
+}
+
+.image-listing li {
+    position: relative;
+}
+
+.image-listing img {
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	border-radius: 10px;
+	width: 100%;
+	height: 100%;
+}
+
+.remove-profile {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	background-color: rgba(0,0,0,0.5);
+	border: none;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	top: 4px;
+	left: 5px;
+    border: 1px solid #fff;
+}
+
+.remove-profile  span {
+	display: flex;
+	height: 24px;
+}
+
 @media (max-width: 767px) {
 
     .modal-header-image {
         width: 30px;
         height: 30px;
         right: 20px;
+    }
+    .image-listing {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
 }
 @media (min-width: 768px) {

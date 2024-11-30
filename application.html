@@ -12,6 +12,10 @@
 
     <!-- Main Styles -->
     <link rel="stylesheet" href="css/main.css">
+
+    <!-- Chat Styles -->
+    <link rel="stylesheet" href="css/chat.css">
+    
     <!-- Responsive Styles -->
     <link rel="stylesheet" href="css/theme-responsive.css">
     <!-- Owl Stylesheets -->
@@ -42,6 +46,177 @@
                 </div>
             </div>
         </div> -->
+
+        <!-- Send Messages Modal -->
+        <div x-cloak="" class="modal fade filterModal" id="sendMessage" tabindex="-1" aria-labelledby="sendMessage" aria-hidden="true">
+          <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                          <img src="img/close-icon.svg" alt="">
+                      </div>
+                      <h5 x-text="messageData.headline" class="modal-title text-center"></h5>
+                      <img x-show="messageData.multipleprofiles == 'NO' || msgProfiles.length === 1" class="modal-header-image" x-bind:src="msgProfiles[0]?.imageurl" alt="image"/>
+                  </div>
+                  <div class="modal-body latestProfileSection">
+                      <div x-show="messageData.multipleprofiles == 'NO' && messageData.ShowConversation	== 'NO'" x-html="messageData.text_html" class="mb-3 font-size-16px"></div>
+                      <ul x-show="messageData.multipleprofiles == 'YES' && msgProfiles.length > 1" class="image-listing overflow-auto" style="max-height: 200px;">
+                        <template x-for="profile in msgProfiles" :key="profile.profileid">
+                          <li>
+                            <button @click="removeMsgProfiles(profile.profileid)" type="button" class="remove-profile"><span>&times;</span></button>
+                            <img x-bind:src="profile.imageurl" />
+                          </li>
+                        </template>
+                      </ul>
+                      
+                      <ul x-show="messageData.multipleprofiles == 'NO' && messageData.ShowConversation	== 'YES'" id="chatMain"  class="mb-4 font-size-16px p-0 overflow-auto" style="max-height: 200px;">
+                        <template x-for="(message, index) in messages" :key="message.messageid">
+                          <li class="chat-main-row">
+                             <div class="chat-main-row-inner">
+                                   <div class="chat-avatar-sm">
+                                      <img :src="message.imagethumb" class="w-100 h-100 img-fluid rounded-circle object-cover" alt="user">
+                                   </div>
+                                   <div class="d-flex flex-column gap-1 position-relative">
+                                      <h5 class="font-size-15px mb-0 fw-bolder">
+                                         <span x-text="message.name"></span> 
+                                         <span x-text="message.date_time" class="fw-semibold ml-1 font-size-11px text-muted"></span>
+                                      </h5>
+                                      <div x-show="message.applicationid !== 0">
+                                         <h1 class="mb-3 mt-2" x-text="message.applicationtitle"></h1>
+                                      </div>
+                                      <div class="mb-0 fw-semibold font-size-16px">
+                                         <div x-show="message.subject">
+                                            <span x-html="message.subject" class="fw-bold">Subject</span>
+                                            <br>
+                                         </div>
+                                         <p class="mb-0 fw-semibold font-size-16px" x-show="message.message" x-html="message.message"></p>
+                                      </div>
+                                      <div x-show="message.applicationid !== 0">
+                                         <div x-show="message.applicationemail || message.applicationphone">
+                                            <ul class="ps-0 mt-3 mb-3 d-flex flex-column gap-1 font-size-18px">
+                                               <li x-show="message.applicationemail">
+                                                  <a class="d-flex align-items-center gap-2 text-decoration-underline"  x-bind:href="'mailto:' + message.applicationemail">
+                                                     <ion-icon class="font-size-18px" name="mail-outline"></ion-icon> <span x-text="message.applicationemail"></span>
+                                                  </a>
+                                               </li>
+                                               <li x-show="message.applicationphone">
+                                                  <a class="d-flex align-items-center gap-2 text-decoration-underline"  x-bind:href="'tel:' + message.applicationphone">
+                                                     <ion-icon class="font-size-18px" name="call-outline"></ion-icon> <span x-text="message.applicationphone"></span>
+                                                  </a>
+                                               </li>
+                                            </ul>
+                                         </div>
+                                         <div x-show="message.agentstatus == 'NEW'">
+                                            <div class="w-100 d-flex mt-3 mb-3 flex-wrap gap-3">
+                                               <a target="_blank" x-text="message.applicationlinktext" :href="message.applicationlink" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"></a>
+                                             </div>
+                                         </div>
+                                         <div x-show="message.rejectandarchivebutton == 'YES'">
+                                            <div class="w-100 d-flex mt-3 mb-3 flex-wrap gap-3">
+                                               <a @click="rejectAndAchiveConfirm(message)" x-text="message.rejectandarchivebuttontext" class="btn mainBtn btnoutlineSecondary w-md-auto w-100"></a>
+                                            </div>
+                                         </div>
+                                      </div>
+                                      <template x-for="(media, index) in message.media" :key="`media-${media.mediaid}-${index}`">
+                                      <div>
+                                         <template x-if="media.mimetype === 'IMAGE'">
+                                            <div class="linkBlock d-flex flex-column gap-3 align-content-md-center mt-1 mb-2">
+                                               <a class="w-100 link mt-1" x-bind:href="media.contenturl" data-fancybox="gallery" data-caption="Caption Images 2"><img class="img-fluid object-cover rounded" x-bind:src="media.contenturl" alt="" /></a>
+                                               <div class="d-flex flex-wrap gap-2">
+                                                  <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                                  <div x-show="media.candelete === 'YES'">
+                                                     <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                                  </div>
+                                               </div>
+                                               </div>
+                                         </template>
+                                         <template x-if="media.mimetype === 'PDF' || media.mimetype === 'Application'">
+                                            <div class="linkBlock d-flex flex-column flex-md-row gap-3 align-content-md-center mt-1 mb-2">
+                                               <a download x-bind:href="media.contenturl" class="link font-size-16px d-flex gap-1 align-items-center fw-semibold text-decoration-underline"><ion-icon class="font-size-18px flex-shrink-0" name="document-attach-outline"></ion-icon> 
+                                               <span x-text="media.contenturl.split('/').pop()"></span>
+                                               </a>
+                                               <div class="d-flex flex-wrap gap-2">
+                                                  <button type="button" class="copyLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="copy-outline"></ion-icon> Copy Link</button>
+                                                  <div x-show="media.candelete === 'YES'">
+                                                     <button type="button" class="deleteLink btn btn-main-sm d-flex align-items-center gap-1 relative"><ion-icon class="font-size-18px" name="trash-outline"></ion-icon> Delete</button>
+                                                  </div>
+                                               </div>
+                                               </div>
+                                         </template>
+                                         <template x-if="media.mimetype === 'VIMEOVIDEO'">
+                                            <div class="ratio ratio-16x9 w-100">
+                                               <iframe class="rounded" x-bind:src="media.contenturl" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                                            </div>
+                                         </template>
+                                      </div>
+                                      </template>                                           
+                                      <span class="mb-0 fw-semibold font-size-11px text-muted">Read by Joy</span>
+                                   </div>
+                             </div>
+                          </li>
+                       </template>
+                      </ul>
+                    
+                      <div class="form-group mb-3 w-100">
+                          <label x-text="messageData.headline_messagebox" class="form-label font-size-16px"></label>
+                          <textarea :maxlength="msgMaxChar" x-model="msgInputText" min="1" rows="6" class="form-control mb-2"></textarea>
+                          <div class="d-flex justify-content-end gap-1"><span x-text="msgMaxChar - msgInputText.length"></span>  <span x-text="messageData.text_characters_left"></span></div>
+                      </div>
+                  </div>
+                  <div class="modal-footer d-flex flex-column">
+                    <div class="d-flex flex-column flex-md-row justify-content-between w-100">
+                      <div class="d-flex flex-column flex-md-row gap-2 ">
+                        
+                        <div class="dropdown-container dropdown-select">
+                          <button data-bs-toggle="dropdown" type="button" class="btn mainBtn btnoutlineSecondary px-4">
+                            <ion-icon name="newspaper-outline"></ion-icon> <span x-text="messageData.text_template_button"></span>
+                          </button>
+                          <div class="dropdown-menu filter-dropdown font-size-14px mt-2 downdown-w-sm">
+                            <ul>
+                              <template x-for="msgTemplate in msgTemplates" :key="msgTemplate.searchname">
+                                <li>
+                                  <a :class="{ 'active': currentSelectedTemplate.searchname == msgTemplate.searchname }"  x-on:click="changeMsgTemplate(msgTemplate.searchname)" class="d-flex align-items-center" href="javascript:;" x-text="msgTemplate.name"></a>
+                               </li>
+                             </template>
+                            </ul>
+                         </div>
+                       </div>
+                        
+                        <!-- Trigger for file upload -->
+                        <button type="button" class="uploadTrigger btn mainBtn btnoutlineSecondary px-4">
+                          <ion-icon name="attach"></ion-icon> <span x-text="messageData.text_attach_files_button"></span>
+                        </button>
+                      </div>
+                      <button x-text="messageData.text_submit" type="button" class="btn mainBtn"></button>
+
+                    </div>
+                      <input type="file" class="fileInput" hidden multiple>
+                      <div class="uploadsContainer w-100 m-0"></div>
+                        <!-- Template for file display -->
+                      <script type="text/template" id="fileDisplayTemplate">
+                            <div class="fileDisplayArea" style="display: none;">
+                              <div class="fileInfo">
+                                  <div class="fileContainer">
+                                    <span class="fileIcon"><ion-icon name="document-outline"></ion-icon></span>
+                                    <div class="imagePreview" style="display: none;"></div>
+                                  </div>
+                                  <div class="fileTextContainer">
+                                    <span class="fileName"></span>
+                                    <div class="fileInfo">
+                                        <span class="fileSize"></span><span class="uploadComplete" style="display: none;"><ion-icon name="checkmark-outline"></ion-icon></span>
+                                    </div>
+                                  </div>
+                                  <button class="removeFile"><ion-icon name="close-outline"></ion-icon></button>
+                              </div>
+                              <div class="progressBarContainer" style="display: none;">
+                                  <div class="progressBar" style="width: 0%;"></div>
+                              </div>
+                            </div>
+                      </script>
+                  </div>
+              </div>
+          </div>
+          </div>
 
 
         <!-- Profile View Modal -->
@@ -287,7 +462,7 @@
                             <span class="icon-solid">
                               <ion-icon name="chatbox-ellipses"></ion-icon>
                             </span>
-                            <span x-show="profile.icon_chat_number_of_messages" x-text="profile.icon_chat_number_of_messages" :class="{ 'active': application.applications_replied == 'YES' && application.icon_chat_number_of_messages}" class="icon-counter">
+                            <span x-show="profile.icon_chat_number_of_messages" x-text="profile.icon_chat_number_of_messages" :class="{ 'active': profile.applications_replied == 'YES' && profile.icon_chat_number_of_messages}" class="icon-counter">
                               0
                             </span>
                           </div>
@@ -1019,7 +1194,7 @@
                                         </a>
                                       </div>
                                       
-                                      <a data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
+                                      <a @click="sendMessageModalData('1730935,1731038,1731030,1730954')" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
                                           <div class="icon-wrapper" :class="{ 'active': application.applications_replied == 'YES' }">
                                             <span class="icon-outline">
@@ -1238,7 +1413,8 @@
     <!-- main-->
     <script src="js/main.js"></script>
     
-    
+    <!-- Chat JS -->
+    <script src="js/chat.js"></script>
 
     <!-- Alpine JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -1250,11 +1426,15 @@
     <!-- Apline SMS data -->
     <script src="js/smsData.js"></script>
 
+    <!-- Aline Send Messages Data -->
+    <script src="js/send-messages-data.js"></script>
+
     <script>
       document.addEventListener("alpine:init", () => {
           Alpine.data('combinedComponent', () => ({
             ...applicationComponent(),
-            ...smsComponent(),
+            ...smsComponent(),  
+            ...sendMessagesComponent(),
             get countryFlagUrl() {
               return this.selectedCountry ? this.selectedCountry.flagUrl : '';
             },
