@@ -34,8 +34,8 @@ function sendMessagesComponent() {
                   sendMessageInstance.show(); 
 
                   this.fetchMsgTemplates()
-                  if (data.ShowConversation	 === "YES") {
-                    this.fetchChatMessages('4018');
+                  if (data.ShowConversation	=== "YES") {
+                    this.fetchChatMessages(data.ConversationID);
                   }
                 }
                 else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
