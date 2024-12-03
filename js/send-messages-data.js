@@ -18,6 +18,7 @@ function sendMessagesComponent() {
       msgMaxChar : 0,
       msgInputText : '',
       msgProfiles: [],
+      selectedProfiles: [],
 
       sendMessageModalData(profileIds) {
         this.isFetchingMsgData = true;
@@ -40,9 +41,9 @@ function sendMessagesComponent() {
                 }
                 else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
                   // console.error("Error fetching message template data"); 
-                  this.statusHeadline = data.StatusMessageHeadline;
-                  this.statusMessage = data.StatusMessage;
-                  this.statusCloseBtn = data.text_close;
+                  this.statusMessageHeadline = data.StatusMessageHeadline;
+                  this.statusMessage = data.StatusMessage	;
+                  this.textClose = data.text_close;
 
                   statusModalInstance.show();
                 }  
@@ -56,7 +57,25 @@ function sendMessagesComponent() {
       },
 
       removeMsgProfiles(profileId) {
-        this.msgProfiles = this.msgProfiles.filter(profile => profile.profileid !== profileId);
+        // Ensure profileId is a number for comparison
+        const idToRemove = typeof profileId === 'string' ? parseInt(profileId, 10) : profileId;
+    
+        this.msgProfiles = this.msgProfiles.filter(profile => profile.profileid !== idToRemove);
+        this.selectedProfiles = this.selectedProfiles.filter(id => parseInt(id, 10) !== idToRemove);
+        this.selectAll = false;
+    },
+    
+      selectAll: false,  
+      toggleSelectAll() {
+        if (this.selectAll) {
+          this.selectedProfiles = this.applications.map(app => app.profileid.toString());
+        } else {
+          this.selectedProfiles = [];
+        }
+      },
+
+      updateSelectAllState() {
+        this.selectAll = this.selectedProfiles.length === this.applications.length;
       },
 
       isFetchingTemplateData: false,
@@ -96,7 +115,7 @@ function sendMessagesComponent() {
         fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles_conversation.asp?conversationid=${conversationid}&skip=0&limit=20`)
           .then(response => response.json())
           .then(data => {
-                console.log(data, 'data')
+                // console.log(data, 'data')
               if (data && Array.isArray(data.messages)) {
                   this.messages = data.messages;
                 } else {

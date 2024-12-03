@@ -63,7 +63,7 @@
                       <ul x-show="messageData.multipleprofiles == 'YES' && msgProfiles.length > 1" class="image-listing overflow-auto" style="max-height: 200px;">
                         <template x-for="profile in msgProfiles" :key="profile.profileid">
                           <li>
-                            <button @click="removeMsgProfiles(profile.profileid)" type="button" class="remove-profile"><span>&times;</span></button>
+                            <button :title="profile.text_remove" @click="removeMsgProfiles(profile.profileid)" type="button" class="remove-profile"><span>&times;</span></button>
                             <img x-bind:src="profile.imageurl" />
                           </li>
                         </template>
@@ -164,11 +164,11 @@
                       </div>
                   </div>
                   <div class="modal-footer d-flex flex-column">
-                    <div class="d-flex flex-column flex-md-row justify-content-between w-100">
+                    <div class="d-flex flex-column flex-md-row justify-content-between w-100 gap-2">
                       <div class="d-flex flex-column flex-md-row gap-2 ">
                         
                         <div class="dropdown-container dropdown-select">
-                          <button data-bs-toggle="dropdown" type="button" class="btn mainBtn btnoutlineSecondary px-4">
+                          <button data-bs-toggle="dropdown" type="button" class="btn mainBtn btnoutlineSecondary px-4 w-100">
                             <ion-icon name="newspaper-outline"></ion-icon> <span x-text="messageData.text_template_button"></span>
                           </button>
                           <div class="dropdown-menu filter-dropdown font-size-14px mt-2 downdown-w-sm">
@@ -713,13 +713,13 @@
           </div>
 
          <!-- Profile Selection -->
-         <div class="selection-section">
+         <div x-show="selectedProfiles.length > 0" class="selection-section">
           <div class="container">
               <div class="row">
                   <div class="col-12">
                       <div class="selection-block">
-                          <h5><span>2</span> ansogninger valgt</h5>
-                          <a class="btn mainBtn btnfillwhite px-3 px-md-4" href="#">Besvar ansogningerne</a>
+                          <h5><span x-text="selectedProfiles.length"></span> ansogninger valgt</h5>
+                          <a @click="sendMessageModalData(selectedProfiles.join(','))" class="btn mainBtn btnfillwhite px-3 px-md-4" href="javascript:;">Besvar ansogningerne</a>
                       </div>
                   </div>
               </div>
@@ -887,12 +887,12 @@
                       <ul class="d-flex flex-column flex-md-row align-items-md-center gap-2 m-0 p-0 flex-wrap">
                         <li class="d-none d-md-block">
                           <div class="form-check">
-                            <input type="checkbox" class="form-check-input cursor-pointer">
+                            <input x-model="selectAll" x-on:change="toggleSelectAll" type="checkbox" class="form-check-input cursor-pointer">
                           </div>
                         </li>
                         <template x-for="folder in folders" :key="folder.name">
                           <li>
-                             <a x-on:click="changeChatFolder(folder.searchname)" class="btn-tab" :class="{ 'active': currentChatFolder == folder.searchname }" href="javascript:;">
+                             <a x-on:click="changeChatFolder(folder.searchname); selectedProfiles = []; selectAll = false;" class="btn-tab" :class="{ 'active': currentChatFolder == folder.searchname }" href="javascript:;">
                               <ion-icon x-bind:name="folder.icon"></ion-icon>
                               <span x-text="folder.name"></span>
                               <span x-text="`(${folder.number_of_applications})`"></span>
@@ -977,7 +977,7 @@
                               <div class="profileItem">
                                   <div class="profile-left">
                                     <div class="form-check">
-                                      <input type="checkbox" class="form-check-input cursor-pointer">
+                                      <input type="checkbox" :value="application.profileid" x-on:change="updateSelectAllState" x-model="selectedProfiles" class="form-check-input cursor-pointer">
                                     </div>
                                     <a @click="fetchProfile(application.applicationid)" class="profile-card-wrapper" href="javascript:;">
                                       <div class="profileCard" :style="`background-image: url(${application.image})`"></div>
@@ -1194,7 +1194,7 @@
                                         </a>
                                       </div>
                                       
-                                      <a @click="sendMessageModalData('1730935,1731038,1731030,1730954')" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
+                                      <a @click="sendMessageModalData(application.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
                                           <div class="icon-wrapper" :class="{ 'active': application.applications_replied == 'YES' }">
                                             <span class="icon-outline">
