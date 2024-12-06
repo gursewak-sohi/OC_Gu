@@ -1489,7 +1489,9 @@ a.hover:hover:before {
 .selection-section {
     background-color: #eb783e;
     padding: 10px 0;
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
 }
 
 .selection-section .container {
@@ -4701,7 +4703,6 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     gap: 3px;
     margin-bottom: 0;
     color: #969696;
-    text-transform: capitalize;
 }
 
 .grid-view .profile-data {
