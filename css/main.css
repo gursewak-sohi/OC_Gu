@@ -4696,6 +4696,9 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     margin-bottom: 0;
     display: flex;
 }
+#sendMessage {
+    z-index: 99999999;
+}
 
 .profile-time {
     display: flex;

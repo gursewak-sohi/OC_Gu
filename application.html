@@ -453,16 +453,18 @@
 
                       
 
-                      <a class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
+                      <a @click="sendMessageModalData(profile.profileid)" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
-                          <div class="icon-wrapper active" :class="{ 'active': profile.applications_replied == 'YES' }">
+                          <div class="icon-wrapper">
                             <span class="icon-outline">
-                              <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                              <ion-icon x-show="profile.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
+                              <ion-icon x-show="profile.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
                             </span>
                             <span class="icon-solid">
-                              <ion-icon name="chatbox-ellipses"></ion-icon>
+                              <ion-icon x-show="profile.applications_replied == 'NO'" name="arrow-undo"></ion-icon>
+                              <ion-icon x-show="profile.applications_replied !== 'NO'" name="chatbox-ellipses"></ion-icon>
                             </span>
-                            <span x-show="profile.icon_chat_number_of_messages" x-text="profile.icon_chat_number_of_messages" :class="{ 'active': profile.applications_replied == 'YES' && profile.icon_chat_number_of_messages}" class="icon-counter">
+                            <span x-show="profile.text_icon_chat_circle" x-text="profile.text_icon_chat_circle" class="icon-counter">
                               0
                             </span>
                           </div>
@@ -1009,7 +1011,58 @@
                                          </template>
                                       </div>
                                         <div class="font-size-16px mb-2"><b>Email:</b> <span x-text="application.email"></span></div>
+                                         
                                         <div class="font-size-16px mb-2"><b>Phone:</b> <span x-text="application.phone"></span></div>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_image == 'YES'" x-bind:class="application.attached_image == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_image_attached_hover" href="javascript:;">
+                                            <div class="icon-text-wrapper">
+                                              <div class="icon-wrapper fs-4">
+                                                <span class="icon-outline">
+                                                    <ion-icon name="images-outline"></ion-icon>
+                                                </span>
+                                                <span class="icon-solid">
+                                                    <ion-icon name="images"></ion-icon>
+                                                </span>
+                                                <span x-show="application.attached_image == 'YES'" class="icon-checkmark">
+                                                  <ion-icon name="checkmark-circle"></ion-icon>
+                                                </span>
+                                              </div>
+                                              <div class="icon-text" x-text="application.text_icon_image_attached"></div>
+                                            </div>
+                                          </a>
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_video == 'YES'" x-bind:class="application.attached_video == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_video_attached_hover" href="javascript:;">
+                                            <div class="icon-text-wrapper">
+                                            <div class="icon-wrapper fs-4">
+                                              <span class="icon-outline">
+                                                <ion-icon name="videocam-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="videocam"></ion-icon>
+                                              </span>
+                                              <span x-show="application.attached_video == 'YES'" class="icon-checkmark">
+                                                <ion-icon name="checkmark-circle"></ion-icon>
+                                              </span>
+                                            </div>
+                                            <div class="icon-text" x-text="application.text_icon_video_attached"></div>
+                                            </div>
+                                          </a>
+                                          <a @click="fetchProfile(application.applicationid)" x-show="application.allow_attach_audio == 'YES'" x-bind:class="application.attached_audio == 'YES' ? 'text-muted' : 'text-muted-light'" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_audio_attached_hover" href="javascript:;">
+                                            <div class="icon-text-wrapper">
+                                            <div class="icon-wrapper fs-3">
+                                              <span class="icon-outline">
+                                                <ion-icon name="attach-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="attach-outline"></ion-icon>
+                                              </span>
+                                              <span x-show="application.attached_audio == 'YES'" class="icon-checkmark">
+                                                <ion-icon name="checkmark-circle"></ion-icon>
+                                              </span>
+                                            </div>
+                                            <div class="icon-text" x-text="application.text_icon_audio_attached"></div>
+                                            </div>
+                                          </a>
+                                        </div>
                                         <div>
                                           <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_rating_stars_hover" class="star-rating">
                                             <template x-for="star in 5" :key="star">
@@ -1032,7 +1085,17 @@
                                       </div>
                                       <div class="d-flex align-items-center gap-2 mt-3 fs-3">
                                         
-                                      <a class="btn-iconed-primary" href="javascript:;"><ion-icon class="font-size-22px" name="chatbox-ellipses-outline"></ion-icon><span x-text="application.text_icon_chat"></span></a>
+       
+                                      <a @click="sendMessageModalData(application.profileid)" class="btn-iconed-primary position-relative" href="javascript:;">
+                                        <ion-icon class="font-size-22px" x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
+                                        <ion-icon class="font-size-22px" x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
+                                        <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter active">
+                                          0
+                                        </span>
+                                        <span x-text="application.text_icon_chat"></span>
+                                      </a>
+
+
                                       <a @click="fetchSMS(application.applicationid, application.profileid)"  class="btn-iconed-primary" href="javascript:;">
                                         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                           <g>
@@ -1197,14 +1260,16 @@
                                       
                                       <a @click="sendMessageModalData(application.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
-                                          <div class="icon-wrapper" :class="{ 'active': application.applications_replied == 'YES' }">
+                                          <div class="icon-wrapper">
                                             <span class="icon-outline">
-                                              <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                                              <ion-icon x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
+                                              <ion-icon x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
                                             </span>
                                             <span class="icon-solid">
-                                              <ion-icon name="chatbox-ellipses"></ion-icon>
+                                              <ion-icon x-show="application.applications_replied == 'NO'" name="arrow-undo"></ion-icon>
+                                              <ion-icon x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses"></ion-icon>
                                             </span>
-                                            <span x-show="application.icon_chat_number_of_messages" x-text="application.icon_chat_number_of_messages" class="icon-counter" :class="{ 'active': application.applications_replied == 'YES' && application.icon_chat_number_of_messages}">
+                                            <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter">
                                               0
                                             </span>
                                           </div>
@@ -1237,7 +1302,15 @@
                                       </a>
                                     </div>
                                       
-                                      <a class="btn-iconed-primary grid-only" href="javascript:;"><ion-icon class="font-size-22px" name="chatbox-ellipses-outline"></ion-icon><span x-text="application.text_icon_chat"></span></a>
+                                      <a @click="sendMessageModalData(application.profileid)" class="btn-iconed-primary grid-only position-relative" href="javascript:;">
+                                        <ion-icon class="font-size-22px" x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
+                                        <ion-icon class="font-size-22px" x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
+                                        <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter active">
+                                          0
+                                        </span>
+                                        <span x-text="application.text_icon_chat"></span>
+                                      </a>
+
                                       <a @click="fetchSMS(application.applicationid, application.profileid)"  class="btn-iconed-primary grid-only" href="javascript:;">
                                         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
                                           <g>
