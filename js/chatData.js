@@ -322,7 +322,7 @@ document.addEventListener("alpine:init", () => {
             fetch(`https://www.onlinecasting.dk/api/chat/conversation_new_july_2024.asp?conversationid=${this.currentConversationID}&skip=${this.messagesSkip}&limit=${this.messagesLimit}`)
               .then(response => response.json())
               .then(data => {
-                    console.log(data, 'data')
+                    // console.log(data, 'data')
                   if (data && Array.isArray(data.messages)) {
                         // this.messagesData = data  
                         if (fetchOlderMessages) {
@@ -542,7 +542,7 @@ document.addEventListener("alpine:init", () => {
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Star toggled', data);
+                    // console.log('Star toggled', data);
                     // Update the conversation's starred status in the Alpine state
                     conversation.tag = setAsStarred;
                     
@@ -552,7 +552,7 @@ document.addEventListener("alpine:init", () => {
                     
                     if (data.ChangeToFolder) {
                         this.switchFolder(data.ChangeToFolder, data.ChangeToFolder.toLowerCase());
-                        console.log('switched to', data.ChangeToFolder);
+                        // console.log('switched to', data.ChangeToFolder);
                     }
                 })
                 .catch(error => {
@@ -574,7 +574,7 @@ document.addEventListener("alpine:init", () => {
                     
                     if (data.ChangeToFolder) {
                         this.switchFolder(data.ChangeToFolder, data.ChangeToFolder.toLowerCase());
-                        console.log('switched to', data.ChangeToFolder);
+                        // console.log('switched to', data.ChangeToFolder);
                     }
                 })
                 .catch(error => {
@@ -587,7 +587,7 @@ document.addEventListener("alpine:init", () => {
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Ready only status toggled', data);
+                    // console.log('Ready only status toggled', data);
                     // Update the conversation's starred status in the Alpine state
                     conversation.readonly = setReadStatus;
                    
@@ -606,7 +606,7 @@ document.addEventListener("alpine:init", () => {
 
                     if (data.ChangeToFolder) {
                         this.switchFolder(data.ChangeToFolder, data.ChangeToFolder.toLowerCase());
-                        console.log('switched to', data.ChangeToFolder);
+                        // console.log('switched to', data.ChangeToFolder);
                     }
 
                 })
@@ -645,7 +645,7 @@ document.addEventListener("alpine:init", () => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Response:', data);
+                // console.log('Response:', data);
 
                 this.currentConversation.isblocked = 'YES';
 
@@ -686,7 +686,7 @@ document.addEventListener("alpine:init", () => {
             fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                console.log('Response:', data);
+                // console.log('Response:', data);
                 // this.statusHeadline = data.Status;
                 // this.statusMessage = data.StatusMessage;
 
@@ -761,7 +761,7 @@ document.addEventListener("alpine:init", () => {
             fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                console.log('Response:', data);
+                // console.log('Response:', data);
                 rejectModalInstance.hide();
 
                 if (data.HideConversationBox == 'YES') {
