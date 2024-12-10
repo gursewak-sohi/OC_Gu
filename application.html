@@ -160,7 +160,25 @@
                       <div class="form-group mb-3 w-100">
                           <label x-text="messageData.headline_messagebox" class="form-label font-size-16px"></label>
                           <textarea :maxlength="msgMaxChar" x-model="msgInputText" min="1" rows="6" class="form-control mb-2"></textarea>
-                          <div class="d-flex justify-content-end gap-1"><span x-text="msgMaxChar - msgInputText.length"></span>  <span x-text="messageData.text_characters_left"></span></div>
+                          <div class="d-flex flex-md-row flex-column justify-content-between gap-1">
+                            <div x-show="messageData.movetofolder">
+                              <div class="d-flex justify-content-center align-items-center whitespace">
+                                <div class="form-check mb-0">
+                                  <input type="checkbox" class="form-check-input cursor-pointer">
+                                </div>
+                                <div x-text="messageData.text_checkbox_move_to"></div>
+                                <select class="form-select mx-2">
+                                  <template x-for="folder in messageData.movetofolder" :key="folder.folder">
+                                   <option :value="folder" x-text="folder.folder"></option>
+                                 </template>
+                                </select>
+                                <div x-text="messageData.text_move_to_after_dropdown"></div>
+                              </div>
+                            </div>
+                            <div class="d-flex justify-content-center gap-1">
+                              <span x-text="msgMaxChar - msgInputText.length"></span>  <span x-text="messageData.text_characters_left"></span>
+                            </div>
+                          </div>
                       </div>
                   </div>
                   <div class="modal-footer d-flex flex-column">
@@ -453,7 +471,7 @@
 
                       
 
-                      <a @click="sendMessageModalData(profile.profileid)" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
+                      <a @click="sendMessageModalData(profile.profileid, currentChatFolder)" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div class="icon-wrapper">
                             <span class="icon-outline">
@@ -721,7 +739,7 @@
                   <div class="col-12">
                       <div class="selection-block">
                           <h5><span x-text="selectedProfiles.length"></span> ansogninger valgt</h5>
-                          <a @click="sendMessageModalData(selectedProfiles.join(','))" class="btn mainBtn btnfillwhite px-3 px-md-4" href="javascript:;">Besvar ansogningerne</a>
+                          <a @click="sendMessageModalData(selectedProfiles.join(','), currentChatFolder)" class="btn mainBtn btnfillwhite px-3 px-md-4" href="javascript:;">Besvar ansogningerne</a>
                       </div>
                   </div>
               </div>
@@ -1086,7 +1104,7 @@
                                       <div class="d-flex align-items-center gap-2 mt-3 fs-3">
                                         
        
-                                      <a @click="sendMessageModalData(application.profileid)" class="btn-iconed-primary position-relative" href="javascript:;">
+                                      <a @click="sendMessageModalData(application.profileid, currentChatFolder)" class="btn-iconed-primary position-relative" href="javascript:;">
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
                                         <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter active">
@@ -1258,7 +1276,7 @@
                                         </a>
                                       </div>
                                       
-                                      <a @click="sendMessageModalData(application.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
+                                      <a @click="sendMessageModalData(application.profileid, currentChatFolder)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
                                           <div class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1302,7 +1320,7 @@
                                       </a>
                                     </div>
                                       
-                                      <a @click="sendMessageModalData(application.profileid)" class="btn-iconed-primary grid-only position-relative" href="javascript:;">
+                                      <a @click="sendMessageModalData(application.profileid, currentChatFolder)" class="btn-iconed-primary grid-only position-relative" href="javascript:;">
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
                                         <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter active">

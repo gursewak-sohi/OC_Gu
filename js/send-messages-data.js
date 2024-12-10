@@ -20,12 +20,12 @@ function sendMessagesComponent() {
       msgProfiles: [],
       selectedProfiles: [],
 
-      sendMessageModalData(profileIds) {
+      sendMessageModalData(profileIds, currentChatFolder) {
         this.isFetchingMsgData = true;
-        fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles.asp?profileid=${profileIds}&page=SEARCH`)
+        fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles.asp?profileid=${profileIds}&page=SEARCH&auditionid=23406&folder=${currentChatFolder}`)
             .then(response => response.json())
             .then(data => {
-                // console.log(data, 'send Messages');
+                console.log(data, 'send Messages');
                 if (data.Status == 'OK') {
                   this.messageData = data;
                   this.msgInputText = data.text_messagebox;
