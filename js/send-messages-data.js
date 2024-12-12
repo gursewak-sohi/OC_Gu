@@ -164,7 +164,7 @@ function sendMessagesComponent() {
 
     profileReplyData : {},
     isFetchingProfileReply : false,
-    profileReplyData(profileId, applicationId, auditionId) {
+    handleProfileReplyData(profileId, applicationId, auditionId) {
       this.isFetchingProfileReply = true;
       fetch(`https://www.onlinecasting.dk/api/applications/application_replies.asp?profileid=${profileId}&applicationid=${applicationId}&auditionid=${auditionId}`)
           .then(response => response.json())

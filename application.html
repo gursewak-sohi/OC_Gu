@@ -318,7 +318,7 @@
                             <ion-icon x-show="profile.applications_replied == 'YES'" name="checkmark-circle-outline"></ion-icon>
                             <ion-icon x-show="profile.applications_replied !== 'YES'" name="time-outline"></ion-icon> 
                             <i x-text="profile.date_application_sent"></i>
-                            <div x-show="profile.text_see_reply_link !== ''">- <a @click.prevent="profileReplyData(profile.profileid, profile.applicationid, '24501')" href="javascript:;" class="text-decoration-underline" x-text="profile.text_see_reply_link"></a></div>
+                            <div x-show="profile.text_see_reply_link !== ''">- <a @click.prevent="handleProfileReplyData(profile.profileid, profile.applicationid, '24501')" href="javascript:;" class="text-decoration-underline" x-text="profile.text_see_reply_link"></a></div>
                           </div>
                           <h1 class="mb-0" x-text="profile.name"></h1>
                           <h3 class="text-muted mb-3" x-text="profile.age_area"></h3>
@@ -435,7 +435,7 @@
                         </div>
                         </div>
                       </div>
-                      
+
                       <div class="row mt-4">
                         <div class="col-md-12 col-12">
                           <h3 class="font-weight-800" x-text="profile.attribues_text_title"></h3>
@@ -1042,7 +1042,7 @@
                                           <ion-icon x-show="application.applications_replied == 'YES'" name="checkmark-circle-outline"></ion-icon>
                                           <ion-icon x-show="application.applications_replied !== 'YES'" name="time-outline"></ion-icon> 
                                           <i x-text="application.date_application_sent"></i>
-                                          <div x-show="application.text_see_reply_link !== ''">- <a @click.prevent="profileReplyData(application.profileid, application.applicationid, '24501')" href="javascript:;" class="text-decoration-underline" x-text="application.text_see_reply_link"></a></div>
+                                          <div x-show="application.text_see_reply_link !== ''">- <a @click.prevent="handleProfileReplyData(application.profileid, application.applicationid, '24501')" href="javascript:;" class="text-decoration-underline" x-text="application.text_see_reply_link"></a></div>
                                         </div>
                                         <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_hired_selected" href="javascript:;" class="text-muted font-size-17px">
                                           <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
