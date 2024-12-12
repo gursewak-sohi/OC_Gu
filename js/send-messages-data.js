@@ -7,6 +7,12 @@ if (!sendMessageInstance) {
   sendMessageInstance = new bootstrap.Modal(sendMessage);
 }
 
+let profileReplyModal = document.getElementById('profileReplyModal');
+let profileReplyModalInstance = bootstrap.Modal.getInstance(profileReplyModal);
+if (!profileReplyModalInstance) {
+  profileReplyModalInstance = new bootstrap.Modal(profileReplyModal);
+}
+
 
 
  
@@ -131,6 +137,58 @@ function sendMessagesComponent() {
               this.isMessagesFetching = false;
           });
            
+    },
+
+    replyAllInFolder() {
+      fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles.asp?auditionid=23406&folder=NO&replyallinfolder=YES`)
+          .then(response => response.json())
+          .then(data => {
+              console.log(data, 'replyAllInFolder'); 
+              if (data.Status === 'OK') {
+                this.sendMessageModalData(data.profileid, "NO")
+              }
+              else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                this.statusMessageHeadline = data.StatusMessageHeadline;
+                this.statusMessage = data.StatusMessage	;
+                this.textClose = data.text_close;
+                statusModalInstance.show();
+              }   
+          })
+          .catch(error => {
+              console.error("Error:", error);
+          })
+          .finally(() => {
+              // console.log('Folder fetched')
+          });
+    },
+
+    profileReplyData : {},
+    isFetchingProfileReply : false,
+    profileReplyData(profileId, applicationId, auditionId) {
+      this.isFetchingProfileReply = true;
+      fetch(`https://www.onlinecasting.dk/api/applications/application_replies.asp?profileid=${profileId}&applicationid=${applicationId}&auditionid=${auditionId}`)
+          .then(response => response.json())
+          .then(data => {
+              // console.log(data, 'send Messages');
+              if (data.Status == 'OK') {
+                this.profileReplyData = data;
+                profileReplyModalInstance.show(); 
+              }
+              else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
+                // console.error("Error fetching message template data"); 
+                this.statusMessageHeadline = data.StatusMessageHeadline;
+                this.statusMessage = data.StatusMessage	;
+                this.textClose = data.text_close;
+
+                statusModalInstance.show();
+              }  
+          })
+          .catch(error => {
+              console.error("Error fetching profile reply modal data:", error);
+          })
+          .finally(() => {
+              this.isFetchingProfileReply = false;
+          });
     },
  
   }

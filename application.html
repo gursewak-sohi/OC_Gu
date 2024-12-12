@@ -47,6 +47,34 @@
             </div>
         </div> -->
 
+        <!-- Profile Reply Modal -->
+        <div x-cloak="" class="modal fade filterModal" id="profileReplyModal" tabindex="-1" aria-labelledby="profileReplyModal" aria-hidden="true">
+          <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                          <img src="img/close-icon.svg" alt="">
+                      </div>
+                      <h5 x-text="profileReplyData.headline" class="modal-title text-center"></h5>
+                      <img class="modal-header-image" x-bind:src="profileReplyData.image" alt="image"/>
+                  </div>
+                  <div class="modal-body latestProfileSection">
+                      <ul class="mb-0 p-0 d-flex flex-column gap-3 overflow-auto" style="max-height: 320px;">
+                        <template x-for="(reply, index) in profileReplyData.replies" :key="index">
+                           <li>
+                              <div x-text="reply.date" class="profile-time"></div>
+                              <div class="font-size-16px" x-html="reply.text.replace(/\r?\n/g, '<br>')"></div>
+                           </li>
+                       </template>
+                      </ul>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-between">
+                    <button x-text="profileReplyData.text_close" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
+                </div>
+              </div>
+          </div>
+        </div>
+
         <!-- Send Messages Modal -->
         <div x-cloak="" class="modal fade filterModal" id="sendMessage" tabindex="-1" aria-labelledby="sendMessage" aria-hidden="true">
           <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
@@ -234,7 +262,7 @@
                   </div>
               </div>
           </div>
-          </div>
+        </div>
 
 
         <!-- Profile View Modal -->
@@ -286,9 +314,12 @@
                             </div>
                             </template>
                           </div>
-                          <a href="javascript:;" class="profile-time">
-                            <ion-icon name="time-outline"></ion-icon><i x-text="profile.date_application_sent"></i>
-                          </a>
+                          <div class="profile-time">
+                            <ion-icon x-show="profile.applications_replied == 'YES'" name="checkmark-circle-outline"></ion-icon>
+                            <ion-icon x-show="profile.applications_replied !== 'YES'" name="time-outline"></ion-icon> 
+                            <i x-text="profile.date_application_sent"></i>
+                            <div x-show="profile.text_see_reply_link !== ''">- <a @click.prevent="profileReplyData(profile.profileid, profile.applicationid, '24501')" href="javascript:;" class="text-decoration-underline" x-text="profile.text_see_reply_link"></a></div>
+                          </div>
                           <h1 class="mb-0" x-text="profile.name"></h1>
                           <h3 class="text-muted mb-3" x-text="profile.age_area"></h3>
                           <div class="d-flex align-items-center gap-2 mb-2">
@@ -354,40 +385,40 @@
                       </div>
                        
                     </div>
+
   
-                    <div x-show="profile.attached_media == 'YES'" class="row mt-4">
-                      <div class="col-md-12">
-                        <h3  class="font-weight-800" x-text="profile.attached_media_text_title"></h3>
-                      </div>
-                      <div class="col-12 filterTabs pt-0 mb-2">
-                        <div x-show="!isFetchingProfile" class="grid">
-                        <template  x-for="image in profile.images_attached" :key="image.imageurl">
-                            <div class="grid-item">
-                                <a :href="image.imageurl" data-fancybox="gallery" :data-caption="image.datecreated">
-                                  <img class="w-100 rounded" :src="image.imageurl"/>
-                                </a>
+                      <div x-show="profile.attached_media == 'YES'" class="row mt-4">
+                        <div class="col-md-12">
+                          <h3  class="font-weight-800" x-text="profile.attached_media_text_title"></h3>
+                        </div>
+                        <div class="col-12 filterTabs pt-0 mb-2">
+                          <div class="grid">
+                          <template  x-for="image in profile.images_attached" :key="image.imageurl">
+                              <div class="grid-item">
+                                  <a :href="image.imageurl" data-fancybox="gallery" :data-caption="image.datecreated">
+                                    <img class="w-100 rounded" :src="image.imageurl"/>
+                                  </a>
+                              </div>
+                          </template>
+                        </div>
+                        </div>
+                        <div class="col-12">
+                          <template x-for="video in profile.videos_attached" :key="video">
+                              <div class="ratio ratio-16x9 mb-20">
+                                <iframe loading="lazy" :src="video" title="vimeo video" allowfullscreen></iframe>
+                              </div>
+                          </template>
+                        </div>
+                        <div class="col-12">
+                          <template x-for="audio in profile.audio_attached" :key="audio.src">
+                            <div>
+                              <div class="mb-1" x-text="audio.filename"></div>
+                              <div x-html="audio.html"></div>
                             </div>
-                        </template>
+                          </template>
+                        </div>
                       </div>
-                      </div>
-                      <div class="col-12">
-                        <template x-for="video in profile.videos_attached" :key="video">
-                            <div class="ratio ratio-16x9 mb-20">
-                              <iframe :src="video" title="vimeo video" allowfullscreen></iframe>
-                            </div>
-                        </template>
-                      </div>
-                      <div class="col-12">
-                        <template x-for="audio in profile.audio_attached" :key="audio.src">
-                          <div>
-                            <div class="mb-1" x-text="audio.filename"></div>
-                            <div x-html="audio.html"></div>
-                          </div>
-                        </template>
-                      </div>
-                    </div>
-  
-  
+                      
                       <div x-show="profile.profile_images_text_title !== ''" class="row mt-4">
                         <div class="col-md-12 col-12">
                           <h3 class="font-weight-800" x-text="profile.profile_images_text_title"></h3>
@@ -404,8 +435,7 @@
                         </div>
                         </div>
                       </div>
-  
-  
+                      
                       <div class="row mt-4">
                         <div class="col-md-12 col-12">
                           <h3 class="font-weight-800" x-text="profile.attribues_text_title"></h3>
@@ -922,6 +952,9 @@
                         <li x-show="currentChatFolder === 'YES'">
                           <a @click="shareChatFolder()" class="btn-share" href="javascript:;"><span x-text="shareLinkText"></span> <ion-icon name="share-outline"></ion-icon></a>
                         </li>
+                        <li x-show="currentChatFolder === 'NO'">
+                          <a @click="replyAllInFolder()" class="btn-share" href="javascript:;"><span x-text="textRejection"></span>  <ion-icon name="thumbs-down-outline"></ion-icon></a>
+                        </li>
                      </ul>
                     </div>
                     <div class="col-md-3">
@@ -1005,9 +1038,12 @@
                                     </a>
                                     <div class="profile-data">
                                       <div class="d-flex gap-2 align-items-center">
-                                        <a @click="fetchProfile(application.applicationid)" href="javascript:;" class="profile-time">
-                                          <ion-icon name="time-outline"></ion-icon> <i x-text="application.date_application_sent"></i>
-                                        </a>
+                                        <div class="profile-time">
+                                          <ion-icon x-show="application.applications_replied == 'YES'" name="checkmark-circle-outline"></ion-icon>
+                                          <ion-icon x-show="application.applications_replied !== 'YES'" name="time-outline"></ion-icon> 
+                                          <i x-text="application.date_application_sent"></i>
+                                          <div x-show="application.text_see_reply_link !== ''">- <a @click.prevent="profileReplyData(application.profileid, application.applicationid, '24501')" href="javascript:;" class="text-decoration-underline" x-text="application.text_see_reply_link"></a></div>
+                                        </div>
                                         <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_hired_selected" href="javascript:;" class="text-muted font-size-17px">
                                           <div :class="application.hired === 'YES' && 'active-red'" class="icon-wrapper">
                                             <span class="icon-solid">
@@ -1295,8 +1331,8 @@
                                         </div>
                                       </a>
 
-                                      <div x-bind:class="application.show_sms_icon === 'YES' ? 'visible' : 'invisible'">
-                                      <a @click="fetchSMS(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_sms_hover" href="javascript:;" class="text-muted list-only hidden-list-xs ms-1">
+                                      <div class="list-only hidden-list-xs" x-bind:class="application.show_sms_icon === 'YES' ? 'visible' : 'invisible'">
+                                      <a @click="fetchSMS(application.applicationid, application.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_sms_hover" href="javascript:;" class="text-muted  ms-1">
                                         <div class="icon-text-wrapper">
                                         <div class="icon-wrapper more-icon">
                                           <span class="icon-outline">

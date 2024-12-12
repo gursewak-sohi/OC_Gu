@@ -68,6 +68,7 @@ function applicationComponent() {
     folders : [],
     currentChatFolder: '',
     shareLinkText: '',
+    textRejection: '',
 
     setCurrentView(view) {
       this.currentView = view;
@@ -84,6 +85,7 @@ function applicationComponent() {
               // console.log(data, 'folders'); 
               if (data && Array.isArray(data.folders)) {
                   this.shareLinkText = data.text_sharelink;
+                  this.textRejection = data.text_send_rejection;
                   this.folders = data.folders.map(folder => {
                     return {
                       ...folder,
@@ -166,6 +168,7 @@ function applicationComponent() {
     },
 
     removeApplication(applicationid) {
+      
       this.applications = this.applications.filter(app => app.applicationid !== applicationid);
     },
 
@@ -195,6 +198,14 @@ function applicationComponent() {
               }
               
               this.removeApplication(applicationid);
+              
+              if (this.applications.length === 0) {
+                this.applications = [];
+                this.applicationSkip = 0;
+                this.applicationLimit = 5;
+
+                this.fetchApplications()
+              }
               if (nextProfileId) {
                   // console.log(nextProfileId, 'nextProfileId')
                   this.fetchProfile(nextProfileId)
@@ -612,6 +623,7 @@ function applicationComponent() {
                     this.isFetchingProfile = false;
                   }, 100);
                 }, 500);
+                
             });
       },
 
@@ -624,6 +636,8 @@ function applicationComponent() {
             history.pushState({}, '', newUrl);
             profileModalInstance.hide();
         }, 100)(); // Adjust the debounce delay as necessary
-    }    
+    },
+
+        
   }
 }

@@ -4477,7 +4477,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     right: 0;
     display: flex;
     gap: 10px;
-    bottom: 172px;
+    bottom: 154px;
 }
 
 .profile-left {
@@ -4696,7 +4696,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     margin-bottom: 0;
     display: flex;
 }
-#sendMessage {
+#sendMessage , #profileReplyModal {
     z-index: 99999999;
 }
 
@@ -4706,6 +4706,7 @@ input.gender-checkbox[type="checkbox"]:checked+label {
     gap: 3px;
     margin-bottom: 0;
     color: #969696;
+    font-style: italic;
 }
 
 .grid-view .profile-data {
