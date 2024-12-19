@@ -26,9 +26,10 @@ function sendMessagesComponent() {
       msgProfiles: [],
       selectedProfiles: [],
 
-      sendMessageModalData(profileIds, currentChatFolder) {
+      sendMessageModalData(applicationIds, currentChatFolder) {
+
         this.isFetchingMsgData = true;
-        fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles.asp?profileid=${profileIds}&page=SEARCH&auditionid=23406&folder=${currentChatFolder}`)
+        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${currentChatFolder}&template=NO`)
             .then(response => response.json())
             .then(data => {
                 console.log(data, 'send Messages');
@@ -66,7 +67,7 @@ function sendMessagesComponent() {
         // Ensure profileId is a number for comparison
         const idToRemove = typeof profileId === 'string' ? parseInt(profileId, 10) : profileId;
     
-        this.msgProfiles = this.msgProfiles.filter(profile => profile.profileid !== idToRemove);
+        this.msgProfiles = this.msgProfiles.filter(profile => profile.applicationid !== idToRemove);
         this.selectedProfiles = this.selectedProfiles.filter(id => parseInt(id, 10) !== idToRemove);
         this.selectAll = false;
     },
@@ -74,7 +75,7 @@ function sendMessagesComponent() {
       selectAll: false,  
       toggleSelectAll() {
         if (this.selectAll) {
-          this.selectedProfiles = this.applications.map(app => app.profileid.toString());
+          this.selectedProfiles = this.applications.map(app => app.applicationid.toString());
         } else {
           this.selectedProfiles = [];
         }
@@ -140,12 +141,12 @@ function sendMessagesComponent() {
     },
 
     replyAllInFolder() {
-      fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles.asp?auditionid=23406&folder=NO&replyallinfolder=YES`)
+      fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?page=SEARCH&auditionid=24501&folder=NO&replyallinfolder=YES&replytype=REJECT&template=NO`)
           .then(response => response.json())
           .then(data => {
-              console.log(data, 'replyAllInFolder'); 
+              // console.log(data, 'replyAllInFolder'); 
               if (data.Status === 'OK') {
-                this.sendMessageModalData(data.profileid, "NO")
+                this.sendMessageModalData(data.applicationid, "NO")
               }
               else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
                 this.statusMessageHeadline = data.StatusMessageHeadline;

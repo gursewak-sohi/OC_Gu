@@ -84,20 +84,20 @@
                           <img src="img/close-icon.svg" alt="">
                       </div>
                       <h5 x-text="messageData.headline" class="modal-title text-center"></h5>
-                      <img x-show="messageData.multipleprofiles == 'NO' || msgProfiles.length === 1" class="modal-header-image" x-bind:src="msgProfiles[0]?.imageurl" alt="image"/>
+                      <img x-show="messageData.multipleapplications == 'NO' || msgProfiles.length === 1" class="modal-header-image" x-bind:src="msgProfiles[0]?.imageurl" alt="image"/>
                   </div>
                   <div class="modal-body latestProfileSection">
-                      <div x-show="messageData.multipleprofiles == 'NO' && messageData.ShowConversation	== 'NO'" x-html="messageData.text_html" class="mb-3 font-size-16px"></div>
-                      <ul x-show="messageData.multipleprofiles == 'YES' && msgProfiles.length > 1" class="image-listing overflow-auto" style="max-height: 200px;">
-                        <template x-for="profile in msgProfiles" :key="profile.profileid">
+                      <div x-show="messageData.multipleapplications == 'NO' && messageData.ShowConversation	== 'NO'" x-html="messageData.text_html" class="mb-3 font-size-16px"></div>
+                      <ul x-show="messageData.multipleapplications == 'YES' && msgProfiles.length > 1" class="image-listing overflow-auto" style="max-height: 200px;">
+                        <template x-for="profile in msgProfiles" :key="profile.applicationid">
                           <li>
-                            <button :title="profile.text_remove" @click="removeMsgProfiles(profile.profileid)" type="button" class="remove-profile"><span>&times;</span></button>
+                            <button :title="profile.text_remove" @click="removeMsgProfiles(profile.applicationid)" type="button" class="remove-profile"><span>&times;</span></button>
                             <img x-bind:src="profile.imageurl" />
                           </li>
                         </template>
                       </ul>
                       
-                      <ul x-show="messageData.multipleprofiles == 'NO' && messageData.ShowConversation	== 'YES'" id="chatMain"  class="mb-4 font-size-16px p-0 overflow-auto" style="max-height: 200px;">
+                      <ul x-show="messageData.multipleapplications == 'NO' && messageData.ShowConversation	== 'YES'" id="chatMain"  class="mb-4 font-size-16px p-0 overflow-auto" style="max-height: 200px;">
                         <template x-for="(message, index) in messages" :key="message.messageid">
                           <li class="chat-main-row">
                              <div class="chat-main-row-inner">
@@ -501,7 +501,7 @@
 
                       
 
-                      <a @click="sendMessageModalData(profile.profileid, currentChatFolder)" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
+                      <a @click="sendMessageModalData(profile.applicationid, currentChatFolder)" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div class="icon-wrapper">
                             <span class="icon-outline">
@@ -1031,7 +1031,7 @@
                               <div class="profileItem">
                                   <div class="profile-left">
                                     <div class="form-check">
-                                      <input type="checkbox" :value="application.profileid" x-on:change="updateSelectAllState" x-model="selectedProfiles" class="form-check-input cursor-pointer">
+                                      <input type="checkbox" :value="application.applicationid" x-on:change="updateSelectAllState" x-model="selectedProfiles" class="form-check-input cursor-pointer">
                                     </div>
                                     <a @click="fetchProfile(application.applicationid)" class="profile-card-wrapper" href="javascript:;">
                                       <div class="profileCard" :style="`background-image: url(${application.image})`"></div>
@@ -1140,7 +1140,7 @@
                                       <div class="d-flex align-items-center gap-2 mt-3 fs-3">
                                         
        
-                                      <a @click="sendMessageModalData(application.profileid, currentChatFolder)" class="btn-iconed-primary position-relative" href="javascript:;">
+                                      <a @click="sendMessageModalData(application.applicationid, currentChatFolder)" class="btn-iconed-primary position-relative" href="javascript:;">
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
                                         <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter active">
@@ -1312,7 +1312,7 @@
                                         </a>
                                       </div>
                                       
-                                      <a @click="sendMessageModalData(application.profileid, currentChatFolder)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
+                                      <a @click="sendMessageModalData(application.applicationid, currentChatFolder)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
                                           <div class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1356,7 +1356,7 @@
                                       </a>
                                     </div>
                                       
-                                      <a @click="sendMessageModalData(application.profileid, currentChatFolder)" class="btn-iconed-primary grid-only position-relative" href="javascript:;">
+                                      <a @click="sendMessageModalData(application.applicationid, currentChatFolder)" class="btn-iconed-primary grid-only position-relative" href="javascript:;">
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
                                         <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter active">
