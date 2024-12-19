@@ -32,7 +32,7 @@ function sendMessagesComponent() {
         fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${currentChatFolder}&template=NO`)
             .then(response => response.json())
             .then(data => {
-                console.log(data, 'send Messages');
+                // console.log(data, 'send Messages');
                 if (data.Status == 'OK') {
                   this.messageData = data;
                   this.msgInputText = data.text_messagebox;
@@ -63,6 +63,64 @@ function sendMessagesComponent() {
             });
       },
 
+       //  Post Messages
+       movefolder : false,
+       movetofolder : 'INBOX',
+       sendNewMessage(applicationid) {  
+           const url = "https://proxy.cors.sh/https://www.onlinecasting.dk/api/messages/message_with_attachment_profiles_sendOT.asp";
+           
+           // Convert newlines to <br/> tags
+           const formattedMessage = this.msgInputText.replace(/\n/g, '<br/>');
+
+           const data = {
+               applicationid: applicationid,
+               auditionid: 24501,
+               movefolder: this.movefolder ? 'YES' :  'NO',
+               movetofolder: this.movetofolder,
+               replytype: "REJECT",
+               message: formattedMessage,
+           };
+
+            
+           
+           fetch(url, {
+               method: 'POST',
+               headers: {
+                   'x-cors-api-key': 'temp_eef745625cb54bc7665a1785f4bee6a9',
+                   'Content-Type': 'application/x-www-form-urlencoded'
+               },
+               body: new URLSearchParams(data).toString()
+           })
+           .then(response => response.text())
+           .then(data => {
+              const parsedData = JSON.parse(data);
+               if (parsedData.Status == 'OK') {  
+                  sendMessageInstance.hide();
+                  this.statusMessageHeadline = parsedData.StatusMessageHeadline;
+                  this.statusMessage = parsedData.StatusMessage	;
+                  this.textClose = parsedData.text_close;
+
+                  statusModalInstance.show();
+              }
+              if (parsedData.Status == 'ERROR') { 
+                  // Open Status Modal
+                  sendMessageInstance.hide();
+                  
+                  this.statusMessageHeadline = parsedData.StatusMessageHeadline;
+                  this.statusMessage = parsedData.StatusMessage	;
+                  this.textClose = parsedData.text_close;
+
+                  statusModalInstance.show();
+              }
+           })
+           .catch((error) => {
+               console.error('Error:', error);
+           })
+           .finally(() => {
+              
+           });
+       },
+
       removeMsgProfiles(profileId) {
         // Ensure profileId is a number for comparison
         const idToRemove = typeof profileId === 'string' ? parseInt(profileId, 10) : profileId;
@@ -89,9 +147,10 @@ function sendMessagesComponent() {
       msgTemplates : [],
       fetchMsgTemplates() {
         this.isFetchingTemplateData = true;
-        fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles_template.asp?default_template=`)
+        fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles_template.asp?template=NO`)
             .then(response => response.json())
             .then(data => {
+              // console.log(data.templates, 'data.templates')
               this.msgTemplates = data.templates
             })
             .catch(error => {

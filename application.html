@@ -192,12 +192,12 @@
                             <div x-show="messageData.movetofolder">
                               <div class="d-flex justify-content-center align-items-center whitespace">
                                 <div class="form-check mb-0">
-                                  <input type="checkbox" class="form-check-input cursor-pointer">
+                                  <input x-model="movefolder" type="checkbox" class="form-check-input cursor-pointer">
                                 </div>
                                 <div x-text="messageData.text_checkbox_move_to"></div>
-                                <select class="form-select mx-2">
+                                <select x-model="movetofolder" class="form-select mx-2">
                                   <template x-for="folder in messageData.movetofolder" :key="folder.folder">
-                                   <option :value="folder" x-text="folder.folder"></option>
+                                   <option :value="folder.foldersearchname" x-text="folder.folder"></option>
                                  </template>
                                 </select>
                                 <div x-text="messageData.text_move_to_after_dropdown"></div>
@@ -229,11 +229,11 @@
                        </div>
                         
                         <!-- Trigger for file upload -->
-                        <button type="button" class="uploadTrigger btn mainBtn btnoutlineSecondary px-4">
+                        <!-- <button type="button" class="uploadTrigger btn mainBtn btnoutlineSecondary px-4">
                           <ion-icon name="attach"></ion-icon> <span x-text="messageData.text_attach_files_button"></span>
-                        </button>
+                        </button> -->
                       </div>
-                      <button x-text="messageData.text_submit" type="button" class="btn mainBtn"></button>
+                      <button @click="sendNewMessage(messageData.applicationid)" x-text="messageData.text_submit" type="button" class="btn mainBtn"></button>
 
                     </div>
                       <input type="file" class="fileInput" hidden multiple>
