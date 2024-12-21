@@ -25,20 +25,24 @@ function sendMessagesComponent() {
       msgInputText : '',
       msgProfiles: [],
       selectedProfiles: [],
+      currentSelectedTemplate: 'INBOX',
+      currentReplytype : '',
 
-      sendMessageModalData(applicationIds, currentChatFolder) {
+      sendMessageModalData(applicationIds) {
 
         this.isFetchingMsgData = true;
-        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${currentChatFolder}&template=NO`)
+        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=NO`)
             .then(response => response.json())
             .then(data => {
-                // console.log(data, 'send Messages');
+                // console.log(data.template, 'send Messages');
                 if (data.Status == 'OK') {
                   this.messageData = data;
                   this.msgInputText = data.text_messagebox;
                   this.msgProfiles = data.profiles;
                   this.msgSingleImageUrl = data.profiles[0].imageurl;
                   this.msgMaxChar = data.max_characters;
+                  this.currentSelectedTemplate = data.template;
+                  this.currentReplytype = data.replytype;
                   sendMessageInstance.show(); 
 
                   this.fetchMsgTemplates()
@@ -63,26 +67,28 @@ function sendMessagesComponent() {
             });
       },
 
+     
+
        //  Post Messages
        movefolder : false,
-       movetofolder : 'INBOX',
-       sendNewMessage(applicationid) {  
+       movetofolder : '',
+       sendNewMessage(applicationids) {  
+            const applicationIdsArray = applicationids.split(',').map(id => id.trim());
+
            const url = "https://proxy.cors.sh/https://www.onlinecasting.dk/api/messages/message_with_attachment_profiles_sendOT.asp";
-           
            // Convert newlines to <br/> tags
            const formattedMessage = this.msgInputText.replace(/\n/g, '<br/>');
 
            const data = {
-               applicationid: applicationid,
+               applicationid: applicationids,
                auditionid: 24501,
                movefolder: this.movefolder ? 'YES' :  'NO',
                movetofolder: this.movetofolder,
-               replytype: "REJECT",
+               replytype: this.currentReplytype,
                message: formattedMessage,
            };
+ 
 
-            
-           
            fetch(url, {
                method: 'POST',
                headers: {
@@ -95,6 +101,26 @@ function sendMessagesComponent() {
            .then(data => {
               const parsedData = JSON.parse(data);
                if (parsedData.Status == 'OK') {  
+                  
+                if (this.movefolder && this.movetofolder !== '') {
+                    this.updateFolderCount(this.currentChatFolder, -applicationIdsArray.length);
+                    this.updateFolderCount(this.movetofolder, applicationIdsArray.length);
+                }
+                // Remove each applicationid locally
+                applicationIdsArray.forEach(applicationid => {
+                  if (this.movefolder && this.movetofolder !== '') {
+                      this.removeApplication(applicationid);
+                  }
+
+                   // Find and update the application date
+                  const application = this.applications.find(app => app.applicationid === applicationid);
+                  if (application) {
+                      application.date_application_sent = 'Current Date' // Update to the desired date
+                  }  
+                });
+
+               
+                   
                   sendMessageInstance.hide();
                   this.statusMessageHeadline = parsedData.StatusMessageHeadline;
                   this.statusMessage = parsedData.StatusMessage	;
@@ -117,7 +143,9 @@ function sendMessagesComponent() {
                console.error('Error:', error);
            })
            .finally(() => {
-              
+            this.movingApplicationId = null;
+            this.movefolder = false,
+            this.movetofolder = ''
            });
        },
 
@@ -147,7 +175,7 @@ function sendMessagesComponent() {
       msgTemplates : [],
       fetchMsgTemplates() {
         this.isFetchingTemplateData = true;
-        fetch(`https://www.onlinecasting.dk/api/message_with_attachment_profiles_template.asp?template=NO`)
+        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profiles_template.asp`)
             .then(response => response.json())
             .then(data => {
               // console.log(data.templates, 'data.templates')
@@ -161,11 +189,11 @@ function sendMessagesComponent() {
             });
       },
 
-      currentSelectedTemplate : '',
+ 
       changeMsgTemplate(searchname) {
         const selectedTemplate = this.msgTemplates.find(template => template.searchname === searchname);
         if (selectedTemplate) {
-            this.currentSelectedTemplate = selectedTemplate;
+            this.currentSelectedTemplate = selectedTemplate.searchname;
             this.msgInputText = selectedTemplate.templatecontent;
         } else {
             console.error('Template not found for searchname:', searchname);

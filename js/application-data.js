@@ -180,10 +180,8 @@ function applicationComponent() {
     },
 
     movingApplicationId: null,
-    isMovingToFolder: false,
     moveToFolder(newFolder, applicationid, nextProfileId) {
       this.movingApplicationId = applicationid;
-      this.isMovingToFolder = true;
       fetch(`https://www.onlinecasting.dk/api/applications/change_folder.asp?applicationid=${applicationid}&newfolder=${newFolder}`)
           .then(response => response.json())
           .then(data => {
@@ -221,10 +219,7 @@ function applicationComponent() {
             console.error("Error move to new folder:", error);
           })
           .finally(() => {
-            this.isMovingToFolder = false;
             this.movingApplicationId = null;
-
-           
         });
     },
 

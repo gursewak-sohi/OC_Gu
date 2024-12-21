@@ -196,6 +196,7 @@
                                 </div>
                                 <div x-text="messageData.text_checkbox_move_to"></div>
                                 <select x-model="movetofolder" class="form-select mx-2">
+                                  <option disabled value="">Select</option>
                                   <template x-for="folder in messageData.movetofolder" :key="folder.folder">
                                    <option :value="folder.foldersearchname" x-text="folder.folder"></option>
                                  </template>
@@ -221,7 +222,7 @@
                             <ul>
                               <template x-for="msgTemplate in msgTemplates" :key="msgTemplate.searchname">
                                 <li>
-                                  <a :class="{ 'active': currentSelectedTemplate.searchname == msgTemplate.searchname }"  x-on:click="changeMsgTemplate(msgTemplate.searchname)" class="d-flex align-items-center" href="javascript:;" x-text="msgTemplate.name"></a>
+                                  <a :class="{ 'active': currentSelectedTemplate == msgTemplate.searchname }"  x-on:click="changeMsgTemplate(msgTemplate.searchname)" class="d-flex align-items-center" href="javascript:;" x-text="msgTemplate.name"></a>
                                </li>
                              </template>
                             </ul>
@@ -501,7 +502,7 @@
 
                       
 
-                      <a @click="sendMessageModalData(profile.applicationid, currentChatFolder)" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
+                      <a @click="sendMessageModalData(profile.applicationid)" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div class="icon-wrapper">
                             <span class="icon-outline">
