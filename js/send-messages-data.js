@@ -34,7 +34,7 @@ function sendMessagesComponent() {
         fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=NO`)
             .then(response => response.json())
             .then(data => {
-                // console.log(data.template, 'send Messages');
+                // console.log(data, 'send Messages');
                 if (data.Status == 'OK') {
                   this.messageData = data;
                   this.msgInputText = data.text_messagebox;
@@ -45,7 +45,8 @@ function sendMessagesComponent() {
                   this.currentReplytype = data.replytype;
                   sendMessageInstance.show(); 
 
-                  this.fetchMsgTemplates()
+                  this.fetchMsgTemplates();
+                  
                   if (data.ShowConversation	=== "YES") {
                     this.fetchChatMessages(data.ConversationID);
                   }
@@ -106,21 +107,24 @@ function sendMessagesComponent() {
                     this.updateFolderCount(this.currentChatFolder, -applicationIdsArray.length);
                     this.updateFolderCount(this.movetofolder, applicationIdsArray.length);
                 }
-                // Remove each applicationid locally
-                applicationIdsArray.forEach(applicationid => {
-                  if (this.movefolder && this.movetofolder !== '') {
-                      this.removeApplication(applicationid);
-                  }
+                
+                if (!this.movefolder) {
+                     // Remove each applicationid locally
+                      applicationIdsArray.forEach(applicationid => {
+                        if (this.movefolder && this.movetofolder !== '') {
+                            this.removeApplication(applicationid);
+                        }
 
-                   // Find and update the application date
-                  const application = this.applications.find(app => app.applicationid === applicationid);
-                  if (application) {
-                      application.date_application_sent = 'Current Date' // Update to the desired date
-                  }  
-                });
+                        // Find and update the application date
+                        const application = this.applications.find(app => app.applicationid === applicationid);
+                        if (application) {
+                            application.date_application_sent = parsedData.change_date_application_sent;
+                            application.text_see_reply_link = parsedData.change_text_see_reply_link;
+                        }  
+                      });
+                }
 
-               
-                   
+
                   sendMessageInstance.hide();
                   this.statusMessageHeadline = parsedData.StatusMessageHeadline;
                   this.statusMessage = parsedData.StatusMessage	;
@@ -146,6 +150,7 @@ function sendMessagesComponent() {
             this.movingApplicationId = null;
             this.movefolder = false,
             this.movetofolder = ''
+            this.selectedProfiles = []
            });
        },
 
@@ -178,7 +183,9 @@ function sendMessagesComponent() {
         fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profiles_template.asp`)
             .then(response => response.json())
             .then(data => {
-              // console.log(data.templates, 'data.templates')
+              this.$nextTick(() => {
+                this.changeMsgTemplate('NO');
+              });
               this.msgTemplates = data.templates
             })
             .catch(error => {
@@ -233,7 +240,7 @@ function sendMessagesComponent() {
           .then(data => {
               // console.log(data, 'replyAllInFolder'); 
               if (data.Status === 'OK') {
-                this.sendMessageModalData(data.applicationid, "NO")
+                this.sendMessageModalData(data.applicationid, "NO");
               }
               else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
                 this.statusMessageHeadline = data.StatusMessageHeadline;
@@ -252,9 +259,9 @@ function sendMessagesComponent() {
 
     profileReplyData : {},
     isFetchingProfileReply : false,
-    handleProfileReplyData(profileId, applicationId, auditionId) {
+    handleProfileReplyData(applicationId) {
       this.isFetchingProfileReply = true;
-      fetch(`https://www.onlinecasting.dk/api/applications/application_replies.asp?profileid=${profileId}&applicationid=${applicationId}&auditionid=${auditionId}`)
+      fetch(`https://www.onlinecasting.dk/api/applications/application_replies.asp?applicationid=${applicationId}`)
           .then(response => response.json())
           .then(data => {
               // console.log(data, 'send Messages');
