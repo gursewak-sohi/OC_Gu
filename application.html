@@ -196,7 +196,7 @@
                                 </div>
                                 <div x-text="messageData.text_checkbox_move_to"></div>
                                 <select x-model="movetofolder" class="form-select mx-2">
-                                  <option disabled value="">Select</option>
+                                  <option disabled value="" x-text="messageData.text_dropbox_move_to_choose">Select</option>
                                   <template x-for="folder in messageData.movetofolder" :key="folder.folder">
                                    <option :value="folder.foldersearchname" x-text="folder.folder"></option>
                                  </template>
