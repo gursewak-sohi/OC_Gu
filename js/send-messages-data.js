@@ -25,13 +25,12 @@ function sendMessagesComponent() {
       msgInputText : '',
       msgProfiles: [],
       selectedProfiles: [],
-      currentSelectedTemplate: 'INBOX',
+      currentSelectedTemplate: '',
       currentReplytype : '',
 
-      sendMessageModalData(applicationIds) {
-
+      sendMessageModalData(applicationIds, template = '') {
         this.isFetchingMsgData = true;
-        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=NO`)
+        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=${template}`)
             .then(response => response.json())
             .then(data => {
                 // console.log(data, 'send Messages');
@@ -183,10 +182,8 @@ function sendMessagesComponent() {
         fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profiles_template.asp`)
             .then(response => response.json())
             .then(data => {
-              this.$nextTick(() => {
-                this.changeMsgTemplate('NO');
-              });
-              this.msgTemplates = data.templates
+              this.msgTemplates = data.templates;
+              this.changeMsgTemplate(this.currentSelectedTemplate);
             })
             .catch(error => {
                 console.error("Error fetching message template data:", error);
@@ -240,7 +237,7 @@ function sendMessagesComponent() {
           .then(data => {
               // console.log(data, 'replyAllInFolder'); 
               if (data.Status === 'OK') {
-                this.sendMessageModalData(data.applicationid, "NO");
+                this.sendMessageModalData(data.applicationid , 'NO');
               }
               else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
                 this.statusMessageHeadline = data.StatusMessageHeadline;
@@ -266,6 +263,7 @@ function sendMessagesComponent() {
           .then(data => {
               // console.log(data, 'send Messages');
               if (data.Status == 'OK') {
+                
                 this.profileReplyData = data;
                 profileReplyModalInstance.show(); 
               }

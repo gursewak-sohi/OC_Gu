@@ -770,7 +770,7 @@
                   <div class="col-12">
                       <div class="selection-block">
                           <h5><span x-text="selectedProfiles.length"></span> ansogninger valgt</h5>
-                          <a @click="sendMessageModalData(selectedProfiles.join(','), currentChatFolder)" class="btn mainBtn btnfillwhite px-3 px-md-4" href="javascript:;">Besvar ansogningerne</a>
+                          <a @click="sendMessageModalData(selectedProfiles.join(','))" class="btn mainBtn btnfillwhite px-3 px-md-4" href="javascript:;">Besvar ansogningerne</a>
                       </div>
                   </div>
               </div>
@@ -1141,7 +1141,7 @@
                                       <div class="d-flex align-items-center gap-2 mt-3 fs-3">
                                         
        
-                                      <a @click="sendMessageModalData(application.applicationid, currentChatFolder)" class="btn-iconed-primary position-relative" href="javascript:;">
+                                      <a @click="sendMessageModalData(application.applicationid)" class="btn-iconed-primary position-relative" href="javascript:;">
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
                                         <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter active">
@@ -1313,7 +1313,7 @@
                                         </a>
                                       </div>
                                       
-                                      <a @click="sendMessageModalData(application.applicationid, currentChatFolder)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
+                                      <a @click="sendMessageModalData(application.applicationid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="application.text_icon_chat_hover" href="javascript:;" class="text-muted list-only hidden-list-xs">
                                         <div class="icon-text-wrapper">
                                           <div class="icon-wrapper">
                                             <span class="icon-outline">
@@ -1357,7 +1357,7 @@
                                       </a>
                                     </div>
                                       
-                                      <a @click="sendMessageModalData(application.applicationid, currentChatFolder)" class="btn-iconed-primary grid-only position-relative" href="javascript:;">
+                                      <a @click="sendMessageModalData(application.applicationid)" class="btn-iconed-primary grid-only position-relative" href="javascript:;">
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied == 'NO'" name="arrow-undo-outline"></ion-icon>
                                         <ion-icon class="font-size-22px" x-show="application.applications_replied !== 'NO'" name="chatbox-ellipses-outline"></ion-icon>
                                         <span x-show="application.text_icon_chat_circle" x-text="application.text_icon_chat_circle" class="icon-counter active">
