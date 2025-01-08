@@ -168,7 +168,6 @@ function applicationComponent() {
     },
 
     removeApplication(applicationid) {
-      
       this.applications = this.applications.filter(app => app.applicationid !== applicationid);
     },
 

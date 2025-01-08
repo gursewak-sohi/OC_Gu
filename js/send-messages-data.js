@@ -101,28 +101,32 @@ function sendMessagesComponent() {
            .then(data => {
               const parsedData = JSON.parse(data);
                if (parsedData.Status == 'OK') {  
-                  
-                if (this.movefolder && this.movetofolder !== '') {
-                    this.updateFolderCount(this.currentChatFolder, -applicationIdsArray.length);
-                    this.updateFolderCount(this.movetofolder, applicationIdsArray.length);
-                }
-                
-                if (!this.movefolder) {
-                     // Remove each applicationid locally
+
+               
+                  if (this.movefolder && this.movetofolder !== '') {
+                      this.updateFolderCount(this.currentChatFolder, -applicationIdsArray.length);
+                      this.updateFolderCount(this.movetofolder, applicationIdsArray.length);
+
+                      // Remove each applicationid locally
                       applicationIdsArray.forEach(applicationid => {
                         if (this.movefolder && this.movetofolder !== '') {
                             this.removeApplication(applicationid);
-                        }
-
-                        // Find and update the application date
-                        const application = this.applications.find(app => app.applicationid === applicationid);
-                        if (application) {
-                            application.date_application_sent = parsedData.change_date_application_sent;
-                            application.text_see_reply_link = parsedData.change_text_see_reply_link;
-                        }  
+                        } 
                       });
-                }
+                  }
 
+                  if (!this.movefolder) {
+                    applicationIdsArray.forEach(applicationid => {
+                      // Find and update the application date
+                      const application = this.applications.find(app => app.applicationid === applicationid);
+                      if (application) {
+                          application.date_application_sent = parsedData.change_date_application_sent;
+                          application.text_see_reply_link = parsedData.change_text_see_reply_link;
+                      }  
+                    });
+                  }
+                
+                
 
                   sendMessageInstance.hide();
                   this.statusMessageHeadline = parsedData.StatusMessageHeadline;
