@@ -502,7 +502,7 @@
 
                       
 
-                      <a @click="sendMessageModalData(profile.applicationid)" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
+                      <a @click="sendMessageModalData(profile.applicationid); isNextProfileId = profile.nextapplicationID;" class="text-white d-flex flex-column align-items-center gap-2px" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" :data-bs-title="profile.text_icon_chat_hover || 'toolip'" data-bs-custom-class="orange-tooltip" href="javascript:;">
                         <div class="font-size-26px d-flex icon-bottom">
                           <div class="icon-wrapper">
                             <span class="icon-outline">

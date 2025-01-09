@@ -28,9 +28,9 @@ function sendMessagesComponent() {
       currentSelectedTemplate: '',
       currentReplytype : '',
 
-      sendMessageModalData(applicationIds, template = '') {
+      sendMessageModalData(applicationIds, template = '', replytype = '') {
         this.isFetchingMsgData = true;
-        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=${template}`)
+        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=${template}&replytype=${replytype}`)
             .then(response => response.json())
             .then(data => {
                 // console.log(data, 'send Messages');
@@ -72,7 +72,10 @@ function sendMessagesComponent() {
        //  Post Messages
        movefolder : false,
        movetofolder : '',
+       isNextProfileId : '',
        sendNewMessage(applicationids) {  
+        
+        
             const applicationIdsArray = applicationids.split(',').map(id => id.trim());
 
            const url = "https://proxy.cors.sh/https://www.onlinecasting.dk/api/messages/message_with_attachment_profiles_sendOT.asp";
@@ -109,10 +112,29 @@ function sendMessagesComponent() {
 
                       // Remove each applicationid locally
                       applicationIdsArray.forEach(applicationid => {
+
                         if (this.movefolder && this.movetofolder !== '') {
                             this.removeApplication(applicationid);
                         } 
+
+                        if (this.applications.length === 0) {
+                          this.applications = [];
+                          this.applicationSkip = 0;
+                          this.applicationLimit = 5;
+          
+                          this.fetchApplications()
+                        }
+                        if (this.isNextProfileId) {
+                            // console.log(nextProfileId, 'nextProfileId')
+                            this.fetchProfile(this.isNextProfileId)
+                             // Move item to new folder for single profile in modal
+                            // this.profile.application_folder = newFolder;
+                        }
                       });
+
+
+
+                      
                   }
 
                   if (!this.movefolder) {
@@ -154,6 +176,7 @@ function sendMessagesComponent() {
             this.movefolder = false,
             this.movetofolder = ''
             this.selectedProfiles = []
+            this.isNextProfileId = null;
            });
        },
 
@@ -241,7 +264,7 @@ function sendMessagesComponent() {
           .then(data => {
               // console.log(data, 'replyAllInFolder'); 
               if (data.Status === 'OK') {
-                this.sendMessageModalData(data.applicationid , 'NO');
+                this.sendMessageModalData(data.applicationid , 'NO', 'REJECT');
               }
               else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
                 this.statusMessageHeadline = data.StatusMessageHeadline;
