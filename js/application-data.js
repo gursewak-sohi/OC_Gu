@@ -581,6 +581,8 @@ function applicationComponent() {
 
       applicationHasNotes: false,
       fetchProfile(applicationId) {
+        this.selectedProfiles = []; //newly added
+        this.selectAll = false; //newly added
         this.isFetchingProfile = true;
         this.applicationHasNotes = false;
         fetch(`https://www.onlinecasting.dk/api/applications/application_profile.asp?applicationid=${applicationId}&orderby=${this.currentOrderBy}&folder=${this.currentChatFolder}`)

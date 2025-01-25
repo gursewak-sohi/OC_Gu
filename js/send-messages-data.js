@@ -189,18 +189,42 @@ function sendMessagesComponent() {
         this.selectAll = false;
     },
     
+      // New code starts here
       selectAll: false,  
+      maximum_number_of_applications : 5,
       toggleSelectAll() {
         if (this.selectAll) {
-          this.selectedProfiles = this.applications.map(app => app.applicationid.toString());
+          if (this.applications.length > this.maximum_number_of_applications) {
+              this.showMaxApplicationErrorMsg();
+              this.selectedProfiles = this.applications
+                  .slice(0, this.maximum_number_of_applications)
+                  .map(app => app.applicationid.toString());
+              this.selectAll = false;
+          } else {
+              this.selectedProfiles = this.applications.map(app => app.applicationid.toString());
+          }
         } else {
           this.selectedProfiles = [];
         }
       },
 
+      
       updateSelectAllState() {
         this.selectAll = this.selectedProfiles.length === this.applications.length;
+        if (this.selectedProfiles.length > this.maximum_number_of_applications) {
+          this.showMaxApplicationErrorMsg();
+          this.selectedProfiles.pop();
+      }
       },
+
+      showMaxApplicationErrorMsg() {
+        this.statusMessageHeadline = "Fejl";
+        this.statusMessage = "Fejl: Ansogningen findes ikke i systemet længere eller du har besvaret profilen for mange gange.";
+        this.textClose = "Luk";
+        statusModalInstance.show();
+      },
+
+      // New code ends here
 
       isFetchingTemplateData: false,
       msgTemplates : [],
