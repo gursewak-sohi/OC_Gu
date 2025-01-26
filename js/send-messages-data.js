@@ -28,6 +28,15 @@ function sendMessagesComponent() {
       currentSelectedTemplate: '',
       currentReplytype : '',
 
+   
+    
+      htmlToPlainText(html) {
+        return html
+            .replace(/<br\s*\/?>/gi, '\n')  
+            .replace(/&nbsp;/g, ' ')       
+            .replace(/\\n/g, '\n');
+      },
+
       sendMessageModalData(applicationIds, template = '', replytype = '') {
         this.isFetchingMsgData = true;
         fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=${template}&replytype=${replytype}`)
@@ -36,7 +45,7 @@ function sendMessagesComponent() {
                 // console.log(data, 'send Messages');
                 if (data.Status == 'OK') {
                   this.messageData = data;
-                  this.msgInputText = data.text_messagebox;
+                  this.msgInputText = this.htmlToPlainText(data.text_messagebox);
                   this.msgProfiles = data.profiles;
                   this.msgSingleImageUrl = data.profiles[0].imageurl;
                   this.msgMaxChar = data.max_characters;
@@ -254,6 +263,8 @@ function sendMessagesComponent() {
             console.error('Template not found for searchname:', searchname);
         }
     },
+
+
 
 
     isMessagesFetching : false,
