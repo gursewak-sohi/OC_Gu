@@ -204,7 +204,6 @@ function sendMessagesComponent() {
       toggleSelectAll() {
         if (this.selectAll) {
           if (this.applications.length > this.maximum_number_of_applications) {
-              this.showMaxApplicationErrorMsg();
               this.selectedProfiles = this.applications
                   .slice(0, this.maximum_number_of_applications)
                   .map(app => app.applicationid.toString());
