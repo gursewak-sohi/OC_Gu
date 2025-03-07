@@ -79,7 +79,7 @@ function applicationComponent() {
     },
 
     fetchFolders() {
-      fetch(`https://www.onlinecasting.dk/api/applications/applications_folders.asp?auditionid=23406`)
+      fetch(`https://www.onlinecasting.dk/api/applications/applications_foldersWIP.asp?auditionid=23406`)
           .then(response => response.json())
           .then(data => {
               // console.log(data, 'folders'); 
@@ -301,7 +301,7 @@ function applicationComponent() {
     textMoveTo: '',
     fetchApplications() {
       this.isApplicationsLoading = true;
-      fetch(`https://www.onlinecasting.dk/api/applications/applications.asp?skip=${this.applicationSkip}&limit=${this.applicationLimit}&folder=${this.currentChatFolder}&orderby=${this.currentOrderBy}&filter=${this.currentFilterBy}`)
+      fetch(`https://www.onlinecasting.dk/api/applications/applicationsWIP.asp?skip=${this.applicationSkip}&limit=${this.applicationLimit}&folder=${this.currentChatFolder}&orderby=${this.currentOrderBy}&filter=${this.currentFilterBy}`)
           .then(response => response.json())
           .then(data => {
               // console.log(data, 'isApplicationsLoading')

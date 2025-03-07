@@ -38,8 +38,9 @@ function sendMessagesComponent() {
       },
 
       sendMessageModalData(applicationIds, template = '', replytype = '') {
+        console.log(applicationIds, 'applicationIds')
         this.isFetchingMsgData = true;
-        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOT.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=${template}&replytype=${replytype}`)
+        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profilesOTWIP.asp?applicationid=${applicationIds}&page=SEARCH&auditionid=24501&folder=${this.currentChatFolder}&template=${template}&replytype=${replytype}`)
             .then(response => response.json())
             .then(data => {
                 // console.log(data, 'send Messages');
@@ -238,7 +239,7 @@ function sendMessagesComponent() {
       msgTemplates : [],
       fetchMsgTemplates() {
         this.isFetchingTemplateData = true;
-        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profiles_template.asp`)
+        fetch(`https://www.onlinecasting.dk/api/messages/message_with_attachment_profiles_templateWIP.asp`)
             .then(response => response.json())
             .then(data => {
               this.msgTemplates = data.templates;
