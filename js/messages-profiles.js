@@ -30,7 +30,7 @@ document.addEventListener("alpine:init", () => {
                 .replace(/\\n/g, '\n');
         },
 
-        sendMessageModalData(profileids, page = '') {
+        sendMessageModalData(profileids, page = '', template = '') {
             console.log(profileids, 'profileids')
             this.isFetchingMsgData = true;
             fetch(`https://www.onlinecasting.dk/api/messages/message_profile_2025WIP.asp?profileid=${profileids}&page=${page}&casterlistid=7`)
@@ -45,11 +45,8 @@ document.addEventListener("alpine:init", () => {
                         this.msgMaxChar = data.max_characters;
                         sendMessageInstance.show();
 
-                        this.fetchMsgTemplates();
+                        this.fetchMsgTemplates(template);
 
-                        if (data.ShowConversation === "YES") {
-                            this.fetchChatMessages(data.ConversationID);
-                        }
                     } else if (data.Status == 'ERROR' && data.ShowMessage == 'YES') {
                         this.statusMessageHeadline = data.StatusMessageHeadline;
                         this.statusMessage = data.StatusMessage;
@@ -68,7 +65,7 @@ document.addEventListener("alpine:init", () => {
 
         //  Remove Profiles
         removeMsgProfiles(profileId) {
-            console.log(profileId, 'profileId')
+            // console.log(profileId, 'profileId')
             // Ensure profileId is a number for comparison
             const idToRemove = typeof profileId === 'string'
                 ? parseInt(profileId, 10)
@@ -82,17 +79,15 @@ document.addEventListener("alpine:init", () => {
         // New code ends here
         isFetchingTemplateData: false,
         msgTemplates: [],
-        fetchMsgTemplates() {
+        fetchMsgTemplates(template) {
             this.isFetchingTemplateData = true;
-            fetch(`https://www.onlinecasting.dk/api/messages/message_profile_2025_templateWIP.asp`)
+            fetch(`https://www.onlinecasting.dk/api/messages/message_profile_2025_templateWIP.asp?template=${template}`)
                 .then(response => response.json())
                 .then(data => {
                     // console.log(data.templates, 'templates')
                     this.msgTemplates = data.templates;
-                    this.currentSelectedTemplate = data
-                        .templates
-                        .find(template => template.default === "True")
-                        .searchname;
+                    this.currentSelectedTemplate = data.templates.find(template => template.default === "True").searchname;
+                    this.changeMsgTemplate(this.currentSelectedTemplate)
                 })
                 .catch(error => {
                     console.error("Error fetching message template data:", error);
