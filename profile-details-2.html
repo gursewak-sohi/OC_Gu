@@ -100,7 +100,7 @@
                         <ion-icon name="attach"></ion-icon> <span x-text="messageData.text_attach_files_button"></span>
                       </button>
                     </div>
-                    <button x-text="messageData.text_submit" type="button" class="btn mainBtn"></button>
+                    <button @click="sendNewMessage(messageData.profileid)" x-text="messageData.text_submit" type="button" class="btn mainBtn"></button>
                   </div>
                 </div>
             </div>
@@ -370,7 +370,7 @@
                         <p class="font-size-18px line-height-30 text-muted"><span class="more">Jeg taler flydende svensk, dansk og engelsk samt kan skifte til flere dialekter på disse 3 sprog. Min erfaring med komedie er at jeg har været statist i “Dansegarderoben” af Ditte Hansen og “Viktor mod verden” begge er i gang med at blive indspillet/optaget lige nu.Jeg taler flydende svensk, dansk og engelsk samt kan skifte til flere dialekter på disse 3 sprog. Min erfaring med komedie er at jeg har været statist i “Dansegarderoben” af Ditte Hansen og “Viktor mod verden” begge er i gang med at blive indspillet/optaget lige nu.Jeg taler flydende svensk, dansk og engelsk samt kan skifte til flere dialekter på disse 3 sprog. Min erfaring med komedie er at jeg har været statist i “Dansegarderoben” af Ditte Hansen og “Viktor mod verden” begge er i gang med at blive indspillet/optaget lige nu.Jeg taler flydende svensk, dansk og engelsk samt kan skifte til flere dialekter på disse 3 sprog. Min erfaring med komedie er at jeg har været statist i “Dansegarderoben” af Ditte Hansen og “Viktor mod verden” begge er i gang med at blive indspillet/optaget lige nu.Jeg taler flydende svensk, dansk og engelsk samt kan skifte til flere dialekter</span>                            </p>
                     </div>
                     <div class="col-md-3">
-                        <a @click="sendMessageModalData('139528,1733190', 'SAVEDPROFILES')" href="javascript:;" class="btn mainBtn w-100 mb-10">Send besked</a>
+                        <a @click="sendMessageModalData('139528', 'SAVEDPROFILES')" href="javascript:;" class="btn mainBtn w-100 mb-10">Send besked</a>
                         <a href="#" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Gem</a>
                         <a href="#folderModal" data-bs-toggle="modal" data-bs-target="#folderModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Bedøm</a>
                         <a href="#phoneModal" data-bs-toggle="modal" data-bs-target="#phoneModal" class="btn mainBtn btnoutlinePrimary w-100 mb-10">Phone numbers</a>

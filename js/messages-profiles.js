@@ -22,6 +22,7 @@ document.addEventListener("alpine:init", () => {
         msgInputText: '',
         msgProfiles: [],
         currentSelectedTemplate: '',
+        currentPage: '',
 
         htmlToPlainText(html) {
             return html
@@ -31,8 +32,8 @@ document.addEventListener("alpine:init", () => {
         },
 
         sendMessageModalData(profileids, page = '', template = '') {
-            console.log(profileids, 'profileids')
             this.isFetchingMsgData = true;
+            this.currentPage = page;
             fetch(`https://www.onlinecasting.dk/api/messages/message_profile_2025WIP.asp?profileid=${profileids}&page=${page}&casterlistid=7`)
                 .then(response => response.json())
                 .then(data => {
@@ -67,13 +68,8 @@ document.addEventListener("alpine:init", () => {
         removeMsgProfiles(profileId) {
             // console.log(profileId, 'profileId')
             // Ensure profileId is a number for comparison
-            const idToRemove = typeof profileId === 'string'
-                ? parseInt(profileId, 10)
-                : profileId;
-
-            this.msgProfiles = this
-                .msgProfiles
-                .filter(profile => profile.profileid !== idToRemove);
+            const idToRemove = typeof profileId === 'string' ? parseInt(profileId, 10) : profileId;
+            this.msgProfiles = this.msgProfiles.filter(profile => profile.profileid !== idToRemove);
         },
 
         // New code ends here
@@ -96,6 +92,55 @@ document.addEventListener("alpine:init", () => {
                     this.isFetchingTemplateData = false;
                 });
         },
+
+        //  Post Messages
+       sendNewMessage() {  
+          const profileIds = this.msgProfiles.map(profile => profile.profileid).join(',');
+    
+           const url = "https://www.onlinecasting.dk/api/messages/message_profile_2025_sendWIP.asp";
+           // Convert newlines to <br/> tags
+           const formattedMessage = this.msgInputText.replace(/\n/g, '<br/>');
+
+           const data = {
+               profileid: profileIds,
+               page: this.currentPage,
+               template: this.currentSelectedTemplate,
+               casterlistid: 7,
+               message: formattedMessage,
+           };
+           fetch(url, {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/x-www-form-urlencoded'
+               },
+               body: new URLSearchParams(data).toString()
+           })
+           .then(response => response.text())
+           .then(data => {
+              const parsedData = JSON.parse(data);
+
+               if (parsedData.Status == 'OK') {                  
+                  sendMessageInstance.hide();
+                  this.statusMessageHeadline = parsedData.StatusMessageHeadline;
+                  this.statusMessage = parsedData.StatusMessage	;
+                  this.textClose = parsedData.text_close;
+                  statusModalInstance.show();
+              }
+              if (parsedData.Status == 'ERROR') { 
+                  // Open Status Modal
+                  sendMessageInstance.hide();
+                  this.statusMessageHeadline = parsedData.StatusMessageHeadline;
+                  this.statusMessage = parsedData.StatusMessage	;
+                  this.textClose = parsedData.text_close;
+                  statusModalInstance.show();
+              }
+           })
+           .catch((error) => {
+               console.error('Error:', error);
+           })
+           .finally(() => {});
+       },
+
 
         changeMsgTemplate(searchname) {
             const selectedTemplate = this
