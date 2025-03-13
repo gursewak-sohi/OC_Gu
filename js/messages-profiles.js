@@ -23,36 +23,31 @@ if (shareModal) {
 const toastBootstrap = bootstrap.Toast.getOrCreateInstance(document.getElementById('liveToast'));
 
 function initializeOwlSlider() {
+    console.log('initializeOwlSlider');
+
     $('.latestProfile').each(function () {
         var $carousel = $(this);
 
-        // ✅ STEP 1: Clone all 'a' tags (slides)
         var slides = $carousel.find('a').clone();
-
-        // ✅ STEP 2: Remove any <template> tags left
+        
         $carousel.children('template').remove();
-
-        // ✅ STEP 3: Clean ':style' attribute from each slide
+       
         slides.each(function () {
-            $(this).find('.profileCard').removeAttr(':style'); // Remove Alpine :style binding
+             $(this).find('.profileCard').removeAttr(':style');  
         });
 
-        // ✅ STEP 4: Clear existing content and re-insert cleaned slides
         $carousel.html(slides);
-
-        // ✅ STEP 5: Initialize Owl only if not already initialized
-        if (!$carousel.hasClass('owl-loaded')) {
-            $carousel.owlCarousel({
-                loop: false,
-                margin: 10,
-                nav: true,
-                responsive: {
-                    0: { items: 1 },
-                    600: { items: 1 },
-                    1000: { items: 1 }
-                }
-            });
-        }
+       
+        $carousel.owlCarousel({
+            loop: false,
+            margin: 10,
+            nav: true,
+            responsive: {
+                0: { items: 1 },
+                600: { items: 1 },
+                1000: { items: 1 }
+            }
+        });
     });
 }
  
@@ -152,7 +147,6 @@ document.addEventListener("alpine:init", () => {
 
         deleteProfile(profileId) {
             // if (!confirm('Are you sure you want to delete this profile?')) return;
-            
             fetch(`https://www.onlinecasting.dk/api/savedprofiles/page_saved_profiles_folder_full_delete_profileWIP.asp?casterlistid=${this.currentCasterListId}&profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
@@ -164,9 +158,10 @@ document.addEventListener("alpine:init", () => {
                     toastBootstrap.show();
 
                     this.$nextTick(() => { 
-                        initializeOwlSlider();
-                        this.initializeTooltips();    
+                        initializeOwlSlider()    
+                        this.initializeTooltips();
                     });
+                    
                     
                 } else if (data.Status == 'ERROR') {
                     this.statusMessageHeadline = data.StatusMessageHeadline;
@@ -178,6 +173,9 @@ document.addEventListener("alpine:init", () => {
             })
             .catch(error => {
                 console.error('Error:', error);
+            })
+            .finally(() => {
+                
             });
         },
  
