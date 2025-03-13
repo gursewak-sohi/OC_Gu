@@ -102,16 +102,16 @@ document.addEventListener("alpine:init", () => {
             });
         },
 
-        // Computed function to get visible dots (max 3)
+        showDots: 5,
         visibleDots(profileId) {
             const totalSlides = this.totalSlidesMap[profileId] || 0;
-            return Array.from({ length: Math.min(totalSlides, 3) });
+            return Array.from({ length: Math.min(totalSlides, this.showDots) });
         },
 
         // Computed function to get remaining slides number
         remainingSlides(profileId) {
             const totalSlides = this.totalSlidesMap[profileId] || 0;
-            return totalSlides > 5 ? totalSlides - 5 : 0;
+            return totalSlides > this.showDots ? totalSlides - this.showDots : 0;
         },
 
         // Active slide index for highlighting
