@@ -14,11 +14,16 @@
     <!-- Responsive Styles -->
     <link rel="stylesheet" href="css/theme-responsive.css">
     <!-- Owl Stylesheets -->
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <!-- <link rel="stylesheet" href="css/owl.carousel.min.css"> -->
     <!-- Fancy Box -->
     <link rel="stylesheet" href="css/jquery.fancybox.min.css">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
+        :root {
+            --swiper-pagination-bullet-inactive-color: #ffffff;
+            --swiper-theme-color: #ffffff;
+        }
         .btn-delete {
             bottom: auto;
             top: 15px;
@@ -30,6 +35,70 @@
             top: 10px;
             left: 10px;
             z-index: 20;
+        }
+
+        .profile-slider .swiper-nav-button {
+            background: rgba(255, 255, 255, 0.7);
+            width: 32px;
+            height: 32px;
+            font-size: 20px;
+            border-radius: 50%;
+            color: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: 0.2s all ease;
+            visibility: hidden;
+        }
+
+
+        .profile-slider .swiper-nav-button:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .profile-slider:hover .swiper-nav-button {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .profile-slider .swiper-nav-button.swiper-button-disabled {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .profile-slider .swiper-nav-button::after {
+            display: none;
+        }
+
+        .custom-pagination {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            gap: 4px;
+            z-index: 10;
+        }
+
+        .custom-pagination span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: white;
+            opacity: 0.3;
+            transition: 0.2s all ease;
+        }
+
+        .custom-pagination span.active {
+            opacity: 1;
+        }
+
+        .extra-count {
+            margin-left: 5px;
+            color: black;
+            font-size: 14px;
+            background-color: #ffffff;
+            padding: 0 8px 2px;
+            border-radius: 20px;
         }
       
         @media screen and (max-width: 767px){
@@ -100,8 +169,6 @@
                       </template>
                     </ul>
                     
-                     
-                  
                     <div class="form-group mb-3 w-100">
                         <label x-text="messageData.headline_messagebox" class="form-label font-size-16px"></label>
                         <textarea :maxlength="msgMaxChar" x-model="msgInputText" min="1" rows="6" class="form-control mb-2 profile-textarea"></textarea>
@@ -461,14 +528,40 @@
                                     <div class="form-check form-check-profile">
                                         <input type="checkbox" :value="profile.profileid" x-model="selectedProfiles" class="form-check-input cursor-pointer">
                                     </div>
-                                    <div class="latestProfile owl-carousel owl-theme">
-                                        <template x-for="(image, imgIndex) in profile.images_profile" :key="profile.profileid + '-' + imgIndex">
-                                            <a href="javascript:;">
-                                                <div class="item">
-                                                    <div class="profileCard" :style="`background-image: url(${image.imageurl})`""></div>
-                                                </div>
-                                            </a>
+                                    <div class="swiper profile-slider" :data-profile-id="`${profile.profileid}`">
+                                        <div class="swiper-wrapper">
+                                            <template x-for="(image, imgIndex) in profile.images_profile" :key="profile.profileid + '-' + imgIndex">
+                                                <div class="swiper-slide">
+                                                    <a href="javascript:;">
+                                                        <div class="item">
+                                                            <div class="profileCard" :style="`background-image: url(${image.imageurl})`""></div>
+                                                        </div>
+                                                    </a>
+                                                </div> 
                                         </template>
+                                        </div>
+                                         
+                                        <div class="custom-pagination">
+                                            <template x-for="(dot, index) in visibleDots(profile.profileid)" :key="index">
+                                                <span 
+                                                    :class="{
+                                                        'active': index === getActiveIndex(profile.profileid)
+                                                    }"
+                                                    class="dot">
+                                                </span>
+                                            </template>
+                                        
+                                            <template x-if="remainingSlides(profile.profileid) > 0">
+                                                <div class="extra-count">+<small x-text="remainingSlides(profile.profileid)"></small></div>
+                                            </template>
+                                        </div>
+                                      
+                                        <div class="swiper-button-prev swiper-nav-button">
+                                            <ion-icon name="chevron-back-outline"></ion-icon>
+                                        </div>
+                                        <div class="swiper-button-next swiper-nav-button">
+                                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                                        </div>
                                     </div>
                                 
                                 <div class="d-block position-relative">
@@ -609,13 +702,15 @@
     <script src="js/imagesloaded.pkgd.min.js"></script>
     <script src="js/masonry.pkgd.min.js"></script>
     <!-- Owl Slider -->
-    <script src="js/owl.carousel.min.js"></script>
+    <!-- <script src="js/owl.carousel.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <!-- Fancybox -->
     <script src="js/jquery.fancybox.min.js"></script>
     
 
      <!-- main-->
     <script src="js/main.js"></script>
+ 
    
      <!-- Alpine JS -->
      <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>

@@ -24,7 +24,39 @@ if(shareModal) {
 
 const toastBootstrap = bootstrap.Toast.getOrCreateInstance(document.getElementById('liveToast'));
 
- 
+function initializeOwlSlider() {
+    $('.latestProfile').each(function () {
+        var $carousel = $(this);
+
+        // ✅ STEP 1: Clone all 'a' tags (slides)
+        var slides = $carousel.find('a').clone();
+
+        // ✅ STEP 2: Remove any <template> tags left
+        $carousel.children('template').remove();
+
+        // ✅ STEP 3: Clean ':style' attribute from each slide
+        slides.each(function () {
+            $(this).find('.profileCard').removeAttr(':style'); // Remove Alpine :style binding
+        });
+
+        // ✅ STEP 4: Clear existing content and re-insert cleaned slides
+        $carousel.html(slides);
+
+        // ✅ STEP 5: Initialize Owl only if not already initialized
+        if (!$carousel.hasClass('owl-loaded')) {
+            $carousel.owlCarousel({
+                loop: false,
+                margin: 10,
+                nav: true,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 1 },
+                    1000: { items: 1 }
+                }
+            });
+        }
+    });
+}
  
 
 document.addEventListener("alpine:init", () => {
@@ -69,56 +101,6 @@ document.addEventListener("alpine:init", () => {
             return selectedOrder ? selectedOrder.name : '';
         },
 
-        swiperInstances: [],
-        totalSlidesMap: {}, 
-        activeIndexMap: {},
-        initializeSwiperSlider() {
-            let profileSliders = document.querySelectorAll('.profile-slider');
-            const self = this;
-        
-            // Destroy previous Swiper instances
-            this.swiperInstances.forEach(swiper => swiper.destroy(true, true));
-            this.swiperInstances = [];
-        
-            profileSliders.forEach((el) => {
-                let profileId = el.getAttribute('data-profile-id');
-        
-                let swiper = new Swiper(el, {
-                    pagination: {
-                        el: el.querySelector('.swiper-pagination'),
-                    },
-                    navigation: {
-                        nextEl: el.querySelector('.swiper-button-next'),
-                        prevEl: el.querySelector('.swiper-button-prev'),
-                    },
-                    on: {
-                        slideChange: function (swiperInstance) {
-                            self.activeIndexMap = { ...self.activeIndexMap, [profileId]: swiperInstance.activeIndex };
-                        }
-                    }
-                });
-        
-                this.swiperInstances.push(swiper);
-            });
-        },
-
-        // Computed function to get visible dots (max 3)
-        visibleDots(profileId) {
-            const totalSlides = this.totalSlidesMap[profileId] || 0;
-            return Array.from({ length: Math.min(totalSlides, 3) });
-        },
-
-        // Computed function to get remaining slides number
-        remainingSlides(profileId) {
-            const totalSlides = this.totalSlidesMap[profileId] || 0;
-            return totalSlides > 5 ? totalSlides - 5 : 0;
-        },
-
-        // Active slide index for highlighting
-        getActiveIndex(profileId) {
-            return this.activeIndexMap[profileId] || 0;
-        },
-
         fetchOrderBy() {
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/page_saved_profiles_orderbyWIP.asp`)
             .then(response => response.json())
@@ -151,13 +133,6 @@ document.addEventListener("alpine:init", () => {
                     // console.log(data, 'profileData')
                     this.profileData = data;
                     this.profiles = data.savedprofiles;
-
-                    data.savedprofiles.forEach(profile => {
-                        this.totalSlidesMap[profile.profileid] = profile.images_profile.length;
-                        this.activeIndexMap[profile.profileid] = 0;  
-                    });
-
-
                     this.pagination = data.pagination;
                 })
                 .catch(error => {
@@ -167,7 +142,7 @@ document.addEventListener("alpine:init", () => {
                 .finally(() => {
                     this.isProfilesLoading = false;
                     this.$nextTick(() => { 
-                        this.initializeSwiperSlider()    
+                        initializeOwlSlider()    
                         window.scrollTo({
                             top: 0,
                             behavior: 'smooth'
@@ -191,7 +166,8 @@ document.addEventListener("alpine:init", () => {
                     toastBootstrap.show();
 
                     this.$nextTick(() => { 
-                        this.initializeSwiperSlider();
+                        this.profiles = [];
+                        this.fetchProfiles()
                     });
                     
                 } else if (data.Status == 'ERROR') {
