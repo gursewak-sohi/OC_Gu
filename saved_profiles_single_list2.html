@@ -116,7 +116,9 @@
             width: 28px;
             height: 28px;
             font-size: 16px;
-            transition: 0.3s all ease;
+            transition: 0.2s all ease;
+            opacity: 0;
+            visibility: hidden;
         }
 
         .zoom-in-profile:hover {
@@ -125,6 +127,11 @@
 
         .profile-slider {
             transition: 0.3s all ease;
+        }
+
+        .profile-slider:hover  .zoom-in-profile {
+            opacity: 1;
+            visibility: visible;
         }
         
         .zoomed-profile {
