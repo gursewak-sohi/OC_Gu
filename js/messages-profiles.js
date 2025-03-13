@@ -164,8 +164,8 @@ document.addEventListener("alpine:init", () => {
                     toastBootstrap.show();
 
                     this.$nextTick(() => { 
-                        initializeOwlSlider();
-                        this.initializeTooltips();    
+                        this.profiles = [];
+                        this.fetchProfiles()
                     });
                     
                 } else if (data.Status == 'ERROR') {
