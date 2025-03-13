@@ -36,6 +36,7 @@
             left: 10px;
             z-index: 20;
         }
+        
 
         .profile-slider .swiper-nav-button {
             background: rgba(255, 255, 255, 0.7);
@@ -99,6 +100,38 @@
             background-color: #ffffff;
             padding: 0 8px 2px;
             border-radius: 20px;
+        }
+
+        .zoom-in-profile {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 10;
+            border: none;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            font-size: 16px;
+            transition: 0.3s all ease;
+        }
+
+        .zoom-in-profile:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .profile-slider {
+            transition: 0.3s all ease;
+        }
+        
+        .zoomed-profile {
+            transform: scale(1.3);
+            z-index: 30;
+            border-radius: 10px;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
         }
       
         @media screen and (max-width: 767px){
@@ -525,10 +558,22 @@
                     <template x-for="(profile, index) in profiles" :key="profile.profileid + '-' + index">
                         <div class="col-12 col-sm-4 col-md-3">
                             <div class="profileItem">
-                                    <div class="form-check form-check-profile">
-                                        <input type="checkbox" :value="profile.profileid" x-model="selectedProfiles" class="form-check-input cursor-pointer">
-                                    </div>
-                                    <div class="swiper profile-slider" :data-profile-id="`${profile.profileid}`">
+                                    
+                                    
+                                    <div class="swiper profile-slider" 
+                                        :data-profile-id="`${profile.profileid}`"
+                                        x-data="{ zoomed: false }"
+                                        :class="{ 'zoomed-profile': zoomed }"
+                                        @click.away="zoomed = false"
+                                        @mouseleave="zoomed = false">
+
+                                        <div class="form-check form-check-profile">
+                                            <input type="checkbox" :value="profile.profileid" x-model="selectedProfiles" class="form-check-input cursor-pointer">
+                                        </div>
+
+                                        <button x-show="!zoomed" class="zoom-in-profile" @mouseenter="zoomed = true">
+                                            <ion-icon name="expand-outline"></ion-icon>
+                                        </button>
                                         <div class="swiper-wrapper">
                                             <template x-for="(image, imgIndex) in profile.images_profile" :key="profile.profileid + '-' + imgIndex">
                                                 <div class="swiper-slide">
@@ -542,13 +587,15 @@
                                         </div>
                                          
                                         <div class="custom-pagination">
-                                            <template x-for="(dot, index) in visibleDots(profile.profileid)" :key="index">
-                                                <span 
-                                                    :class="{
-                                                        'active': index === getActiveIndex(profile.profileid)
-                                                    }"
-                                                    class="dot">
-                                                </span>
+                                            <template x-if="visibleDots(profile.profileid).length > 1">
+                                                <template x-for="(dot, index) in visibleDots(profile.profileid)" :key="index">
+                                                    <span 
+                                                        :class="{
+                                                            'active': index === getActiveIndex(profile.profileid)
+                                                        }"
+                                                        class="dot">
+                                                    </span>
+                                                </template>
                                             </template>
                                         
                                             <template x-if="remainingSlides(profile.profileid) > 0">
