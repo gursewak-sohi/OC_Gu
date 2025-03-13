@@ -10,13 +10,15 @@ if (!statusModalInstance) {
     statusModalInstance = new bootstrap.Modal(statusModal);
 }
 
+let shareModalInstance = null;
 let shareModal = document.getElementById('shareModal');
-if (shareModal) {
-    let shareModalInstance = bootstrap.Modal.getInstance(shareModal);
+if(shareModal) {
+    shareModalInstance = bootstrap.Modal.getInstance(shareModal);
     if (!shareModalInstance) {
         shareModalInstance = new bootstrap.Modal(shareModal);
     }
 }
+ 
 
 
 
@@ -328,7 +330,6 @@ document.addEventListener("alpine:init", () => {
         fetch(`https://www.onlinecasting.dk/api/savedprofiles/page_saved_profiles_folder_full_shareWIP.asp?casterlistid=${this.currentCasterListId}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data, 'share'); 
                 if (data.Status === 'OK') {
                     this.statusMessageHeadline = data.StatusMessageHeadline
                     this.textHtml = data.text_html;
@@ -383,6 +384,7 @@ document.addEventListener("alpine:init", () => {
             history.pushState({ limit: limit }, '', newUrl);
 
             if (fetch) {
+                this.setSkip(0, false)
                 this.profiles = [];
                 this.fetchProfiles();
             }
