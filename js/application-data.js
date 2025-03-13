@@ -110,7 +110,7 @@ function applicationComponent() {
     linkToShare : '',
     textCopyLink : '',
     shareChatFolder() {
-      fetch(`https://www.onlinecasting.dk/api/applications/applications_share.asp?auditionid=23406&folder=YES`)
+      fetch(`https://www.onlinecasting.dk/api/applications/applications_shareWIP.asp?auditionid=23406&folder=YES`)
           .then(response => response.json())
           .then(data => {
               // console.log(data, 'share chat'); 

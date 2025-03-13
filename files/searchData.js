@@ -382,7 +382,7 @@ document.addEventListener("alpine:init", () => {
       isAskingSelfie: false,
       sendSelfie(profileId) {
           this.isAskingSelfie = true;
-          fetch(`https://www.onlinecasting.dk/api/message_profile_send_selfie.asp?profileid=${profileId}`)
+          fetch(`https://www.onlinecasting.dk/api/message_profile_send_selfieWIP.asp?profileid=${profileId}`)
               .then(response => response.json())
               .then(data => {
                   if (data.Status == 'OK') {
@@ -463,7 +463,7 @@ document.addEventListener("alpine:init", () => {
       messageProfile(profileId) {
         this.currentProfileId = profileId;
         this.isLoadingMessage = true;
-        fetch(`https://proxy.cors.sh/https://www.onlinecasting.dk/api/message_profile.asp?profileid=${profileId}`)
+        fetch(`https://proxy.cors.sh/https://www.onlinecasting.dk/api/message_profileWIP.asp?profileid=${profileId}`)
             .then(response => response.json())
             .then(data => {
               if (data.Status == 'OK') {

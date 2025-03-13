@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Page Title -->
+    <title>OnlineCasting</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Responsive Styles -->
+    <link rel="stylesheet" href="css/theme-responsive.css">
+    <!-- Owl Stylesheets -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <!-- Fancy Box -->
+    <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+
+    <style>
+        .btn-delete {
+            bottom: auto;
+            top: 15px;
+            position: absolute;
+            right: 0;
+        }
+        .form-check-profile {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 20;
+        }
+      
+        @media screen and (max-width: 767px){
+            .profile-textarea {
+                height: 350px;
+            }
+        }
+    </style>
+
+</head>
+
+<body x-data="messageProfilesComponent()">
+
+     <!-- Toast Message -->
+     <div class="toast-container position-fixed bottom-0 start-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div  class="toast-body">
+            <div class="d-flex gap-3 align-items-center">
+                <img class="rounded" x-show="statusImage" x-bind:src="statusImage" alt="image" width="50" height="50">
+                <span class="font-size-16px fw-semibold" x-text="statusMessage">Hello, world! This is a toast message.</span>
+            </div>
+          </div>
+        </div>
+    </div>
+
+     <!-- Status Modal -->
+     <div class="modal fade filterModal" id="statusModal" tabindex="-1" aria-labelledby="statusModal" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                        <img src="img/close-icon.svg" alt="">
+                    </div>
+                    <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+                </div>
+                <div class="modal-body chat-modal-body">
+                  <p x-text="statusMessage" class="font-size-16px"></p>
+                </div>
+                <div class="modal-footer">
+                    <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn"></button>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+    <!-- Send Messages Modal -->
+    <div x-cloak="" class="modal fade filterModal" id="sendMessage" tabindex="-1" aria-labelledby="sendMessage" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                        <img src="img/close-icon.svg" alt="">
+                    </div>
+                    <h5 x-text="messageData.headline" class="modal-title text-center"></h5>
+                    <img x-show="messageData.multipleprofiles == 'NO' || msgProfiles.length === 1" class="modal-header-image" x-bind:src="msgProfiles[0]?.imageurl" alt="image"/>
+                </div>
+                <div class="modal-body latestProfileSection">
+                    <div x-show="messageData.multipleprofiles == 'NO'" x-html="messageData.text_html" class="mb-3 font-size-16px"></div>
+                    <ul x-show="messageData.multipleprofiles == 'YES' && msgProfiles.length > 1" class="image-listing overflow-auto" style="max-height: 200px;">
+                      <template x-for="profile in msgProfiles" :key="profile.profileid">
+                        <li>
+                          <button :title="profile.text_remove" @click="removeMsgProfiles(profile.profileid)" type="button" class="remove-profile"><span>&times;</span></button>
+                          <img x-bind:src="profile.imageurl" />
+                        </li>
+                      </template>
+                    </ul>
+                    
+                     
+                  
+                    <div class="form-group mb-3 w-100">
+                        <label x-text="messageData.headline_messagebox" class="form-label font-size-16px"></label>
+                        <textarea :maxlength="msgMaxChar" x-model="msgInputText" min="1" rows="6" class="form-control mb-2 profile-textarea"></textarea>
+                        <div class="d-flex flex-md-row flex-column justify-content-end gap-1">
+                          <div class="d-flex justify-content-end gap-1">
+                            <span x-text="msgMaxChar - msgInputText.length"></span>  <span x-text="messageData.text_characters_left"></span>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex flex-column">
+                  <div class="d-flex flex-row justify-content-between w-100 gap-2">
+                    <div class="d-flex flex-row gap-2 ">
+                      
+                      <div x-show="messageData.show_template_button	 === 'YES'" class="dropdown-container dropdown-select">
+                        <button data-bs-toggle="dropdown" type="button" class="btn mainBtn btnoutlineSecondary px-4 w-100">
+                          <ion-icon name="newspaper-outline"></ion-icon> <span class="d-none d-md-inline" x-text="messageData.text_template_button"></span>
+                        </button>
+                        <div class="dropdown-menu filter-dropdown font-size-14px mt-2 downdown-w-sm">
+                          <ul>
+                            <template x-for="msgTemplate in msgTemplates" :key="msgTemplate.searchname">
+                              <li>
+                                <a :class="{ 'active': currentSelectedTemplate == msgTemplate.searchname }"  x-on:click="changeMsgTemplate(msgTemplate.searchname)" class="d-flex align-items-center" href="javascript:;" x-text="msgTemplate.name"></a>
+                             </li>
+                           </template>
+                          </ul>
+                       </div>
+                     </div>
+                      
+                      <!-- Trigger for file upload -->
+                      <button x-show="messageData.show_attach_files_button === 'YES'" type="button" class="btn mainBtn btnoutlineSecondary px-4">
+                        <ion-icon name="attach"></ion-icon> <span class="d-none d-md-inline" x-text="messageData.text_attach_files_button"></span>
+                      </button>
+                    </div>
+                    <button @click="sendNewMessage(messageData.profileid)" x-text="messageData.text_submit" type="button" class="btn mainBtn"></button>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- Share Modal -->
+      <div class="modal fade filterModal" id="shareModal" tabindex="-1" aria-labelledby="shareModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="close closeonheader" data-bs-dismiss="modal" aria-label="Close">
+                        <img src="img/close-icon.svg" alt="">
+                    </div>
+                    <h5 x-text="statusMessageHeadline" class="modal-title text-center"></h5>
+                </div>
+                <div class="modal-body chat-modal-body latestProfileSection">
+                    <div class="unset-p" x-html="textHtml" class="mb-3 font-size-16px overflow-auto" style="max-height: 250px;"></div>
+                    <div class="form-group mb-3">
+                        <!-- <label x-text="textHeaderInput" class="form-label font-size-16px"></label> -->
+                         <input x-model="linkToShare" type="text" class="form-control mb-2">
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button x-text="textClose" type="button" data-bs-dismiss="modal" class="btn mainBtn btnoutlineSecondary">Text Close</button>
+                    <button @click="copyLink(linkToShare, 'sharingLink')" x-text="isCopied === 'sharingLink' ? textCopiedLink : textCopyLink"  type="button" class="btn mainBtn"></button>
+                </div>
+            </div>
+        </div>
+        </div>
+  
+
+    <div class="wrapper">
+        <!-- Promo Section -->
+        <div id="promoSection" class="promo-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="promo-block">
+                            <h5>Just launched new design</h5>
+                            <a class="btn mainBtn btnfillwhite" href="#">Post a Job</a>
+                        </div>
+                        <button id="promoBtn" type="button" class="promo-close">
+                            <ion-icon name="close-circle-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- Profile Selection -->
+         <div x-show="selectedProfiles.length > 0" class="selection-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="selection-block">
+                            <h5><span x-text="selectedProfiles.length"></span> ansogninger valgt</h5>
+                            <a @click="sendMessageModalData(selectedProfiles, 'PROFILE', 'CALL', currentCasterListId)" class="btn mainBtn btnfillwhite px-3 px-md-4" href="javascript:;">Besvar ansogningerne</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+        <!-- header start here -->
+        <header class="header" id="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-3 col-md-3">
+                        <div class="logo">
+                            <a href="index.html"><img src="img/onlineCasting.svg" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-none d-md-block">
+                        <ul class="headerNav">
+                            <li><a href="#">CASTINGS &amp; JOBS</a></li>
+                            <li><a href="#">Search talents</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-9 col-md-3">
+                        <div class="rightNav">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <ion-icon style="font-size:25px" name="mail-outline"></ion-icon>
+                                        <div class="value">2</div>
+                                        <span>beskedar</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i>
+                                            <div class="profileavtar" style="background-image: url(img/profile-2.png);"></div>
+                                        </i>
+                                        <div class="value">!</div>
+                                        <span>Kasper</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <button class="top-bar__nav-toggle hamburger" id="top-nav-toggle">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </button>
+                                        <span>MENU</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="top-bar">
+                            <div class="top-bar__nav__wrapper" id="top-bar__nav">
+                                <nav class="top-bar__nav">
+                                    <div class="bordertp">
+                                        <div class="inner-col">
+
+                                            <h3>
+                                                <div class="avtar" style="background-image: url(img/exp-2.png);"></div>
+                                                My Profile</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="create-outline"></ion-icon>
+                                                        Edit profile</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="image-outline"></ion-icon>
+                                                        Upload image</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <ion-icon name="log-out-outline"></ion-icon>
+                                                        Log out</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Casters &amp; Producers</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">See profiles</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Saved profiles</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Join us</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+                                            <h3>Generals</h3>
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Contact us</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">About onlinecasting</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">What is this?</a>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <figure id="figure" class="nav-reavel nav-down">
+            <ul class="headerNav brdrTp d-md-none">
+                <li><a href="#">CASTINGS &amp; JOBS</a></li>
+                <li><a href="#">Search talents</a></li>
+            </ul>
+        </figure>
+        <!-- header end here -->
+        <div class="clearfix"></div>
+
+        <section class="entry-content pt-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between mb-3 mb-sm-4">
+                            <h1 class="mb-0">Profiles <small class="text-muted fs-4">(<span x-text="profiles.length"></span>)</small></h1>
+                            <div class="d-flex fs-4 pe-3 gap-2 align-items-center">
+                                <a  data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-title="Delete" class="text-muted" href="trashcan.html">
+                                  <div class="icon-text-wrapper">
+                                    <div class="icon-wrapper">
+                                      <span class="icon-outline">
+                                        <ion-icon name="trash-outline"></ion-icon>
+                                      </span>
+                                      <span class="icon-solid">
+                                        <ion-icon name="trash"></ion-icon>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </a>
+                                <a @click="shareProfiles()" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-title="Share" class="text-muted" href="javascript:;">
+                                  <div class="icon-text-wrapper">
+                                  <div class="icon-wrapper">
+                                    <span class="icon-outline">
+                                      <ion-icon name="share-social-outline"></ion-icon>
+                                    </span>
+                                    <span class="icon-solid">
+                                      <ion-icon name="share-social"></ion-icon>
+                                    </span>
+                                  </div>
+                                  </div>
+                                </a>
+                                <a data-bs-toggle="tooltip"data-bs-trigger="hover" data-bs-placement="top" data-bs-title="Edit" href="edit.html" class="text-muted">
+                                  <div class="icon-text-wrapper">
+                                  <div class="icon-wrapper">
+                                    <span class="icon-outline">
+                                      <ion-icon name="create-outline"></ion-icon>
+                                    </span>
+                                    <span class="icon-solid">
+                                        <ion-icon name="create"></ion-icon>
+                                    </span>
+                                  </div>
+                                 </div>
+                                </a>
+                              </div>
+                        </div>
+                        <div class="d-flex flex-column flex-md-row gap-3 mb-4">
+                            <a @click.prevent="sendMessageModalData(profiles.map(p => p.profileid).join(','), 'PROFILE', 'CALL', currentCasterListId)" href="javscript:;" class="btn mainBtn btnoutlinePrimary">Send Message to All Profiles</a>
+                            <a href="javscript:;" class="btn mainBtn btnoutlinePrimary">Hent PDF</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <div class="font-weight-600 pt-0 text-truncate fs-sm-7 fs-6" x-text="profileData.text_showing_numbers_profiles_on_page"></div>
+                            <div class="d-flex align-items-center">
+                                <div class="dropdown-container dropdown-solid filter-downBtn">
+                                    <div data-bs-toggle="dropdown" class="dropdown-toggle  px-1 px-md-2">
+                                        <ion-icon class="fs-5 me-1" name="filter-circle-outline"></ion-icon>
+                                        <span class="pe-4" x-text="currentOrderByName"></span>
+                                    </div>
+                                    <div class="dropdown-menu filter-dropdown font-size-13px filter-dropdown-profile">
+                                        <ul>
+                                            <template x-for="order in orderBy" :key="order.name">
+                                                <li>
+                                                  <a x-on:click="setOrderBy(order.searchname, true)" :class="{ 'active': currentOrderBy == order.searchname }" class="d-flex align-items-center" href="javascript:;" x-text="order.name"></a>
+                                               </li>
+                                             </template>
+                                        </ul>
+                                    </div>
+                                </div>
+                               
+                                 
+                                <div class="dropdown-container dropdown-solid filter-downBtn">
+                                    <div data-bs-toggle="dropdown" class="dropdown-toggle px-1 px-md-2">
+                                        <ion-icon class="fs-5 me-1" name="people-outline"></ion-icon>
+                                        <span x-text="profileLimit" class="pe-4">10</span>
+                                    </div>
+                                    <div class="dropdown-menu filter-dropdown font-size-13px filter-dropdown-profile">
+                                        <ul>
+                                            <li>
+                                                <a :class="{ 'active': profileLimit == 30 }" @click.prevent="setLimit(30, true)" href="javascript:;">30</a>
+                                            </li>
+                                            <li>
+                                                <a :class="{ 'active': profileLimit == 10 }" @click.prevent="setLimit(10, true)" href="javascript:;">10</a>
+                                            </li>
+                                            <li>
+                                                <a :class="{ 'active': profileLimit == 60 }" @click.prevent="setLimit(60, true)" href="javascript:;">60</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       
+
+        <!-- Latest Profile start here-->
+        <section class="latestProfileSection pt-4 mt-2">
+            <div class="container">
+                <div class="row">
+                    <div class="application-loader" x-show="isProfilesLoading">
+                        Loading Profiles..
+                     </div>
+                     <div class="application-loader" x-show="profiles.length === 0 && !isProfilesLoading">
+                       No Profile found
+                     </div>
+                    <template x-for="(profile, index) in profiles" :key="profile.profileid + '-' + index">
+                        <div class="col-12 col-sm-4 col-md-3">
+                            <div class="profileItem">
+                                    <div class="form-check form-check-profile">
+                                        <input type="checkbox" :value="profile.profileid" x-model="selectedProfiles" class="form-check-input cursor-pointer">
+                                    </div>
+                                    <div class="latestProfile owl-carousel owl-theme">
+                                        <template x-for="(image, imgIndex) in profile.images_profile" :key="profile.profileid + '-' + imgIndex">
+                                            <a href="javascript:;">
+                                                <div class="item">
+                                                    <div class="profileCard" :style="`background-image: url(${image.imageurl})`""></div>
+                                                </div>
+                                            </a>
+                                        </template>
+                                    </div>
+                                
+                                <div class="d-block position-relative">
+                                    <div>
+                                        <h4 x-text="profile.name_and_age_text">name</h4>
+                                        <p x-text="profile.region" class="mb-2">region</p>
+                                    </div>
+                                    <div class="btn-delete fs-4">
+                                        <a @click.prevent="deleteProfile(profile.profileid)" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" data-bs-title="Delete profile" class="text-muted" href="javascript:;">
+                                          <div class="icon-text-wrapper">
+                                            <div class="icon-wrapper">
+                                              <span class="icon-outline">
+                                                <ion-icon name="trash-outline"></ion-icon>
+                                              </span>
+                                              <span class="icon-solid">
+                                                <ion-icon name="trash"></ion-icon>
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex justify-content-start pt-1">
+                                        <a @click="sendMessageModalData(profile.profileid, 'PROFILE', 'CALL', currentCasterListId)" class="btn-iconed-primary position-relative" href="javascript:;">
+                                            <ion-icon class="font-size-22px" name="mail-outline"></ion-icon>
+                                            <span x-text="profile.text_button_send_message">Besked</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                
+
+                <!-- /Pagination start here-->
+                <div class="pagination-area pt-30">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <template x-for="(page, pageIndex) in pagination" :key="pageIndex">
+                                <li class="page-item">
+                                    <a @click.prevent="setSkip(page.skip, true); setLimit(page.limit, false)" :style="page.cssstyle" class="page-link" x-html="page.show" href="javascript:;">1</a>
+                                </li>
+                            </template>
+                            
+                        </ul>
+                    </nav>
+                </div>
+                <!-- /Pagination end here-->
+
+            </div>
+        </section>
+        <!-- Latest Profile end here-->
+
+
+        <!-- Footer start here-->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Navigation</h5>
+                        <ul>
+                            <li> <a href="#">Opret profil</a> </li>
+                            <li> <a href="#">Tilføj opslag</a> </li>
+                            <li> <a href="#">Castere &amp; agenter</a> </li>
+                            <li> <a href="#">Opret agentprofil</a> </li>
+                            <li> <a href="#">Casting &amp; auditions</a> </li>
+                            <li> <a href="#">Profiler</a> </li>
+                            <li> <a href="#">Log ind</a> </li>
+                            <li> <a href="#">RSS</a> </li>
+                        </ul>
+
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Artikler</h5>
+                        <ul>
+                            <li> <a href="#">Succesoplevelser</a> </li>
+                            <li> <a href="#">Artikler &amp; tips</a> </li>
+                            <li> <a href="#">Casterprofiler</a> </li>
+                            <li> <a href="#">Interviews</a> </li>
+                            <li> <a href="#">Presse</a> </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Quicklinks</h5>
+                        <ul>
+                            <li> <a href="#">Statister</a> </li>
+                            <li> <a href="#">Hårmodel</a> </li>
+                            <li> <a href="#">Børnemodel</a> </li>
+                            <li> <a href="#">Audition</a> </li>
+                            <li> <a href="#">Statist</a> </li>
+                            <li> <a href="#">Bliv model</a> </li>
+                            <li> <a href="#">TV vært</a> </li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-sm-3 pb-20">
+                        <h5>Onlinecasting</h5>
+                        <ul>
+                            <li> <a href="#">Om Onlinecasting</a> </li>
+                            <li> <a href="#">Konceptet</a> </li>
+                            <li> <a href="#">F.a.q.</a> </li>
+                            <li> <a href="#">Kontrakter</a> </li>
+                            <li> <a href="#">Handelsbetingelser</a> </li>
+                            <li> <a href="#">Cookies</a> </li>
+                            <li> <a href="#">Sitemap</a> </li>
+                            <li> <a href="#">Kontakt</a> </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <img src="img/ftr-logo.svg" alt="" class="mb-10 mt-20">
+                        <p>Onlinekoncept <br>Klostermosevej 140<br>3000 Helsingør </p>
+                        <p class="pb-10 font-size-15px"> <a href="#">onlinecasting@onlinecasting.dk</a> </p>
+                        <p class="pb-10">
+                            <a href="#">
+                                <ion-icon class="footer-icons" name="logo-instagram"></ion-icon>
+                            </a> &nbsp;
+                            <a href="#">
+                                <ion-icon class="footer-icons" name="logo-facebook"></ion-icon>
+                            </a>
+                        </p>
+                        <p class="font-size-15px"><a href="#">Maleribasen.dk</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer end here-->
+
+
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <!-- Icon Fonts -->
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- Masonry -->
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <!-- Owl Slider -->
+    <script src="js/owl.carousel.min.js"></script>
+    <!-- Fancybox -->
+    <script src="js/jquery.fancybox.min.js"></script>
+    
+
+     <!-- main-->
+    <script src="js/main.js"></script>
+    <script type="text/javascript">
+        $(".grid").imagesLoaded(function() {
+            $(".grid").masonry({
+                itemSelector: ".grid-item"
+            });
+        });
+    </script>
+    
+   
+     <!-- Alpine JS -->
+     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+ 
+     <!-- Aline Send Messages Profile -->
+     <script src="js/messages-profiles.js"></script>
+  
+   
+</body>
+
+</html>
